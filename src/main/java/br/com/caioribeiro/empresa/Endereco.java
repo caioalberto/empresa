@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 
 public class Endereco {
 	
@@ -24,6 +23,7 @@ public class Endereco {
 	private static final int TAM_MAX_CIDADE = 30;
 	private static final int TAM_MIN_PAIS = 5;
 	private static final int TAM_MAX_PAIS = 20;
+
 			
 	public String getLogradouro() {
 		return logradouro;
@@ -43,6 +43,7 @@ public class Endereco {
 	public int getNumero() {
 		return numero;
 	}
+	
 	public void setLogradouro(String logradouro) {
 		this.validaLogradouro(logradouro);
 		this.logradouro = logradouro;
@@ -67,6 +68,7 @@ public class Endereco {
 		this.validaNumero(numero);
 		this.numero = numero;
 	}
+
 	
 	/**
 	 * 
@@ -177,4 +179,24 @@ public class Endereco {
 	public void verificaTamMaxPais(String pais) {
 		checkArgument(pais.length() < TAM_MAX_PAIS,"O país deve conter no máximo 20 letras!");
 	}
+	
+	/**
+	 * 
+	 * Verifica se o numero está preenchido, assim como as regras preestabelecidas
+	 * @param numero
+	 */
+	public void validaNumero(int numero) {
+		this.verificaSePreenchidoNumero(numero);
+	}
+	
+	/**
+	 * 
+	 * Verifica se o numero foi preenchido
+	 * @param numero
+	 */
+	public void verificaSePreenchidoNumero(int numero) {
+		checkArgument(numero == 0, "O número não pode ser vazio!");
+	}
+	
+
 }
