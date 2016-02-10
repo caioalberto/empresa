@@ -1,7 +1,9 @@
 package br.com.caioribeiro.empresa;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,8 +15,6 @@ public class Empresa {
 	private String nomeFantasia;
 	private Date dataDeCadastro;
 	
-	private static final Date DATA_ATUAL = new Date();
-
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -58,29 +58,46 @@ public class Empresa {
 
 	/**
 	 * 
-	 * Verifica se a data de cadastro é menor/maior que a data atual
-	 * @param dataDeCadastro
+	 * Método para a verificação e validação da data de cadastro da roda.
+	 * @param dataCadastro
 	 */
 	public void validaDataCadastro(Date dataDeCadastro) {
-		this.verificaSeMenorQueAtual(dataDeCadastro);
-		this.verificaSeMaiorQueAtual(dataDeCadastro);
+		this.verificaDataNula(dataDeCadastro);
+		this.verificaSeAntesQueAtual(dataDeCadastro);
+		this.verificaSeDepoisQueAtual(dataDeCadastro);
 	}
 	
-	public void verificaSeMenorQueAtual(Date dataDeCadastro) {
-		this.zerarData(dataDeCadastro);
-		checkArgument(dataDeCadastro.before(DATA_ATUAL),"A data de cadastro não pode ser anterior a data atual!");		
+    private static Date zerarHoras(Date data){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+	
+	public void verificaDataNula(Date dataDeCadastro) {
+		checkNotNull(dataDeCadastro,"Não é possível criar um objeto com data nula!");
 	}
 	
-	public void verificaSeMaiorQueAtual(Date dataDeCadastro) {
-		this.zerarData(dataDeCadastro);
-		checkArgument(dataDeCadastro.after(DATA_ATUAL),"A data de cadastro não pode ser posterior a data atual!");
+	public void verificaSeAntesQueAtual(Date dataDeCadastro) {
+		Date dataAtual = new Date();		
+		Date dataAtualZerada = zerarHoras(dataAtual);
+		Date dataCadastroZerada = zerarHoras(dataDeCadastro);
+		checkArgument(!dataCadastroZerada.before(dataAtualZerada), "Não é possível criar um objeto com uma data anterior a atual!");		
 	}
 	
-	public void zerarData(Date dataDeCadastro) {		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(dataDeCadastro);
-		calendar.set(Calendar.HOUR_OF_DAY, 0); 
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
+	public void verificaSeDepoisQueAtual(Date dataDeCadastro) {
+		Date dataAtual = new Date();		
+		Date dataAtualZerada = zerarHoras(dataAtual);
+		Date dataCadastroZerada = zerarHoras(dataDeCadastro);
+		checkArgument(!dataCadastroZerada.after(dataAtualZerada), "Não é possível criar um objeto com uma data posterior a atual!" );
+	}
+	
+	@Override
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return "Empresa: " + nomeFantasia + "\n" + "Razão Social: " + razaoSocial + " CNPJ: " + cnpj + "\n" + "Data de abertura: " + sdf.format(dataDeCadastro);
 	}
 }

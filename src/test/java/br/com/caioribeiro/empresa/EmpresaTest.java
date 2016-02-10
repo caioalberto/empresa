@@ -1,5 +1,7 @@
 package br.com.caioribeiro.empresa;
 
+import java.util.Date;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -8,9 +10,11 @@ import org.junit.Test;
 
 public class EmpresaTest {
 	
+	private static Empresa empresa;
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Empresa empresa = new Empresa();	
+		empresa = new Empresa();	
 		System.out.println("Before Class");
 	}
 	
@@ -30,7 +34,9 @@ public class EmpresaTest {
 	}
 	
 	@Test
-	public void deve_testar_se_endereco_esta_preenchido() {		
+	public void deve_testar_a_data_de_cadastro_da_empresa() {
+		empresa.setDataDeCadastro(new Date());
+		System.out.println(empresa);
 	}
 
 }
