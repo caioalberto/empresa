@@ -6,17 +6,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Empresa {
 
 	private Endereco endereco;
+	private List<Telefone> telefones;
 	private String cnpj;
 	private String razaoSocial;
 	private String nomeFantasia;
+	private String email;
 	private Date dataDeCadastro;
 	
 	public Endereco getEndereco() {
 		return endereco;
+	}
+	
+	public List<Telefone> getTelefones(){
+		return telefones;
 	}
 	
 	public String getCnpj() {
@@ -30,13 +37,21 @@ public class Empresa {
 	public String getNomeFantasia() {
 		return nomeFantasia;
 	}
+	
+	public String getEmail() {
+		return email;
+	}
 
 	public Date getDataDeCadastro() {
 		return dataDeCadastro;
-	}
+	}	
 	
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+	
+	public void setTelefone(List<Telefone> telefones) {
+		this.telefones = telefones;
 	}
 			
 	public void setCnpj(String cnpj) {
