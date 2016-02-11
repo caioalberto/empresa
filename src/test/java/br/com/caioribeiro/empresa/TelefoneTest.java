@@ -1,7 +1,5 @@
 package br.com.caioribeiro.empresa;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +65,23 @@ public class TelefoneTest {
 	@Test
 	public void deve_aceitar_o_numero_do_telefone() {
 		telefone.setTelefone("12345678");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void deve_gerar_uma_excecao_de_tamanho_de_ddd() {
+		t1.setDdd(000);		
+	}
+	
+	@Test
+	public void deve_aceitar_o_numero_do_ddd() {
+		telefone.setDdd(11);
+	}
+	
+	@Test
+	public void deve_listar_as_informacoes_do_telefone() {
+		telefone.setDdd(11);
+		telefone.setTelefone("24594064");
+		System.out.println(telefone);
 	}
 
 }

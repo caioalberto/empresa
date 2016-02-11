@@ -64,9 +64,28 @@ public class Telefone {
 	}
 	
 	public void verificaSePreenchidoDdd(int ddd){
-		checkArgument(ddd == TAM_DDD, "O DDD deve ter apenas 2 dígitos!");
+		checkArgument(ddd != TAM_DDD, "O DDD deve ter apenas 2 dígitos!");
 	}
 	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Telefone && ((Telefone) obj).getTelefone().equals(this.getTelefone())){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "Telefone: " + ddd + telefone;

@@ -236,6 +236,26 @@ public class Endereco {
 		checkArgument(numero != 0, "O número não pode ser 0!");
 	}
 	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Endereco && ((Endereco)obj).getCep().equals(this.getCep())){
+			return true;			
+		}
+		else {
+			return false;
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "Endereço: " + logradouro + ", " + numero + " - " + cep + "\n" + bairro + " - " + cidade + "/" + estado + " - " + pais;
