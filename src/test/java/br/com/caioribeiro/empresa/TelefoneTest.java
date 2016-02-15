@@ -3,8 +3,11 @@ package br.com.caioribeiro.empresa;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,18 +32,23 @@ public class TelefoneTest {
 	@Before
 	public void setUp() throws Exception {
 		System.out.println("Before");
-		telefones = new ArrayList<>();
+		
+		telefones = new ArrayList<Telefone>();
+		
 		t1 = new Telefone();
 		t2 = new Telefone();
 		t3 = new Telefone();
-		this.addTelefones();		
+		
+		this.addTelefones();
 	}
+		
+		public void addTelefones() {
+			
+			telefones.add(t1);
+			telefones.add(t2);
+			telefones.add(t3);
+		}
 	
-	public void addTelefones() {
-		telefones.add(t1);
-		telefones.add(t2);
-		telefones.add(t3);
-	}
 
 	@After
 	public void tearDown() throws Exception {
@@ -67,9 +75,9 @@ public class TelefoneTest {
 		telefone.setTelefone("12345678");
 	}
 	
-	@Test (expected = IllegalArgumentException.class)
+	@Test (expected = NullPointerException.class)
 	public void deve_gerar_uma_excecao_de_tamanho_de_ddd() {
-		t1.setDdd(000);		
+		t1.setDdd(0);		
 	}
 	
 	@Test
@@ -81,7 +89,8 @@ public class TelefoneTest {
 	public void deve_listar_as_informacoes_do_telefone() {
 		telefone.setDdd(11);
 		telefone.setTelefone("24594064");
+		telefone.setTipo("Fixo");
 		System.out.println(telefone);
 	}
-
+	
 }

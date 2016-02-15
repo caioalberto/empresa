@@ -15,7 +15,7 @@ public class Empresa {
 	private String cnpj;
 	private String razaoSocial;
 	private String nomeFantasia;
-	private String email;
+	private List<String> emails;
 	private Date dataDeCadastro;
 	
 	public Endereco getEndereco() {
@@ -38,8 +38,8 @@ public class Empresa {
 		return nomeFantasia;
 	}
 	
-	public String getEmail() {
-		return email;
+	public List<String> getEmail() {
+		return emails;
 	}
 
 	public Date getDataDeCadastro() {
@@ -64,6 +64,10 @@ public class Empresa {
 
 	public void setNomeFantasia(String nomeFantasia) {
 		this.nomeFantasia = nomeFantasia;
+	}
+	
+	public void setEmail(List<String> emails) {
+		this.emails = emails;
 	}
 
 	public void setDataDeCadastro(Date dataDeCadastro) {

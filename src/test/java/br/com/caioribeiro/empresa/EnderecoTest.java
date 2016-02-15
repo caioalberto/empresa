@@ -60,7 +60,7 @@ public class EnderecoTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void deve_gerar_excecao_de_tamanho_maximo_do_bairro() {
-		endereco.setBairro("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		endereco.setBairro("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 	}
 	
 	@Test (expected = NullPointerException.class)
@@ -100,7 +100,7 @@ public class EnderecoTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void deve_gerar_excecao_de_tamanho_maximo_da_cidade() {
-		endereco.setCidade("ABCABCABCABCABCABCABC");
+		endereco.setCidade("ABCABCABCABCABCABCABCABCABCABCABCABCABC");
 	}
 	
 	@Test (expected = NullPointerException.class)
@@ -164,8 +164,8 @@ public class EnderecoTest {
 	}
 	
 	@Test(timeout = 500)
-	public void deve_retornar_o_endereco_em_25_milissegundos() throws Exception {
-		throw new InterruptedException("Timeout");
+	public void deve_retornar_o_endereco_em_25_milissegundos() throws InterruptedException {
+		Thread.sleep(500);
 	}
 	
 	@Test

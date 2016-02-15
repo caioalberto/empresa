@@ -6,14 +6,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Telefone {
 	
 	private String telefone;
+	private String tipo;
 	private int ddd;
 	
 	private static final int TAM_MIN_TELEFONE = 8;
 	private static final int TAM_MAX_TELEFONE = 9;
 	private static final int TAM_DDD = 2;
+	private static final int TAM_MIN_TIPO = 3;
+	private static final int TAM_MAX_TIPO = 7;
 
 	public String getTelefone() {
 		return telefone;
+	}
+	
+	public String getTipo() {
+		return tipo;
 	}
 	
 	public int getDdd() {
@@ -30,6 +37,10 @@ public class Telefone {
 		this.ddd = ddd;
 	}
 	
+	public void setTipo(String tipo) {
+		this.validaTipo(tipo);
+		this.tipo = tipo;
+	}
 	
 	/**
 	 * 
@@ -67,6 +78,28 @@ public class Telefone {
 		checkArgument(ddd != TAM_DDD, "O DDD deve ter apenas 2 dígitos!");
 	}
 	
+	/**
+	 * 
+	 * Verifica se o tipo foi preenchido, e as regras preestabelecidas
+	 * @param tipo
+	 */
+	public void validaTipo(String tipo) {
+		this.verificaSePreenchidoTipo(tipo);
+		this.verificaTamMinTipo(tipo);
+		this.verificaTamMaxTipo(tipo);
+	}
+	
+	public void verificaSePreenchidoTipo(String tipo) {
+		checkNotNull(tipo, "O tipo não pode ser nulo!");
+	}
+	
+	public void verificaTamMinTipo(String tipo) {
+		checkArgument(tipo.length() > TAM_MIN_TIPO, "O tipo não pode ser menor que 3!");
+	}
+	
+	public void verificaTamMaxTipo(String tipo) {
+		checkArgument(tipo.length() < TAM_MAX_TIPO, "O tipo não pode ser maior que 7!");
+	}
 	
 	@Override
 	public int hashCode() {
@@ -88,6 +121,6 @@ public class Telefone {
 
 	@Override
 	public String toString() {
-		return "Telefone: " + ddd + telefone;
+		return "Telefone " + tipo + ": " + ddd + " " + telefone;
 	}
 }
