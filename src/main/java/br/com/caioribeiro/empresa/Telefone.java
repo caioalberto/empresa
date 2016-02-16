@@ -136,6 +136,7 @@ public final class  Telefone {
     }
 
     public void verificaSePreenchidoDdd(int ddd) {
+    	checkArgument(ddd == 0, "O DDD");
         checkArgument(ddd != TAM_DDD, "O DDD deve ter apenas 2 dígitos!");
     }
 

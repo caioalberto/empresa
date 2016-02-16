@@ -1,13 +1,20 @@
 package br.com.caioribeiro.empresa;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isIn;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -78,7 +85,7 @@ public class TelefoneTest {
 		telefone.setTelefone("12345678");
 	}
 	
-	@Test (expected = NullPointerException.class)
+	@Test (expected = IllegalArgumentException.class)
 	public void deve_gerar_uma_excecao_de_tamanho_de_ddd() {
 		t1.setDdd(0);		
 	}
@@ -144,5 +151,14 @@ public class TelefoneTest {
 		telefone.setTelefone("12345678");
 		t1.setTelefone("87654321");
 		assertThat(telefone.getTelefone(), is(not(equalTo(t1.getTelefone()))));
+	}
+	
+	@Test
+	public void deve_assumir_a_excecao_e_rodar_mesmo_assim() {
+		try {
+			t1.setTelefone(null);
+		} catch (NullPointerException e) {
+			Assume.assumeNoException(e);
+		}
 	}
 }
