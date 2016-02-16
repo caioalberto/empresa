@@ -45,11 +45,11 @@ public class TelefoneTest {
 		this.addTelefones();
 	}
 		
-		public void addTelefones() {
-			
+		public void addTelefones() {			
 			telefones.add(t1);
 			telefones.add(t2);
 			telefones.add(t3);
+			System.out.println("Lista preenchida");
 		}
 	
 
@@ -137,5 +137,12 @@ public class TelefoneTest {
 	@Test
 	public void deve_retornar_se_a_lista_contem_os_objetos() {
 		assertThat(telefones, hasItems(t1,t2,t3,telefone));
+	}
+	
+	@Test
+	public void deve_retornar_se_sao_os_mesmos_numeros_de_telefone(){
+		telefone.setTelefone("12345678");
+		t1.setTelefone("87654321");
+		assertThat(telefone.getTelefone(), is(not(equalTo(t1.getTelefone()))));
 	}
 }
