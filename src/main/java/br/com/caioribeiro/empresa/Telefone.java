@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Telefone {
 
-    //Variaveis e constantes------------------------------------------------------------------------ 
+//Variaveis e constantes------------------------------------------------------------------------ 
     /**
      * Define o numero de telefone da classe.
      */
@@ -81,6 +81,8 @@ public class Telefone {
         this.tipo = tipo;
     }
 
+//Metodos de validacao-------------------------------------------------------------------
+    
     /**
      *
      * Valida o preenchimento do telefone, assim como as regras preestabelecidas

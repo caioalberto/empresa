@@ -182,6 +182,8 @@ public class Endereco {
         this.numero = numero;
     }
 
+ //Metodos de validacao-------------------------------------------------------------------
+    
     /**
      *
      * Verifica o logradouro, se preenchido e se respeita as ordem
