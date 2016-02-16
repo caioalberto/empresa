@@ -1,16 +1,16 @@
 package br.com.caioribeiro.empresa;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.Verifier;
-import org.hamcrest.core.*;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -110,5 +110,32 @@ public class TelefoneTest {
 	@Test
 	public void deve_aceitar_o_telefone() {
 		telefone.setTelefone("24594064");
+	}
+	
+		
+	@Test
+	public void deve_dizer_se_o_telefone_esta_na_lista_de_telefones() {
+		assertThat(telefone, isIn(telefones));
+	}
+	
+	@Test
+	public void deve_retornar_se_o_objeto_e_da_mesma_instancia() {
+		assertThat(telefone, instanceOf(Telefone.class));
+	}
+	
+	@Test
+	public void deve_retornar_se_o_numero_do_telefone_comeca_com_determinado_caractere() {
+		telefone.setTelefone("24594064");
+		assertThat(telefone.getTelefone(), startsWith("24"));
+	}
+	
+	@Test
+	public void deve_retornar_se_os_objetos_sao_da_mesma_instancia() {
+		assertThat(t1, is(equalTo(t2))); 
+	}
+	
+	@Test
+	public void deve_retornar_se_a_lista_contem_os_objetos() {
+		assertThat(telefones, hasItems(t1,t2,t3,telefone));
 	}
 }
