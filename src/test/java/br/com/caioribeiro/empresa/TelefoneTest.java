@@ -3,14 +3,17 @@ package br.com.caioribeiro.empresa;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.rules.Verifier;
+import org.hamcrest.core.*;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 public class TelefoneTest {
 
@@ -89,8 +92,23 @@ public class TelefoneTest {
 	public void deve_listar_as_informacoes_do_telefone() {
 		telefone.setDdd(11);
 		telefone.setTelefone("24594064");
-		telefone.setTipo("Fixo");
+	    telefone.setTipo("Fixo");
 		System.out.println(telefone);
 	}
 	
+	
+	@Test
+	public void deve_respeitar_o_contrato_equals_e_hashcode() {
+		EqualsVerifier.forClass(Telefone.class).suppress(Warning.NONFINAL_FIELDS).verify();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void deve_aceitar_apenas_numeros() {
+		telefone.setTelefone("a");						
+	}
+	
+	@Test
+	public void deve_aceitar_o_telefone() {
+		telefone.setTelefone("24594064");
+	}
 }

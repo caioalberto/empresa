@@ -8,6 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  *
  * Classe Empresa, define a criacao de um objeto do tipo empresa, assim como
@@ -145,43 +148,40 @@ public class Empresa {
     }
 
     public void verificaDataNula(Date dataDeCadastro) {
-        checkNotNull(dataDeCadastro, "NÃ£o Ã© possÃ­vel criar um objeto com data nula!");
+        checkNotNull(dataDeCadastro, "Não é possível criar um objeto com data nula!");
     }
 
     public void verificaSeAntesQueAtual(Date dataDeCadastro) {
         Date dataAtual = new Date();
         Date dataAtualZerada = zerarHoras(dataAtual);
         Date dataCadastroZerada = zerarHoras(dataDeCadastro);
-        checkArgument(!dataCadastroZerada.before(dataAtualZerada), "NÃ£o Ã© possÃ­vel criar um objeto com uma data anterior a atual!");
+        checkArgument(!dataCadastroZerada.before(dataAtualZerada), "Não é possível criar um objeto com uma data anterior a atual!");
     }
 
     public void verificaSeDepoisQueAtual(Date dataDeCadastro) {
         Date dataAtual = new Date();
         Date dataAtualZerada = zerarHoras(dataAtual);
         Date dataCadastroZerada = zerarHoras(dataDeCadastro);
-        checkArgument(!dataCadastroZerada.after(dataAtualZerada), "NÃ£o Ã© possÃ­vel criar um objeto com uma data posterior a atual!");
+        checkArgument(!dataCadastroZerada.after(dataAtualZerada), "Não é possível criar um objeto com uma data posterior a atual!");
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((cnpj == null) ? 0 : cnpj.hashCode());
-        return result;
+    	return new HashCodeBuilder().append(this.cnpj).toHashCode();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Empresa && ((Empresa) obj).getCnpj().equals(this.getCnpj())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Empresa)){
+			return false;			
+		}
+		Empresa other = (Empresa) obj;
+		return new EqualsBuilder().append(this.cnpj, other.cnpj).isEquals();
+	}
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return "Empresa: " + nomeFantasia + "\n" + "RazÃ£o Social: " + razaoSocial + " CNPJ: " + cnpj + "\n" + "Data de abertura: " + sdf.format(dataDeCadastro);
+        return "Empresa: " + nomeFantasia + "\n" + "Razão Social: " + razaoSocial + " CNPJ: " + cnpj + "\n" + "Data de abertura: " + sdf.format(dataDeCadastro);
     }
 }

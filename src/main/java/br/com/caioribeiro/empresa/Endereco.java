@@ -3,6 +3,9 @@ package br.com.caioribeiro.empresa;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -57,6 +60,12 @@ public class Endereco {
      * Define o numero do estabelecimento dentro do endereco.
      */
     private int numero;
+    
+    /**
+     * 
+     * Define o tipo do endereco, se residencial/comercial.
+     */
+    private String tipoEndereco;
 
     /**
      *
@@ -147,7 +156,11 @@ public class Endereco {
         return numero;
     }
 
-    public void setLogradouro(String logradouro) {
+    public String getTipoEndereco() {
+		return tipoEndereco;
+	}
+
+	public void setLogradouro(String logradouro) {
         this.validaLogradouro(logradouro);
         this.logradouro = logradouro;
     }
@@ -181,6 +194,10 @@ public class Endereco {
         this.validaNumero(numero);
         this.numero = numero;
     }
+    
+	public void setTipoEndereco(String tipoEndereco) {
+		this.tipoEndereco = tipoEndereco;
+	}
 
  //Metodos de validacao-------------------------------------------------------------------
     
@@ -198,15 +215,15 @@ public class Endereco {
     }
 
     public void verificaSePreenchido(String logradouro) {
-        checkNotNull(logradouro, "Logradouro nÃ£o pode estar vazio/nulo!");
+        checkNotNull(logradouro, "Logradouro não pode estar vazio/nulo!");
     }
 
     public void verificaTamMin(String logradouro) {
-        checkArgument(logradouro.length() > TAM_MIN_LOGRADOURO, "Logradouro nÃ£o pode conter menos de 4 caracteres!");
+        checkArgument(logradouro.length() > TAM_MIN_LOGRADOURO, "Logradouro não pode conter menos de 4 caracteres!");
     }
 
     public void verificaTamMax(String logradouro) {
-        Preconditions.checkArgument(logradouro.length() < TAM_MAX_LOGRADOURO, "Logradouro nÃ£o pode conter menos de 80 caracteres!");
+        Preconditions.checkArgument(logradouro.length() < TAM_MAX_LOGRADOURO, "Logradouro não pode conter menos de 80 caracteres!");
     }
 
     /**
@@ -223,15 +240,15 @@ public class Endereco {
     }
 
     public void verificaSePreenchidoBairro(String bairro) {
-        checkNotNull(bairro, "Bairro nÃ£o pode estar vazio/nulo!");
+        checkNotNull(bairro, "Bairro não pode estar vazio/nulo!");
     }
 
     public void verificaTamMinBairro(String bairro) {
-        checkArgument(bairro.length() > TAM_MIN_BAIRRO, "O bairro nÃ£o pode conter menos de 6 letras!");
+        checkArgument(bairro.length() > TAM_MIN_BAIRRO, "O bairro não pode conter menos de 6 letras!");
     }
 
     public void verificaTamMaxBairro(String bairro) {
-        Preconditions.checkArgument(bairro.length() < TAM_MAX_BAIRRO, "O bairro nÃ£o pode conter mais de 80 letras!");
+        Preconditions.checkArgument(bairro.length() < TAM_MAX_BAIRRO, "O bairro não pode conter mais de 80 letras!");
     }
 
     /**
@@ -246,11 +263,11 @@ public class Endereco {
     }
 
     public void verificaSePreenchidoCep(String cep) {
-        checkNotNull(cep, "Cep nÃ£o pode estar vazio/nulo!");
+        checkNotNull(cep, "Cep não pode estar vazio/nulo!");
     }
 
     public void verificaTamCep(String cep) {
-        checkArgument(cep.length() == TAM_MAX_CEP, "O cep nÃ£o pode ter um valor de dÃ­gitos diferente de 9!");
+        checkArgument(cep.length() == TAM_MAX_CEP, "O cep não pode ter um valor de dígitos diferente de 9!");
     }
 
     /**
@@ -266,15 +283,15 @@ public class Endereco {
     }
 
     public void verificaSePreenchidaCidade(String cidade) {
-        checkNotNull(cidade, "A cidade nÃ£o pode estar vazia/nula!");
+        checkNotNull(cidade, "A cidade não pode estar vazia/nula!");
     }
 
     public void verificaTamMinCidade(String cidade) {
-        checkArgument(cidade.length() > TAM_MIN_CIDADE, "A cidade nÃ£o pode conter menos do que 6 letras!");
+        checkArgument(cidade.length() > TAM_MIN_CIDADE, "A cidade não pode conter menos do que 6 letras!");
     }
 
     public void verificaTamMaxCidade(String cidade) {
-        checkArgument(cidade.length() < TAM_MAX_CIDADE, "A cidade nÃ£o pode conter mais do que 30 caracteres!");
+        checkArgument(cidade.length() < TAM_MAX_CIDADE, "A cidade não pode conter mais do que 30 caracteres!");
     }
 
     /**
@@ -289,11 +306,11 @@ public class Endereco {
     }
 
     public void verificaSePreenchidoEstado(String estado) {
-        checkNotNull(estado, "O estado nÃ£o pode ser nulo/vazio!");
+        checkNotNull(estado, "O estado não pode ser nulo/vazio!");
     }
 
     public void verificaTamanhoEstado(String estado) {
-        checkArgument(estado.length() == TAM_ESTADO, "O estado nÃ£o pode ter mais que 2 letras!");
+        checkArgument(estado.length() == TAM_ESTADO, "O estado não pode ter mais que 2 letras!");
     }
 
     /**
@@ -310,15 +327,15 @@ public class Endereco {
     }
 
     public void verificaSePreenchidoPais(String pais) {
-        checkNotNull(pais, "O paÃ­s nÃ£o pode estar vazio/nulo!");
+        checkNotNull(pais, "O país não pode estar vazio/nulo!");
     }
 
     public void verificaTamMinPais(String pais) {
-        checkArgument(pais.length() > TAM_MIN_PAIS, "O paÃ­s deve conter mais de 5 letras!");
+        checkArgument(pais.length() > TAM_MIN_PAIS, "O país deve conter mais de 5 letras!");
     }
 
     public void verificaTamMaxPais(String pais) {
-        checkArgument(pais.length() < TAM_MAX_PAIS, "O paÃ­s deve conter no mÃ¡ximo 20 letras!");
+        checkArgument(pais.length() < TAM_MAX_PAIS, "O país deve conter no máximo 20 letras!");
     }
 
     /**
@@ -344,24 +361,20 @@ public class Endereco {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((cep == null) ? 0 : cep.hashCode());
-        return result;
+    	return new HashCodeBuilder().append(this.cep).toHashCode();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Endereco && ((Endereco) obj).getCep().equals(this.getCep())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Endereco)){
+			return false;			
+		}
+		Endereco other = (Endereco) obj;
+		return new EqualsBuilder().append(this.cep, other.cep).isEquals();
+	}
     @Override
     public String toString() {
-        return "EndereÃ§o: " + logradouro + ", " + numero + " - " + cep + "\n" + bairro + " - " + cidade + "/" + estado + " - " + pais;
+        return "Endereço: " + logradouro + ", " + numero + " - " + cep + "\n" + bairro + " - " + cidade + "/" + estado + " - " + pais;
     }
 
 }
