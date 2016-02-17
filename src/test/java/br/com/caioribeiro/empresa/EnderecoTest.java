@@ -7,15 +7,18 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+
 public class EnderecoTest {
 
 	static Endereco endereco;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		endereco = new Endereco();	
+		endereco = new Endereco();
+		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 		System.out.println("Before Class");
-		System.out.println("Endereço criado");
 	}
 	
 	@AfterClass
@@ -145,7 +148,7 @@ public class EnderecoTest {
 	
 	@Test
 	public void deve_aceitar_pais() {
-		endereco.setPais("Brasil");
+		endereco.getPais();
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -155,7 +158,7 @@ public class EnderecoTest {
 	
 	@Test
 	public void deve_aceitar_o_numero() {
-		endereco.setNumero(143);
+		endereco.getNumero();
 	}
 	
 	@Ignore
@@ -170,13 +173,7 @@ public class EnderecoTest {
 	
 	@Test
 	public void deve_listar_as_informacoes_do_endereco_corretamente() {
-		endereco.setLogradouro("Rua Visconde de Itaborai");
-		endereco.setNumero(368);
-		endereco.setBairro("Tatuapé");
-		endereco.setCidade("São Paulo");
-		endereco.setEstado("SP");
-		endereco.setCep("03315-000");
-		endereco.setPais("Brasil");
+		endereco = Fixture.from(Endereco.class).gimme("valid");
 		System.out.println(endereco);
 	}
 }

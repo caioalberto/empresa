@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -29,7 +32,20 @@ public class TelefoneTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		telefone = new Telefone();	
+		
+		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
+		
+		telefone = new Telefone();
+		t1 = new Telefone();
+		t2 = new Telefone();
+		t3 = new Telefone();
+		telefone = Fixture.from(Telefone.class).gimme("valid");
+		t1 = Fixture.from(Telefone.class).gimme("valid");
+		t2 = Fixture.from(Telefone.class).gimme("valid");
+		t3 = Fixture.from(Telefone.class).gimme("valid");
+		
+		
+		
 		System.out.println("Before Class");
 		System.out.println("Telefone criado");
 	}
@@ -41,14 +57,8 @@ public class TelefoneTest {
 
 	@Before
 	public void setUp() throws Exception {
-		System.out.println("Before");
-		
+		System.out.println("Before");		
 		telefones = new ArrayList<Telefone>();
-		
-		t1 = new Telefone();
-		t2 = new Telefone();
-		t3 = new Telefone();
-		
 		this.addTelefones();
 	}
 		
@@ -96,10 +106,7 @@ public class TelefoneTest {
 	}
 	
 	@Test
-	public void deve_listar_as_informacoes_do_telefone() {
-		telefone.setDdd(11);
-		telefone.setTelefone("24594064");
-	    telefone.setTipo("Fixo");
+	public void deve_listar_as_informacoes_do_telefone() {		
 		System.out.println(telefone);
 	}
 	
@@ -151,6 +158,12 @@ public class TelefoneTest {
 		telefone.setTelefone("12345678");
 		t1.setTelefone("87654321");
 		assertThat(telefone.getTelefone(), is(not(equalTo(t1.getTelefone()))));
+	}
+	
+	@Test
+	public void teste() {
+		Empresa empresa = new Empresa();
+		empresa.novo(telefones);
 	}
 	
 	@Test

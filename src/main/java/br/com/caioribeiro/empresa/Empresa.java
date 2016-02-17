@@ -55,9 +55,9 @@ public class Empresa {
 
     /**
      *
-     * Define uma lista de Strings que armazena os emails da empresa.
+     * Define uma String que armazena o email da empresa.
      */
-    private List<String> emails;
+    private String email;
 
     /**
      *
@@ -86,8 +86,8 @@ public class Empresa {
         return nomeFantasia;
     }
 
-    public List<String> getEmail() {
-        return emails;
+    public String getEmail() {
+        return email;
     }
 
     public Date getDataDeCadastro() {
@@ -114,8 +114,8 @@ public class Empresa {
         this.nomeFantasia = nomeFantasia;
     }
 
-    public void setEmail(List<String> emails) {
-        this.emails = emails;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setDataDeCadastro(Date dataDeCadastro) {
@@ -165,6 +165,12 @@ public class Empresa {
         checkArgument(!dataCadastroZerada.after(dataAtualZerada), "Não é possível criar um objeto com uma data posterior a atual!");
     }
 
+	public void novo(List<Telefone> telefones) {
+		for(Telefone t: telefones){
+			System.out.println(t.getTelefone());
+		}
+	}
+    
     @Override
     public int hashCode() {
     	return new HashCodeBuilder().append(this.cnpj).toHashCode();
@@ -182,6 +188,6 @@ public class Empresa {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return "Empresa: " + nomeFantasia + "\n" + "Razão Social: " + razaoSocial + " CNPJ: " + cnpj + "\n" + "Data de abertura: " + sdf.format(dataDeCadastro);
+        return "Empresa: " + nomeFantasia + "\n" + "Razão Social: " + razaoSocial + " CNPJ: " + cnpj + "\n" + "Data de abertura: " + sdf.format(dataDeCadastro) + "\n" + "Contato: " + email;
     }
 }
