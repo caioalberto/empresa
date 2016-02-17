@@ -7,14 +7,19 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isIn;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,7 +33,7 @@ import nl.jqno.equalsverifier.Warning;
 public class TelefoneTest {
 
 	private List<Telefone> telefones;
-	static Telefone telefone, t1, t2, t3;
+	static Telefone telefone, telefoneInvalido, t1, t2, t3;
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -36,10 +41,15 @@ public class TelefoneTest {
 		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 		
 		telefone = new Telefone();
+		telefoneInvalido = new Telefone();
+				
 		t1 = new Telefone();
 		t2 = new Telefone();
 		t3 = new Telefone();
+		
 		telefone = Fixture.from(Telefone.class).gimme("valid");
+		telefoneInvalido = Fixture.from(Telefone.class).gimme("invalid");
+		
 		t1 = Fixture.from(Telefone.class).gimme("valid");
 		t2 = Fixture.from(Telefone.class).gimme("valid");
 		t3 = Fixture.from(Telefone.class).gimme("valid");
@@ -66,6 +76,7 @@ public class TelefoneTest {
 			telefones.add(t1);
 			telefones.add(t2);
 			telefones.add(t3);
+			telefones.add(telefone);
 			System.out.println("Lista preenchida");
 		}
 	
@@ -75,9 +86,10 @@ public class TelefoneTest {
 		System.out.println("After");
 	}
 		
-	@Test (expected = IllegalArgumentException.class)
+	@Test 
 	public void deve_gerar_uma_excecao_de_tamanho_minimo_do_telefone() {
-		telefone.setTelefone("112233");
+		telefoneInvalido.getTelefone();
+		System.out.println(telefoneInvalido);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -92,17 +104,17 @@ public class TelefoneTest {
 	
 	@Test
 	public void deve_aceitar_o_numero_do_telefone() {
-		telefone.setTelefone("12345678");
+		assertNotNull(telefone);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void deve_gerar_uma_excecao_de_tamanho_de_ddd() {
-		t1.setDdd(0);		
+		telefone.setDdd(00);	
 	}
 	
 	@Test
 	public void deve_aceitar_o_numero_do_ddd() {
-		telefone.setDdd(11);
+		assertNotNull(telefone.getDdd());
 	}
 	
 	@Test
@@ -123,7 +135,7 @@ public class TelefoneTest {
 	
 	@Test
 	public void deve_aceitar_o_telefone() {
-		telefone.setTelefone("24594064");
+		assertNotNull(telefone.getTelefone());
 	}
 	
 		
@@ -155,8 +167,8 @@ public class TelefoneTest {
 	
 	@Test
 	public void deve_retornar_se_sao_os_mesmos_numeros_de_telefone(){
-		telefone.setTelefone("12345678");
-		t1.setTelefone("87654321");
+		telefone.getTelefone();
+		t1.getTelefone();
 		assertThat(telefone.getTelefone(), is(not(equalTo(t1.getTelefone()))));
 	}
 	

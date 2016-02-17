@@ -36,6 +36,12 @@ public class EmpresaTemplate implements TemplateLoader {
         	add("ddd", regex("\\d{2}"));
         	add("tipo", random("Fixo", "Comercial", "Residencial", "Celular"));
         }});
+        
+        Fixture.of(Telefone.class).addTemplate("invalid", new Rule(){{
+        	add("telefone", regex("\\d{2}"));
+        	add("ddd", regex("\\d{1}"));
+        	add("tipo", random("", "A", "ab"));
+        }});
 	}	
 
 		

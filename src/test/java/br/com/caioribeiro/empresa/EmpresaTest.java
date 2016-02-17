@@ -1,5 +1,7 @@
 package br.com.caioribeiro.empresa;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.util.Date;
 
 import org.junit.After;
@@ -37,9 +39,10 @@ public class EmpresaTest {
 		System.out.println("After");
 	}
 	
-	@Test
+	@Test 
 	public void deve_testar_a_data_de_cadastro_da_empresa() {
-		empresa.setDataDeCadastro(new Date());
+		empresa = Fixture.from(Empresa.class).gimme("valid");
+		assertNotEquals("Não pode ser esta data", new Date(), empresa.getDataDeCadastro());
 		System.out.println(empresa.getDataDeCadastro());
 	}
 	
