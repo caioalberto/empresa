@@ -6,6 +6,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+// TODO: Auto-generated Javadoc
 /**
  *
  * Classe Telefone, define a criacao de um objeto do tipo telefone, assim como
@@ -56,29 +57,59 @@ public final class  Telefone {
      */
     private static final int TAM_MAX_TIPO = 7;
 
+/**
+ * Gets the telefone.
+ *
+ * @return the telefone
+ */
 //Getters e Setters-----------------------------------------------------------------------------------------
     public String getTelefone() {
         return telefone;
     }
 
+    /**
+     * Gets the tipo.
+     *
+     * @return the tipo
+     */
     public String getTipo() {
         return tipo;
     }
 
+    /**
+     * Gets the ddd.
+     *
+     * @return the ddd
+     */
     public int getDdd() {
         return ddd;
     }
 
+    /**
+     * Seta o atributo telefone.
+     *
+     * @param telefone novo valor de telefone
+     */
     public void setTelefone(String telefone) {
         this.validaTelefone(telefone);
         this.telefone = telefone;
     }
 
+    /**
+     * Seta o atributo ddd.
+     *
+     * @param ddd novo valor de ddd
+     */
     public void setDdd(int ddd) {
         this.validaDdd(ddd);
         this.ddd = ddd;
     }
 
+    /**
+     * Seta o atributo tipo.
+     *
+     * @param tipo novo valor de tipo
+     */
     public void setTipo(String tipo) {
         this.validaTipo(tipo);
         this.tipo = tipo;
@@ -87,11 +118,10 @@ public final class  Telefone {
 //Metodos de validacao-------------------------------------------------------------------
     
     /**
-     *
-     * Valida o preenchimento do telefone, assim como as regras preestabelecidas
-     *
-     * @param telefone
-     */
+ * Valida o preenchimento do telefone, assim como as regras preestabelecidas.
+ *
+ * @param telefone the telefone
+ */
     public void validaTelefone(String telefone) {
         this.verificaSeNulo(telefone);
         checkArgument(this.verificaSeEhNumero(telefone)==true,"Você deve inserir apenas números!");
@@ -99,18 +129,39 @@ public final class  Telefone {
         this.verificaTamMaxTel(telefone);
     }
 
+    /**
+     * Verifica se nulo.
+     *
+     * @param telefone the telefone
+     */
     public void verificaSeNulo(String telefone) {
         checkNotNull(telefone, "O telefone não pode ser nulo!");
     }
 
+    /**
+     * Verifica tam min tel.
+     *
+     * @param telefone the telefone
+     */
     public void verificaTamMinTel(String telefone) {
         checkArgument(telefone.length() >= TAM_MIN_TELEFONE, "O telefone não deve conter menos do que 8 caracteres!");
     }
 
+    /**
+     * Verifica tam max tel.
+     *
+     * @param telefone the telefone
+     */
     public void verificaTamMaxTel(String telefone) {
         checkArgument(telefone.length() <= TAM_MAX_TELEFONE, "O telefone não deve conter mais do que 9 caracteres!");
     }
     
+    /**
+     * Verifica se eh numero.
+     *
+     * @param telefone the telefone
+     * @return true, se tiver sucesso
+     */
     public boolean verificaSeEhNumero(String telefone) {
 		boolean aceito = true;
 		char c[] = telefone.toCharArray();		
@@ -125,26 +176,29 @@ public final class  Telefone {
     }
 
     /**
-     *
      * Verifica se o DDD foi preenchido corretamente, assim como as regras
-     * preestabelecidas
+     * preestabelecidas.
      *
-     * @param ddd
+     * @param ddd the ddd
      */
     public void validaDdd(Integer ddd) {
         this.verificaSePreenchidoDdd(ddd);
     }
 
+    /**
+     * Verifica se preenchido ddd.
+     *
+     * @param ddd the ddd
+     */
     public void verificaSePreenchidoDdd(Integer ddd) {
     	checkArgument(ddd != 00, "O DDD não pode ser 0!");
         checkArgument(ddd != TAM_DDD, "O DDD deve ter apenas 2 dígitos!");
     }
 
     /**
+     * Verifica se o tipo foi preenchido, e as regras preestabelecidas.
      *
-     * Verifica se o tipo foi preenchido, e as regras preestabelecidas
-     *
-     * @param tipo
+     * @param tipo the tipo
      */
     public void validaTipo(String tipo) {
         this.verificaSePreenchidoTipo(tipo);
@@ -152,14 +206,29 @@ public final class  Telefone {
         this.verificaTamMaxTipo(tipo);
     }
 
+    /**
+     * Verifica se preenchido tipo.
+     *
+     * @param tipo the tipo
+     */
     public void verificaSePreenchidoTipo(String tipo) {
         checkNotNull(tipo, "O tipo não pode ser nulo!");
     }
 
+    /**
+     * Verifica tam min tipo.
+     *
+     * @param tipo the tipo
+     */
     public void verificaTamMinTipo(String tipo) {
         checkArgument(tipo.length() > TAM_MIN_TIPO, "O tipo não pode ser menor que 3!");
     }
 
+    /**
+     * Verifica tam max tipo.
+     *
+     * @param tipo the tipo
+     */
     public void verificaTamMaxTipo(String tipo) {
         checkArgument(tipo.length() < TAM_MAX_TIPO, "O tipo não pode ser maior que 7!");
     }
@@ -182,4 +251,5 @@ public final class  Telefone {
     public String toString() {
         return "Telefone " + tipo + ": " + ddd + " " + telefone;
     }
+	
 }

@@ -172,7 +172,18 @@ public class Empresa {
      */
 	public void imprimirTelefones(List<Telefone> telefones) {
 		for(Telefone t: telefones){
-			System.out.println(t.getTipo() + " " + t.getDdd() + " " + t.getTelefone());
+			System.out.println(t.toString());
+		}
+	}
+	
+	/**
+	 * 
+	 * Metodo que imprime uma lista de enderecos contidos na empresa.
+	 * @param enderecos
+	 */
+	public void imprimirEnderecos(List<Endereco> enderecos) {
+		for(Endereco e: enderecos){
+			System.out.println(e.toString());
 		}
 	}
     
@@ -193,6 +204,6 @@ public class Empresa {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return "Empresa: " + nomeFantasia + "\n" + "Razão Social: " + razaoSocial + " CNPJ: " + cnpj + "\n" + "Data de abertura: " + sdf.format(dataDeCadastro) + "\n" + "Contato: " + email;
+        return "Empresa: " + nomeFantasia + "\n" + "Razão Social: " + razaoSocial + " CNPJ: " + cnpj + "\n" + "Data de abertura: " + sdf.format(dataDeCadastro) + "\n" + "Contatos: " + email + "\n" + telefones.toString() + "\n" + enderecos.toString();
     }
 }

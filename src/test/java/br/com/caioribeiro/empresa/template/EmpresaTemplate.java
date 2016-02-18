@@ -8,7 +8,6 @@ import br.com.six2six.fixturefactory.loader.TemplateLoader;
 
 
 public class EmpresaTemplate implements TemplateLoader {
-
 	@Override
 	public void load() {
         Fixture.of(Empresa.class).addTemplate("valid", new Rule(){{
@@ -49,6 +48,4 @@ public class EmpresaTemplate implements TemplateLoader {
         	add("tipo", random("Celular"));
         }});
 	}	
-
-		
 }
