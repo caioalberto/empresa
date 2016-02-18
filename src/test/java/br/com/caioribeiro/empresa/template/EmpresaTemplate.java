@@ -34,13 +34,19 @@ public class EmpresaTemplate implements TemplateLoader {
         Fixture.of(Telefone.class).addTemplate("valid", new Rule(){{
         	add("telefone", regex("\\d{8}"));
         	add("ddd", regex("\\d{2}"));
-        	add("tipo", random("Fixo", "Comercial", "Residencial", "Celular"));
+        	add("tipo", random("Comercial", "Residencial"));
         }});
         
         Fixture.of(Telefone.class).addTemplate("invalid", new Rule(){{
         	add("telefone", regex("\\d{2}"));
         	add("ddd", regex("\\d{1}"));
         	add("tipo", random("", "A", "ab"));
+        }});
+        
+        Fixture.of(Telefone.class).addTemplate("celular", new Rule(){{
+        	add("telefone", regex("\\d{9}"));
+        	add("ddd", regex("\\d{2}"));
+        	add("tipo", random("Celular"));
         }});
 	}	
 

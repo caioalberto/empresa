@@ -131,11 +131,11 @@ public final class  Telefone {
      *
      * @param ddd
      */
-    public void validaDdd(int ddd) {
+    public void validaDdd(Integer ddd) {
         this.verificaSePreenchidoDdd(ddd);
     }
 
-    public void verificaSePreenchidoDdd(int ddd) {
+    public void verificaSePreenchidoDdd(Integer ddd) {
     	checkArgument(ddd != 00, "O DDD não pode ser 0!");
         checkArgument(ddd != TAM_DDD, "O DDD deve ter apenas 2 dígitos!");
     }

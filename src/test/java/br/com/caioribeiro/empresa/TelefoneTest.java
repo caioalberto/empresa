@@ -166,13 +166,7 @@ public class TelefoneTest {
 		t1.getTelefone();
 		assertThat(telefone.getTelefone(), is(not(equalTo(t1.getTelefone()))));
 	}
-	
-	@Test
-	public void teste() {
-		Empresa empresa = new Empresa();
-		empresa.novo(telefones);
-	}
-	
+		
 	@Test
 	public void deve_assumir_a_excecao_e_rodar_mesmo_assim() {
 		try {
@@ -180,5 +174,11 @@ public class TelefoneTest {
 		} catch (NullPointerException e) {
 			Assume.assumeNoException(e);
 		}
+	}
+	
+	@Test
+	public void deve_gerar_uma_lista_de_telefones_validos_e_imprimi_los_na_tela() {
+		List<Telefone> telefones = Fixture.from(Telefone.class).gimme(5, "valid");
+		System.out.println(telefones);
 	}
 }

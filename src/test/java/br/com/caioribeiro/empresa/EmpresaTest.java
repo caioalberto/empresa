@@ -3,6 +3,7 @@ package br.com.caioribeiro.empresa;
 import static org.junit.Assert.assertNotEquals;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -51,5 +52,17 @@ public class EmpresaTest {
 		empresa = Fixture.from(Empresa.class).gimme("valid");
 		System.out.println(empresa);
 	}
-		
+	
+	@Test
+	public void deve_imprimir_uma_lista_de_telefones_do_tipo_comercial_e_residencial() {
+		List<Telefone> telefones = Fixture.from(Telefone.class).gimme(5, "valid");
+		empresa.imprimirTelefones(telefones);
+	}
+	
+	@Test
+	public void deve_imprimir_uma_lista_de_telefones_do_tipo_celular() {
+		List<Telefone> celular = Fixture.from(Telefone.class).gimme(2, "celular");
+		empresa.imprimirTelefones(celular);
+	}
+			
 }

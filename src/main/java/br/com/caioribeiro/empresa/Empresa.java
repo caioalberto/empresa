@@ -165,9 +165,14 @@ public class Empresa {
         checkArgument(!dataCadastroZerada.after(dataAtualZerada), "Não é possível criar um objeto com uma data posterior a atual!");
     }
 
-	public void novo(List<Telefone> telefones) {
+    /**
+     * 
+     * Metodo que imprime uma lista de telefones contidos na empresa.
+     * @param telefones
+     */
+	public void imprimirTelefones(List<Telefone> telefones) {
 		for(Telefone t: telefones){
-			System.out.println(t.getTelefone());
+			System.out.println(t.getTipo() + " " + t.getDdd() + " " + t.getTelefone());
 		}
 	}
     
