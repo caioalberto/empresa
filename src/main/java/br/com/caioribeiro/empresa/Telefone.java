@@ -48,16 +48,6 @@ public final class  Telefone {
     private static final int TAM_DDD = 2;
 
     /**
-     * Define o tamanho minimo do tipo do telefone.
-     */
-    private static final int TAM_MIN_TIPO = 3;
-
-    /**
-     * Define o tamanho maximo do tipo de telefone.
-     */
-    private static final int TAM_MAX_TIPO = 7;
-
-/**
  * Gets the telefone.
  *
  * @return the telefone
@@ -203,7 +193,6 @@ public final class  Telefone {
     public void validaTipo(String tipo) {
         this.verificaSePreenchidoTipo(tipo);
         this.verificaTamMinTipo(tipo);
-        this.verificaTamMaxTipo(tipo);
     }
 
     /**
@@ -221,18 +210,23 @@ public final class  Telefone {
      * @param tipo the tipo
      */
     public void verificaTamMinTipo(String tipo) {
-        checkArgument(tipo.length() > TAM_MIN_TIPO, "O tipo não pode ser menor que 3!");
-    }
 
-    /**
-     * Verifica tam max tipo.
-     *
-     * @param tipo the tipo
-     */
-    public void verificaTamMaxTipo(String tipo) {
-        checkArgument(tipo.length() < TAM_MAX_TIPO, "O tipo não pode ser maior que 7!");
+                checkArgument(telefone.length() > 8);
+                tipo = TipoTelefone.getNomeTipo();
+                       
+        /**
+        if(this.tipo == "Celular" && telefone.length() == 9){
+            tipo = this.tipo;                                               
+        }
+        if(this.tipo == "Comercial" && telefone.length() == 8){
+            tipo = this.tipo;
+        }
+        else{
+            tipo = "Fax";
+        }
+        */
     }
-
+    
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(this.tipo).toHashCode();

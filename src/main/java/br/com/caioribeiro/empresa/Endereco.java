@@ -3,8 +3,11 @@ package br.com.caioribeiro.empresa;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import br.com.caioribeiro.empresa.stringbuilder.*;
 
 import com.google.common.base.Preconditions;
 
@@ -374,7 +377,15 @@ public class Endereco {
 	}
     @Override
     public String toString() {
-        return "Endereço: " + logradouro + ", " + numero + " - " + cep + "\n" + bairro + " - " + cidade + "/" + estado + " - " + pais;
+        return new ToStringBuilder(this, MyStyle.MY_STYLE)
+                .append("Endereço: ",this.logradouro)
+                .append("Nº", this.numero)
+                .append("Bairro: ", this.bairro)
+                .append("Cidade: ", this.cidade)
+                .append("UF: ", this.estado)
+                .append("País ", this.pais)
+                .append(tipoEndereco)
+                .toString();
     }
 
 }

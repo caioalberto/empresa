@@ -1,7 +1,7 @@
 package br.com.caioribeiro.empresa;
 
-import org.junit.After;
-import org.junit.AfterClass;
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -11,54 +11,50 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
 public class EnderecoTest {
-
-	static Endereco endereco;
 	
-	@BeforeClass
-	public static void setUpBeforeClass() {
-		endereco = new Endereco();
-		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
+
+	
+	private Endereco enderecoMenor;
+    private Endereco endereco;
+    private Endereco enderecoMaior;
+    private Endereco enderecoNulo;
+
+    @Before
+	public void setUp() {	 
+	    FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
+		
+	    enderecoMenor = Fixture.from(Endereco.class).gimme("menor");
+	    enderecoMaior = Fixture.from(Endereco.class).gimme("maior");
+	    endereco = Fixture.from(Endereco.class).gimme("valid");
+		
 		System.out.println("Before Class");
 	}
-	
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		System.out.println("After Class");
-	}
 
-	@Before
-	public void setUp() throws Exception {
-		System.out.println("Before");
+	@Test 
+	public void nao_deve_aceitar_logradouro_com_menos_de_5_caracteres() {
+	    assertTrue("Não pode conter menos de 5 caracteres", enderecoMenor.getLogradouro().length() < 5 == true);
 	}
 	
-	@After
-	public void tearDown() throws Exception {
-		System.out.println("After");
-	}
-
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_erro_de_tamanho_minimo_de_logradouro() {
-		endereco.setLogradouro("Rua 2");
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_erro_de_tamanho_maximo_de_logradouro() {
-		endereco.setLogradouro("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+	@Test 
+	public void nao_deve_aceitar_logradouro_com_mais_de_80_caracteres() {
+		assertTrue("Não pode conter mais de 80 caracteres", enderecoMaior.getLogradouro().length() > 80 == true);
 	}
 	
 	@Test (expected = NullPointerException.class)
-	public void deve_gerar_excecao_de_logradouro_nulo() {
-		endereco.setLogradouro(null);
+	public void nao_deve_aceitar_logradouro_nulo() {
+		assertNull("Não pode ser nulo!", enderecoNulo.getLogradouro());
 	}
 	
 	@Test
 	public void deve_aceitar_o_logradouro() {
-		endereco.setLogradouro("Rua José dos Santos");
+		assertNotNull(endereco.getLogradouro());
+		System.out.println(endereco);
 	}
 	
-	@Test (expected = IllegalArgumentException.class)
+	@Test 
 	public void deve_gerar_excecao_de_tamanho_minimo_do_bairro() {
-		endereco.setBairro("aa");
+	    enderecoMenor = Fixture.from(Endereco.class).gimme("menor");
+	    assertFalse("Não pode conter mais de 80 caracteres", enderecoMenor.getBairro().length() > 80 == true);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)

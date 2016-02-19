@@ -4,13 +4,9 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.com.six2six.fixturefactory.Fixture;
@@ -23,71 +19,36 @@ import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 public class EmpresaTest {
 
 	/** A empresa. */
-	private static Empresa empresa;
+	private Empresa empresa;
 	
 	/**  Listas de objetos. */
-	private static List<Telefone> telefones;
+	private List<Telefone> telefones;
 	
 	/** The celular. */
-	private static List<Telefone> celular;
+	private List<Telefone> celular;
 	
 	/** The enderecos. */
-	private static List<Endereco> enderecos;
+	private List<Endereco> enderecos;
 
 	/**
 	 * Sets the up before class.
 	 *
 	 * @throws Exception the exception
 	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		//Cria uma nova instancia de empresa.
-		empresa = new Empresa();
-		
+	@Before
+	public void setUpBeforeClass() throws Exception {
+
 		//Carrega o template de teste para a Empresa.
 		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 		
 		//Atribui a variavel do objeto empresa, o template "valido".
 		empresa = Fixture.from(Empresa.class).gimme("valid");
 		
-		//Cria um ArrayList de Telefones.
-		telefones = new ArrayList<Telefone>();
-		
 		//Atribui a variavel de lista de telefones, 5 objetos do template "valido".
 		telefones = Fixture.from(Telefone.class).gimme(5, "valid");
 		celular = Fixture.from(Telefone.class).gimme(2, "celular");
 		enderecos = Fixture.from(Endereco.class).gimme(2, "valid");
 				
-	}
-
-	/**
-	 * Tear down after class.
-	 *
-	 * @throws Exception the exception
-	 */
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        System.out.println("After Class");
-    }
-
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		System.out.println("Before");
-	}
-
-	/**
-	 * Tear down.
-	 *
-	 * @throws Exception the exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		System.out.println("After");
 	}
 
 	/**

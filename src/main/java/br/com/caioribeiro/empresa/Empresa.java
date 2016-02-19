@@ -10,6 +10,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
 
 /**
  *
@@ -204,6 +207,11 @@ public class Empresa {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return "Empresa: " + nomeFantasia + "\n" + "Razão Social: " + razaoSocial + " CNPJ: " + cnpj + "\n" + "Data de abertura: " + sdf.format(dataDeCadastro) + "\n" + "Contatos: " + email + "\n" + telefones.toString() + "\n" + enderecos.toString();
+        return new ToStringBuilder(this, MyStyle.MY_STYLE)
+                .append(this.razaoSocial)
+                .append("CNPJ: ", this.cnpj)
+                .append("Endereço(s): " + enderecos.toString())
+                .append("Contato: " + telefones.toString() + "\n" + this.email)
+                .append("Data de abertura: " + sdf.format(this.dataDeCadastro)).toString();
     }
 }

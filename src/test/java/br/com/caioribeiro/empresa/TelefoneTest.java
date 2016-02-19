@@ -265,4 +265,12 @@ public class TelefoneTest {
 		System.out.println(telefones);
 	}
 	
+	@Test
+	public void um(){
+	    Telefone tel36 = new Telefone();
+	    tel36.setTelefone("966560001");
+	    //tel36.setTipo("Fixo");
+	    System.out.println(tel36.getTipo());
+	}
+	
 }
