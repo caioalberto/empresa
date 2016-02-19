@@ -212,21 +212,21 @@ public class Endereco {
      * @param logradouro
      */
     public void validaLogradouro(String logradouro) {
-        this.verificaSePreenchido(logradouro);
+        this.verificaSePreenchidoOuNulo(logradouro);
         this.verificaTamMin(logradouro);
         this.verificaTamMax(logradouro);
     }
 
-    public void verificaSePreenchido(String logradouro) {
+    public void verificaSePreenchidoOuNulo(String logradouro) {
         checkNotNull(logradouro, "Logradouro não pode estar vazio/nulo!");
     }
 
     public void verificaTamMin(String logradouro) {
-        checkArgument(logradouro.length() > TAM_MIN_LOGRADOURO, "Logradouro não pode conter menos de 4 caracteres!");
+        checkArgument(logradouro.length() > TAM_MIN_LOGRADOURO, "Logradouro não pode conter menos de 5 caracteres!");
     }
 
     public void verificaTamMax(String logradouro) {
-        Preconditions.checkArgument(logradouro.length() < TAM_MAX_LOGRADOURO, "Logradouro não pode conter menos de 80 caracteres!");
+        Preconditions.checkArgument(logradouro.length() < TAM_MAX_LOGRADOURO, "Logradouro não pode conter mais de 80 caracteres!");
     }
 
     /**

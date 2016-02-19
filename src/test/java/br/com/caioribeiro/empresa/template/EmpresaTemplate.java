@@ -38,15 +38,9 @@ public class EmpresaTemplate implements TemplateLoader {
             add("pais", "Brasil");
             add("numero", regex("\\d{1,3}"));
         }});
-        Fixture.of(Endereco.class).addTemplate("maior", new Rule(){{
-            add("logradouro", regex("\\w{90}"));
-            add("bairro", random("Tatuapé", "Centro", "Vila Mariana", "Jardins", "Belém"));
-            add("cep", random("07097171", "07457850", "12345678", "74185236"));
-            add("cidade", random("São Paulo", "Guarulhos", "Suzano", "Santos"));
-            add("estado", "SP");
-            add("pais", "Brasil");
-            add("numero", regex("\\d{1,3}"));
-        }});        
+        Fixture.of(Endereco.class).addTemplate("LogradouroMaiorQuePermitido").inherits("valid", new Rule(){{
+            add("logradouro", regex("\\w{1,90}"));
+        }});     
         Fixture.of(Telefone.class).addTemplate("valid", new Rule(){{
         	add("telefone", regex("\\d{8}"));
         	add("ddd", regex("\\d{2}"));

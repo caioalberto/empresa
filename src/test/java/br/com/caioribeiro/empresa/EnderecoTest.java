@@ -1,43 +1,44 @@
 package br.com.caioribeiro.empresa;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
 public class EnderecoTest {
 	
-
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 	
-	private Endereco enderecoMenor;
     private Endereco endereco;
-    private Endereco enderecoMaior;
-    private Endereco enderecoNulo;
+
 
     @Before
 	public void setUp() {	 
-	    FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
-		
-	    enderecoMenor = Fixture.from(Endereco.class).gimme("menor");
-	    enderecoMaior = Fixture.from(Endereco.class).gimme("maior");
-	    endereco = Fixture.from(Endereco.class).gimme("valid");
-		
+	    FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");		
+	    endereco = Fixture.from(Endereco.class).gimme("valid");		
 		System.out.println("Before Class");
 	}
 
 	@Test 
 	public void nao_deve_aceitar_logradouro_com_menos_de_5_caracteres() {
-	    assertTrue("Não pode conter menos de 5 caracteres", enderecoMenor.getLogradouro().length() < 5 == true);
+	   exception.expect(IllegalArgumentException.class);
+	   exception.expectMessage("Logradouro não pode conter menos de 5 caracteres!");
+	   endereco.setLogradouro("aaa");	    
 	}
 	
 	@Test 
 	public void nao_deve_aceitar_logradouro_com_mais_de_80_caracteres() {
-		assertTrue("Não pode conter mais de 80 caracteres", enderecoMaior.getLogradouro().length() > 80 == true);
+		assertTrue("Não pode conter mais de 80 caracteres", endereco.getLogradouro().length() > 80 == true);
 	}
 	
 	@Test (expected = NullPointerException.class)
@@ -117,10 +118,12 @@ public class EnderecoTest {
 		endereco.setEstado("A");
 	}
 		
-	@Test (expected = NullPointerException.class)
-	public void deve_gerar_excecao_de_estado_nulo() {
-		endereco.setEstado(null);
-	}
+	@Test
+    public void deve_gerar_excecao_de_estado_nulo() {
+        exception.expect(NullPointerException.class);
+        exception.expectMessage("O estado não pode ser nulo/vazio!");
+        endereco.setEstado(null);
+    }
 	
 	@Test
 	public void deve_aceitar_o_estado() {
