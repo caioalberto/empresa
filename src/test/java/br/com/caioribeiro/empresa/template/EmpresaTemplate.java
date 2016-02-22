@@ -16,41 +16,32 @@ public class EmpresaTemplate implements TemplateLoader {
             add("cnpj", cnpj());
             add("razaoSocial", random("Razão Social LTDA.", "Nova Empresa SA", "Teste de Empresa ME"));
             add("nomeFantasia", random("Restaurante do João", "Escola da Maria", "Indústria de Alimentos da Carla"));
-            add("email", random("empresa@gmail.com", "testedeemail@gmail.com", "empresa@empresa.com.br"));
+            add("emails", has(3).of(Email.class, "valid"));
             add("dataDeCadastro", randomDate("2011-04-15", "2016-17-02", new SimpleDateFormat("yyyy-MM-dd")));
-        }});
-        		
+        }});        
         Fixture.of(Endereco.class).addTemplate("valid", new Rule(){{
-        	add("logradouro", random("Rua das Laranjeiras", "Avenida da Paz", "Viela Cardoso", "Travessa Santos", "Rodovia Presidente Dutra"));
-        	add("bairro", random("Tatuapé", "Centro", "Vila Mariana", "Jardins", "Belém"));
-        	add("cep", random("07097171", "07457850", "12345678", "74185236"));
-        	add("cidade", random("São Paulo", "Guarulhos", "Suzano", "Santos"));
-        	add("estado", "SP");
-        	add("pais", "Brasil");
-        	add("numero", regex("\\d{1,3}"));
+            add("bairro", random("Tatuapé", "Vila Carrão", "Penha"));
+            add("cep", random("06608000", "17720000"));
+            add("cidade", "São Paulo");
+            add("estado", "SP");
+            add("logradouro", random("Rua da Penha", "Teste de Rua", "Avenida da Paz"));
+            add("numero", regex("\\d{2}"));
+            add("pais", "Brasil");
+            add("tipoEndereco", random("Comercial", "Residencial"));
         }});
-        Fixture.of(Endereco.class).addTemplate("LogradouroMenorQuePermitido").inherits("valid", new Rule() {{
-            add("logradouro", regex("\\w{3}"));
-        }});
-        Fixture.of(Endereco.class).addTemplate("LogradouroMaiorQuePermitido").inherits("valid", new Rule(){{
-            add("logradouro", regex("\\w{1,90}"));
-        }});     
         Fixture.of(Telefone.class).addTemplate("valid", new Rule(){{
         	add("telefone", regex("\\d{8}"));
         	add("ddd", regex("\\d{2}"));
-        	add("tipo", random("Comercial", "Residencial"));
+        	add("tipo", random(TipoTelefone.COMERCIAL, TipoTelefone.FAX));
+        }});        
+        Fixture.of(Email.class).addTemplate("valid", new Rule(){{
+            add("userName", random("empresa", "nomefantasia", "novaempresa"));
+            add("dominio", random("@gmail.com", "@uol.com.br", "@hotmail.com", "@bol.com.br", "@teste.com"));
         }});
-        
-        Fixture.of(Telefone.class).addTemplate("invalid", new Rule(){{
-        	add("telefone", regex("\\d{2}"));
-        	add("ddd", regex("\\d{1}"));
-        	add("tipo", random("", "A", "ab"));
-        }});
-        
         Fixture.of(Telefone.class).addTemplate("celular", new Rule(){{
         	add("telefone", regex("\\d{9}"));
         	add("ddd", regex("\\d{2}"));
-        	add("tipo", random("Celular"));
+        	add("tipo", random(TipoTelefone.CELULAR));
         }});
 	}	
 }

@@ -1,3 +1,21 @@
+/******************************************************************************
+ * Produto: Connect Cont                                                      *
+ * Contmatic Phoenix © Desde 1986                                             *
+ * Tecnologia em Softwares de Gestão Contábil, Empresarial e ERP              *
+ * Todos os direitos reservados.                                              *
+ *                                                                            *
+ *                                                                            *
+ *    Histórico:                                                              *
+ *          Data        Programador              Tarefa                       *
+ *          ----------  -----------------        -----------------------------*
+ *   Autor  24/02/2016  ${author}          Classe criada.                  *
+ *                                                                            *
+ *   Comentários:                                                             *
+ *                                                                            *
+ *                                                                            *
+ *                                                                            *
+ *                                                                            *
+ *****************************************************************************/
 package br.com.caioribeiro.empresa;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -7,18 +25,15 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isIn;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assume;
-import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
@@ -31,6 +46,9 @@ import nl.jqno.equalsverifier.Warning;
  * @author Caio Ribeiro
  */
 public class TelefoneTest {
+    
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
 	/** The telefones. */
 	private List<Telefone> telefones;
@@ -43,112 +61,71 @@ public class TelefoneTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		
+		//Carregando os templates de teste
 		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 		
-		telefone = new Telefone();
-		telefoneInvalido = new Telefone();
-				
-		t1 = new Telefone();
-		t2 = new Telefone();
-		t3 = new Telefone();
-		
+		//Atribuindo aos objetos um template
 		telefone = Fixture.from(Telefone.class).gimme("valid");
-		telefoneInvalido = Fixture.from(Telefone.class).gimme("invalid");
-		
 		t1 = Fixture.from(Telefone.class).gimme("valid");
 		t2 = Fixture.from(Telefone.class).gimme("valid");
 		t3 = Fixture.from(Telefone.class).gimme("valid");
-		
-		
-		
-		System.out.println("Before Class");
-		System.out.println("Telefone criado");
 	}
-
-	/**
-	 * Tear down after class.
-	 *
-	 * @throws Exception the exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		System.out.println("After Class");
-	}
-
-	/**
-	 * Set up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		System.out.println("Before");		
-		telefones = new ArrayList<Telefone>();
-		this.addTelefones();
-	}
-		
-		/**
-		 * Add telefones.
-		 */
-		public void addTelefones() {			
-			telefones.add(t1);
-			telefones.add(t2);
-			telefones.add(t3);
-			telefones.add(telefone);
-			System.out.println("Lista preenchida");
-		}
 	
-
-	/**
-	 * Tear down.
-	 *
-	 * @throws Exception the exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		System.out.println("After");
-	}
-		
-	/**
-	 * Deve_gerar_uma_excecao_de_tamanho_minimo_do_telefone.
-	 */
 	@Test 
-	public void deve_gerar_uma_excecao_de_tamanho_minimo_do_telefone() {
-		telefoneInvalido.getTelefone();
-		System.out.println(telefoneInvalido);
+	public void nao_deve_aceitar_um_telefone_nulo() {
+	    exception.expect(NullPointerException.class);
+	    exception.expectMessage("O telefone não pode ser nulo!");
+	    telefone.setTelefone(null);
+	}
+	
+	@Test
+	public void nao_deve_aceitar_um_telefone_vazio() {
+	    exception.expect(IllegalArgumentException.class);
+	    exception.expectMessage("O telefone não pode estar vazio!");
+	    telefone.setTelefone("");
+	}
+	
+	@Test 
+	public void nao_deve_aceitar_um_telefone_com_menos_de_8() {
+	    exception.expect(IllegalArgumentException.class);
+	    exception.expectMessage("O telefone não deve conter menos do que 8 caracteres!");
+		telefone.setTelefone("123");
 	}
 	
 	/**
 	 * Deve_gerar_uma_excecao_de_tamanho_maximo_do_telefone.
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_uma_excecao_de_tamanho_maximo_do_telefone() {
+	@Test 
+	public void nao_deve_aceitar_um_telefone_com_mais_de_9() {
+	    exception.expect(IllegalArgumentException.class);
+	    exception.expectMessage("O telefone não deve conter mais do que 9 caracteres");
 		telefone.setTelefone("1234567890");
 	}
 	
-	/**
-	 * Deve_gerar_uma_excecao_de_telefone_nulo.
-	 */
-	@Test (expected = NullPointerException.class)
-	public void deve_gerar_uma_excecao_de_telefone_nulo() {
-		telefone.setTelefone(null);
-	}
 	
 	/**
 	 * Deve_aceitar_o_numero_do_telefone.
 	 */
 	@Test
 	public void deve_aceitar_o_numero_do_telefone() {
-		assertNotNull(telefone);
+		telefone.setTelefone("24594064");
 	}
 	
 	/**
 	 * Deve_gerar_uma_excecao_de_tamanho_de_ddd.
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_uma_excecao_de_tamanho_de_ddd() {
+	@Test 
+	public void nao_deve_aceitar_o_ddd_00() {
+	    exception.expect(IllegalArgumentException.class);
+	    exception.expectMessage("O DDD não pode ser 0!");
 		telefone.setDdd(00);	
+	}
+	
+	@Test
+	public void nao_deve_aceitar_um_ddd_diferente_de_2() {
+	    exception.expect(IllegalArgumentException.class);
+	    exception.expectMessage("O DDD deve ser 2!");
+	    telefone.setDdd(123);
 	}
 	
 	/**
@@ -156,14 +133,11 @@ public class TelefoneTest {
 	 */
 	@Test
 	public void deve_aceitar_o_numero_do_ddd() {
-		assertNotNull(telefone.getDdd());
+		telefone.setDdd(18);
 	}
 	
-	/**
-	 * Deve_listar_as_informacoes_do_telefone.
-	 */
 	@Test
-	public void deve_listar_as_informacoes_do_telefone() {		
+	public void deve_testar_to_string_de_telefone() {		
 		System.out.println(telefone);
 	}
 	
@@ -176,11 +150,14 @@ public class TelefoneTest {
 		EqualsVerifier.forClass(Telefone.class).suppress(Warning.NONFINAL_FIELDS).verify();
 	}
 	
+
 	/**
-	 * Deve_aceitar_apenas_numeros.
+	 * Nao_deve_aceitar_caracteres_diferentes_de_numero.
 	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void deve_aceitar_apenas_numeros() {
+	@Test
+	public void nao_deve_aceitar_caracteres_diferentes_de_numero() {
+	    exception.expect(IllegalArgumentException.class);
+	    exception.expectMessage("Você deve inserir apenas números!");
 		telefone.setTelefone("a");						
 	}
 	
@@ -189,7 +166,7 @@ public class TelefoneTest {
 	 */
 	@Test
 	public void deve_aceitar_o_telefone() {
-		assertNotNull(telefone.getTelefone());
+		telefone.setTelefone("24555510");
 	}
 	
 		
@@ -244,6 +221,14 @@ public class TelefoneTest {
 		assertThat(telefone.getTelefone(), is(not(equalTo(t1.getTelefone()))));
 	}
 		
+	@Test
+	public void deve_retornar_o_tipo_do_telefone_como_celular(){
+	    Telefone tel36 = new Telefone();
+	    tel36.setTelefone("966560001");
+	    tel36.setTipo(TipoTelefone.CELULAR);
+	    System.out.println(tel36.getTipo());
+	}
+	
 	/**
 	 * Deve_assumir_a_excecao_e_rodar_mesmo_assim.
 	 */
@@ -255,22 +240,5 @@ public class TelefoneTest {
 			Assume.assumeNoException(e);
 		}
 	}
-	
-	/**
-	 * Deve_gerar_uma_lista_de_telefones_validos_e_imprimi_los_na_tela.
-	 */
-	@Test
-	public void deve_gerar_uma_lista_de_telefones_validos_e_imprimi_los_na_tela() {
-		List<Telefone> telefones = Fixture.from(Telefone.class).gimme(5, "valid");
-		System.out.println(telefones);
-	}
-	
-	@Test
-	public void um(){
-	    Telefone tel36 = new Telefone();
-	    tel36.setTelefone("966560001");
-	    //tel36.setTipo("Fixo");
-	    System.out.println(tel36.getTipo());
-	}
-	
+		
 }

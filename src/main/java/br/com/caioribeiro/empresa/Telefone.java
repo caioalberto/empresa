@@ -5,8 +5,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-// TODO: Auto-generated Javadoc
+import br.com.caioribeiro.empresa.stringbuilder.MyTelephoneStyle;
+
 /**
  *
  * Classe Telefone, define a criacao de um objeto do tipo telefone, assim como
@@ -25,12 +27,12 @@ public final class  Telefone {
     /**
      * Define o tipo de telefone da classe. Se fixo, celular, fax etc.
      */
-    private String tipo;
+    private TipoTelefone tipo;
 
     /**
      * Define o DDD do telefone, sempre com apenas dois numeros.
      */
-    private int ddd;
+    private Integer ddd;
 
     /**
      * Define o tamanho minimo da constante telefone.
@@ -43,16 +45,16 @@ public final class  Telefone {
     private static final int TAM_MAX_TELEFONE = 9;
 
     /**
-     * Define o tamanho do DDD.
+     * Define o tamanho minimo do DDD.
      */
     private static final int TAM_DDD = 2;
 
-    /**
- * Gets the telefone.
- *
- * @return the telefone
- */
 //Getters e Setters-----------------------------------------------------------------------------------------
+    /**
+     * Gets the telefone.
+     *
+     * @return the telefone
+     */
     public String getTelefone() {
         return telefone;
     }
@@ -62,7 +64,7 @@ public final class  Telefone {
      *
      * @return the tipo
      */
-    public String getTipo() {
+    public TipoTelefone getTipo() {
         return tipo;
     }
 
@@ -71,7 +73,7 @@ public final class  Telefone {
      *
      * @return the ddd
      */
-    public int getDdd() {
+    public Integer getDdd() {
         return ddd;
     }
 
@@ -90,7 +92,7 @@ public final class  Telefone {
      *
      * @param ddd novo valor de ddd
      */
-    public void setDdd(int ddd) {
+    public void setDdd(Integer ddd) {
         this.validaDdd(ddd);
         this.ddd = ddd;
     }
@@ -100,7 +102,7 @@ public final class  Telefone {
      *
      * @param tipo novo valor de tipo
      */
-    public void setTipo(String tipo) {
+    public void setTipo(TipoTelefone tipo) {
         this.validaTipo(tipo);
         this.tipo = tipo;
     }
@@ -113,10 +115,10 @@ public final class  Telefone {
  * @param telefone the telefone
  */
     public void validaTelefone(String telefone) {
-        this.verificaSeNulo(telefone);
-        checkArgument(this.verificaSeEhNumero(telefone)==true,"Você deve inserir apenas números!");
-        this.verificaTamMinTel(telefone);
-        this.verificaTamMaxTel(telefone);
+        this.verificaSeNuloOuVazio(telefone);
+        checkArgument(this.verificaSeEhNumero(telefone) == true,"Você deve inserir apenas números!");
+        checkArgument(telefone.length() >= TAM_MIN_TELEFONE, "O telefone não deve conter menos do que 8 caracteres!");
+        checkArgument(telefone.length() <= TAM_MAX_TELEFONE, "O telefone não deve conter mais do que 9 caracteres!");
     }
 
     /**
@@ -124,26 +126,9 @@ public final class  Telefone {
      *
      * @param telefone the telefone
      */
-    public void verificaSeNulo(String telefone) {
+    public void verificaSeNuloOuVazio(String telefone) {
         checkNotNull(telefone, "O telefone não pode ser nulo!");
-    }
-
-    /**
-     * Verifica tam min tel.
-     *
-     * @param telefone the telefone
-     */
-    public void verificaTamMinTel(String telefone) {
-        checkArgument(telefone.length() >= TAM_MIN_TELEFONE, "O telefone não deve conter menos do que 8 caracteres!");
-    }
-
-    /**
-     * Verifica tam max tel.
-     *
-     * @param telefone the telefone
-     */
-    public void verificaTamMaxTel(String telefone) {
-        checkArgument(telefone.length() <= TAM_MAX_TELEFONE, "O telefone não deve conter mais do que 9 caracteres!");
+        checkArgument(!telefone.isEmpty(),"O telefone não pode estar vazio!");
     }
     
     /**
@@ -173,6 +158,7 @@ public final class  Telefone {
      */
     public void validaDdd(Integer ddd) {
         this.verificaSePreenchidoDdd(ddd);
+        this.verificarTamanhoDdd(ddd);
     }
 
     /**
@@ -181,8 +167,13 @@ public final class  Telefone {
      * @param ddd the ddd
      */
     public void verificaSePreenchidoDdd(Integer ddd) {
-    	checkArgument(ddd != 00, "O DDD não pode ser 0!");
-        checkArgument(ddd != TAM_DDD, "O DDD deve ter apenas 2 dígitos!");
+    	checkArgument(ddd != 00, "O DDD não pode ser 0!");     
+    }
+    
+    public void verificarTamanhoDdd(Integer ddd) {
+        int compair;
+        compair = ddd.toString().length();
+        checkArgument(compair == TAM_DDD, "O DDD deve ser 2!");
     }
 
     /**
@@ -190,7 +181,7 @@ public final class  Telefone {
      *
      * @param tipo the tipo
      */
-    public void validaTipo(String tipo) {
+    public void validaTipo(TipoTelefone tipo) {
         this.verificaSePreenchidoTipo(tipo);
         this.verificaTamMinTipo(tipo);
     }
@@ -200,7 +191,7 @@ public final class  Telefone {
      *
      * @param tipo the tipo
      */
-    public void verificaSePreenchidoTipo(String tipo) {
+    public void verificaSePreenchidoTipo(TipoTelefone tipo) {
         checkNotNull(tipo, "O tipo não pode ser nulo!");
     }
 
@@ -209,10 +200,10 @@ public final class  Telefone {
      *
      * @param tipo the tipo
      */
-    public void verificaTamMinTipo(String tipo) {
+    public void verificaTamMinTipo(TipoTelefone tipo) {
 
                 checkArgument(telefone.length() > 8);
-                tipo = TipoTelefone.getNomeTipo();
+                tipo = TipoTelefone.CELULAR;
                        
         /**
         if(this.tipo == "Celular" && telefone.length() == 9){
@@ -226,12 +217,18 @@ public final class  Telefone {
         }
         */
     }
-    
+ //Equals, HashCode e toString---------------------------------------------------------------------------------------------------   
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(this.tipo).toHashCode();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Telefone)){
@@ -241,9 +238,15 @@ public final class  Telefone {
 		return new EqualsBuilder().append(this.tipo, other.tipo).isEquals();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
     public String toString() {
-        return "Telefone " + tipo + ": " + ddd + " " + telefone;
+        return new ToStringBuilder(this, MyTelephoneStyle.MY_TELEPHONE_STYLE)
+                .append(this.ddd)
+                .append(this.telefone)
+                .append(this.tipo).toString();
     }
 	
 }

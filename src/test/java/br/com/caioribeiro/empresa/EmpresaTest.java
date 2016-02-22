@@ -1,13 +1,32 @@
+/******************************************************************************
+ * Produto: Connect Cont                                                      *
+ * Contmatic Phoenix © Desde 1986                                             *
+ * Tecnologia em Softwares de Gestão Contábil, Empresarial e ERP              *
+ * Todos os direitos reservados.                                              *
+ *                                                                            *
+ *                                                                            *
+ *    Histórico:                                                              *
+ *          Data        Programador              Tarefa                       *
+ *          ----------  -----------------        -----------------------------*
+ *   Autor  22/02/2016  ${author}          Classe criada.                     *
+ *                                                                            *
+ *   Comentários:                                                             *
+ *                                                                            *
+ *                                                                            *
+ *                                                                            *
+ *                                                                            *
+ *****************************************************************************/
 package br.com.caioribeiro.empresa;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
@@ -18,97 +37,193 @@ import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
  */
 public class EmpresaTest {
 
+    /** The exception. */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+    
 	/** A empresa. */
 	private Empresa empresa;
-	
-	/**  Listas de objetos. */
-	private List<Telefone> telefones;
-	
-	/** The celular. */
-	private List<Telefone> celular;
-	
-	/** The enderecos. */
-	private List<Endereco> enderecos;
-
+	    
 	/**
-	 * Sets the up before class.
+	 * Sets the up before.
 	 *
 	 * @throws Exception the exception
 	 */
 	@Before
-	public void setUpBeforeClass() throws Exception {
+	public void setUp() throws Exception {
 
 		//Carrega o template de teste para a Empresa.
 		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 		
 		//Atribui a variavel do objeto empresa, o template "valido".
-		empresa = Fixture.from(Empresa.class).gimme("valid");
-		
-		//Atribui a variavel de lista de telefones, 5 objetos do template "valido".
-		telefones = Fixture.from(Telefone.class).gimme(5, "valid");
-		celular = Fixture.from(Telefone.class).gimme(2, "celular");
-		enderecos = Fixture.from(Endereco.class).gimme(2, "valid");
-				
+		empresa = Fixture.from(Empresa.class).gimme("valid");		
 	}
-
+	
+//CNPJ----------------------------------------------------------------------------------------------------------------------------
 	/**
 	 * Deve_testar_se_o_cnpj_e_nulo.
 	 */
 	@Test
-	public void deve_testar_se_o_cnpj_e_nulo() {
-		assertNotNull("O CNPJ não pode ser nulo!", empresa.getCnpj());
-		assertFalse("O CNPJ não pode estar vazio", isNullOrEmpty(empresa.getCnpj()));
+	public void nao_deve_aceitar_um_cnpj_nulo() {
+	    exception.expect(NullPointerException.class);
+	    exception.expectMessage("O CNPJ não pode ser nulo!");
+	    empresa.setCnpj(null);
 	}
 	
 	/**
-	 * Nao_deve_receber_uma_data_de_cadastro_nula.
+	 * Nao_deve_aceitar_cnpj_vazio.
 	 */
 	@Test
-	public void nao_deve_receber_uma_data_de_cadastro_nula() {
-		assertNotNull("A data não pode ser nula!", empresa.getDataDeCadastro());
+	public void nao_deve_aceitar_cnpj_vazio() {
+	    exception.expect(IllegalArgumentException.class);
+	    exception.expectMessage("O CNPJ não pode ser vazio!");
+	    empresa.setCnpj("");
+	}
+	
+    /**
+     * Nao_deve_aceitar_cnpj_tamanho_maior_14.
+     */
+    @Test
+    public void nao_deve_aceitar_cnpj_tamanho_maior_14() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("O CNPJ deve conter exatamente 14 números!");
+        empresa.setCnpj("123456789123456");
+    }
+    
+    /**
+     * Nao_deve_aceitar_cnpj_menor_que_14.
+     */
+    @Test
+    public void nao_deve_aceitar_cnpj_menor_que_14() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("O CNPJ deve conter exatamente 14 números!");
+        empresa.setCnpj("1234");
+    }
+    
+    /**
+     * Deve_aceitar_o_cnpj.
+     */
+    @Test
+    public void deve_aceitar_o_cnpj() {
+        empresa.setCnpj("12345678901234");
+    }
+    
+//Razao Social--------------------------------------------------------------------------------------------------------------------
+	
+    /**
+ * Nao_deve_aceitar_uma_razao_social_nula.
+ */
+@Test
+    public void nao_deve_aceitar_uma_razao_social_nula() {
+        exception.expect(NullPointerException.class);
+        exception.expectMessage("A Razão Social não pode ser nula!");
+        empresa.setRazaoSocial(null);
+    }
+    
+    /**
+     * Nao_deve_aceitar_uma_razao_social_vazia.
+     */
+    @Test
+    public void nao_deve_aceitar_uma_razao_social_vazia() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("A Razão Social não pode estar vazia!");
+        empresa.setRazaoSocial("");
+    }
+    
+    /**
+     * Nao_deve_aceitar_una_razao_social_menor_que_10.
+     */
+    @Test
+    public void nao_deve_aceitar_una_razao_social_menor_que_10() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("A Razão Social deve conter no mínimo 10 caracteres!");
+        empresa.setRazaoSocial("abc");
+    }
+    
+    /**
+     * Nao_deve_aceitar_uma_razao_social_maior_que_80.
+     */
+    @Test
+    public void nao_deve_aceitar_uma_razao_social_maior_que_80() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("A Razão Social deve conter no máximo 80 caracteres!");
+        empresa.setRazaoSocial("abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh");
+    }
+    
+    /**
+     * Deve_aceitar_a_razao_social.
+     */
+    @Test
+    public void deve_aceitar_a_razao_social() {
+        empresa.getRazaoSocial();
+    }
+    //Data de Cadastro--------------------------------------------------------------------------------------------------------------    
+
+
+    /**
+     * Deve_aceitar_uma_data_de_cadastro.
+     */
+    @Test
+    public void deve_aceitar_uma_data_de_cadastro() {
+        empresa.setDataDeAlteracao(new Date());
+    }
+
+    /**
+     * Deve_imprimir_as_datas_de_cadastro_e_de_alteracao.
+     */
+    //Data de Alteracao--------------------------------------------------------------------------------------------------------------
+    @Test
+    public void deve_imprimir_as_datas_de_cadastro_e_de_alteracao(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        empresa.setDataDeAlteracao(new Date());
+        System.out.println("Data de Alteração: " + sdf.format(empresa.getDataDeAlteracao()));
+        System.out.println("Data de Cadastro: " + sdf.format(empresa.getDataDeCadastro()));
+    }	   
+
+    //Email--------------------------------------------------------------------------------------------------------------------------	
+
+	/**
+     * Deve_aceitar_uma_lista_com_um_email.
+     */
+    @Test
+	public void deve_aceitar_uma_lista_com_um_email() {	    
+	    empresa.getEmails();
 	}
 	
 	/**
-	 * Deve_testar_se_os_emails_sao_validos.
+	 * Nao_deve_aceitar_uma_lista_de_emails_nula.
 	 */
 	@Test
-	public void deve_testar_se_os_emails_sao_validos() {
-		assertNotNull("Os emails não podem ser nulos", empresa.getEmail());
-		assertFalse("Os emails não podem estar vazios!", isNullOrEmpty(empresa.getEmail()));
+	public void nao_deve_aceitar_uma_lista_de_emails_nula() {
+	    exception.expect(NullPointerException.class);
+	    exception.expectMessage("A lista de emails não pode ser nula!");
+	    empresa.setEmails(null);
 	}
 	
 	/**
-	 * Deve_testar_se_os_enderecos_sao_validos.
+	 * Nao_deve_aceitar_uma_lista_de_emails_vazia.
 	 */
 	@Test
-	public void deve_testar_se_os_enderecos_sao_validos() {
-		assertNotNull("Os endereços não podem ser nulos!", empresa.getEnderecos());
-		assertFalse("Os endereços não podem estar vazios!", empresa.getEnderecos().size() == 0);
+	public void nao_deve_aceitar_uma_lista_de_emails_vazia() {
+	    List<Email> emailsVazio = new ArrayList<>();
+	    exception.expect(IllegalArgumentException.class);
+	    exception.expectMessage("Você não pode utilizar uma lista vazia de emails!");
+	    empresa.setEmails(emailsVazio);
 	}
-	
+		
 	/**
 	 * Deve_testar_se_nome_fantasia_da_empresa_e_nulo.
 	 */
 	@Test
-	public void deve_testar_se_nome_fantasia_da_empresa_e_nulo() {
-		assertNotNull("O nome fantasia não pode ser nulo!", empresa.getNomeFantasia());
-		assertFalse("A empresa não pode ser vazia/nula!", isNullOrEmpty(empresa.getNomeFantasia()));
+	public void deve_aceitar_o_nome_fantasia() {
+		empresa.getNomeFantasia();
 	}
-	
-	/**
-	 * Deve_testar_se_razao_social_da_empresa_e_nula.
-	 */
-	@Test
-	public void deve_testar_se_razao_social_da_empresa_e_nula() {
-		assertNotNull("A razão social não pode ser vazia!", empresa.getRazaoSocial());
-		assertFalse("A empresa não pode ser vazia/nula!", isNullOrEmpty(empresa.getRazaoSocial()));
-	}
-	
+		
 	/**
 	 * Deve_verificar_se_os_enderecos_estao_vazios.
 	 */
 	@Test
-	public void deve_verificar_se_os_enderecos_estao_vazios() {
+	public void deve_aceitar_uma_lista_com_objeto_do_tipo_endereco() {
 	    empresa.getEnderecos();
 	}
 	
@@ -116,7 +231,7 @@ public class EmpresaTest {
 	 * Deve_verificar_se_os_telefones_estao_vazios.
 	 */
 	@Test
-	public void deve_verificar_se_os_telefones_estao_vazios() {		
+	public void aceitar_uma_lista_com_objeto_do_tipo_telefone() {		
 	    empresa.getTelefones();
 	}
 	
@@ -127,5 +242,5 @@ public class EmpresaTest {
 	public void deve_testar_to_string() {
 		System.out.println(empresa);
 	}
-
+	
 }
