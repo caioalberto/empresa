@@ -12,6 +12,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.google.common.base.Preconditions;
+
 import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
 
 /**
@@ -98,10 +100,12 @@ public class Empresa {
     }
 
     public void setEndereco(List<Endereco> enderecos) {
+    	this.verificaSeVazioEnderco(enderecos);
         this.enderecos = enderecos;
     }
 
     public void setTelefone(List<Telefone> telefones) {
+    	this.verificaSeVazioTelefone(telefones);
         this.telefones = telefones;
     }
 
@@ -167,7 +171,23 @@ public class Empresa {
         Date dataCadastroZerada = zerarHoras(dataDeCadastro);
         checkArgument(!dataCadastroZerada.after(dataAtualZerada), "Não é possível criar um objeto com uma data posterior a atual!");
     }
+    
+    /**
+     * Metodo que verifica a quantidade minima de telefones na empresa.
+     * @param telefones
+     */
+    public void verificaSeVazioTelefone(List<Telefone> telefones) {
+    	checkArgument(telefones.size() < 0, "Empresa deve ter pelo menos 1 telefone!");
+    }
 
+    /**
+     * Metodo que verifica a quantidade minima de enderecos na empresa.
+     * @param enderecos
+     */
+    public void verificaSeVazioEnderco(List<Endereco> enderecos) {
+    	checkArgument(enderecos.size() < 0, "Empresa deve ter pelo menos 1 endereco!");
+    }
+    
     /**
      * 
      * Metodo que imprime uma lista de telefones contidos na empresa.
