@@ -31,7 +31,7 @@ public class EmpresaTemplate implements TemplateLoader {
         }});
         Fixture.of(Telefone.class).addTemplate("valid", new Rule(){{
         	add("telefone", regex("\\d{8}"));
-        	add("ddd", regex("\\d{2}"));
+        	add("ddd", regex("\\d{1,2}"));
         	add("tipo", random(TipoTelefone.COMERCIAL, TipoTelefone.FAX));
         }});        
         Fixture.of(Email.class).addTemplate("valid", new Rule(){{

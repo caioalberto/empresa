@@ -158,7 +158,6 @@ public final class  Telefone {
      */
     public void validaDdd(Integer ddd) {
         this.verificaSePreenchidoDdd(ddd);
-        this.verificarTamanhoDdd(ddd);
     }
 
     /**
@@ -168,14 +167,11 @@ public final class  Telefone {
      */
     public void verificaSePreenchidoDdd(Integer ddd) {
     	checkArgument(ddd != 00, "O DDD não pode ser 0!");     
+    	int compair;
+    	compair = ddd.toString().length();
+    	checkArgument(compair == TAM_DDD, "O DDD deve ser 2!");
     }
     
-    public void verificarTamanhoDdd(Integer ddd) {
-        int compair;
-        compair = ddd.toString().length();
-        checkArgument(compair == TAM_DDD, "O DDD deve ser 2!");
-    }
-
     /**
      * Verifica se o tipo foi preenchido, e as regras preestabelecidas.
      *
@@ -183,7 +179,6 @@ public final class  Telefone {
      */
     public void validaTipo(TipoTelefone tipo) {
         this.verificaSePreenchidoTipo(tipo);
-        this.verificaTamMinTipo(tipo);
     }
 
     /**
@@ -195,29 +190,7 @@ public final class  Telefone {
         checkNotNull(tipo, "O tipo não pode ser nulo!");
     }
 
-    /**
-     * Verifica tam min tipo.
-     *
-     * @param tipo the tipo
-     */
-    public void verificaTamMinTipo(TipoTelefone tipo) {
-
-                checkArgument(telefone.length() > 8);
-                tipo = TipoTelefone.CELULAR;
-                       
-        /**
-        if(this.tipo == "Celular" && telefone.length() == 9){
-            tipo = this.tipo;                                               
-        }
-        if(this.tipo == "Comercial" && telefone.length() == 8){
-            tipo = this.tipo;
-        }
-        else{
-            tipo = "Fax";
-        }
-        */
-    }
- //Equals, HashCode e toString---------------------------------------------------------------------------------------------------   
+  //Equals, HashCode e toString---------------------------------------------------------------------------------------------------   
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

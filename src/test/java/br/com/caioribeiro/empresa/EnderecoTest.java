@@ -161,14 +161,16 @@ public class EnderecoTest {
 	}
 	
 //Numero--------------------------------------------------------------------------------	
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_uma_excecao_de_numero_nao_preenchido() {
+	@Test 
+	public void nao_deve_aceitar_que_numero_seja_igual_0() {
+	    exception.expect(IllegalArgumentException.class);
+	    exception.expectMessage("O número não pode ser 0!");
 		endereco.setNumero(0);
 	}
-	
+		
 	@Test
 	public void deve_aceitar_o_numero() {
-		endereco.getNumero();
+		endereco.setNumero(144);
 	}
 
 //Ignore---------------------------------------------------------------------------------	

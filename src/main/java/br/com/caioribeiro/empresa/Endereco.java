@@ -1,15 +1,31 @@
+/******************************************************************************
+ * Produto: Connect Cont                                                      *
+ * Contmatic Phoenix © Desde 1986                                             *
+ * Tecnologia em Softwares de Gestão Contábil, Empresarial e ERP              *
+ * Todos os direitos reservados.                                              *
+ *                                                                            *
+ *                                                                            *
+ *    Histórico:                                                              *
+ *          Data        Programador              Tarefa                       *
+ *          ----------  -----------------        -----------------------------*
+ *   Autor  24/02/2016  ${author}          Classe criada.                  *
+ *                                                                            *
+ *   Comentários:                                                             *
+ *                                                                            *
+ *                                                                            *
+ *                                                                            *
+ *                                                                            *
+ *****************************************************************************/
 package br.com.caioribeiro.empresa;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import br.com.caioribeiro.empresa.stringbuilder.*;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.google.common.base.Preconditions;
+import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
 
 /**
  *
@@ -62,7 +78,7 @@ public class Endereco {
      *
      * Define o numero do estabelecimento dentro do endereco.
      */
-    private int numero;
+    private Integer numero;
     
     /**
      * 
@@ -131,73 +147,153 @@ public class Endereco {
     private static final int TAM_MAX_PAIS = 20;
 
 //Getters e Setters---------------------------------------------------------------------------------------			
+    /**
+     * Gets the logradouro.
+     *
+     * @return the logradouro
+     */
     public String getLogradouro() {
         return logradouro;
     }
 
+    /**
+     * Gets the bairro.
+     *
+     * @return the bairro
+     */
     public String getBairro() {
         return bairro;
     }
 
+    /**
+     * Gets the cep.
+     *
+     * @return the cep
+     */
     public String getCep() {
         return cep;
     }
 
+    /**
+     * Gets the cidade.
+     *
+     * @return the cidade
+     */
     public String getCidade() {
         return cidade;
     }
 
+    /**
+     * Gets the pais.
+     *
+     * @return the pais
+     */
     public String getPais() {
         return pais;
     }
 
+    /**
+     * Gets the estado.
+     *
+     * @return the estado
+     */
     public String getEstado() {
         return estado;
     }
 
-    public int getNumero() {
+    /**
+     * Gets the numero.
+     *
+     * @return the numero
+     */
+    public Integer getNumero() {
         return numero;
     }
 
+    /**
+     * Gets the tipo endereco.
+     *
+     * @return the tipo endereco
+     */
     public String getTipoEndereco() {
 		return tipoEndereco;
 	}
 
+	/**
+	 * Seta o atributo logradouro.
+	 *
+	 * @param logradouro novo valor de logradouro
+	 */
 	public void setLogradouro(String logradouro) {
         this.validaLogradouro(logradouro);
         this.logradouro = logradouro;
     }
 
+    /**
+     * Seta o atributo bairro.
+     *
+     * @param bairro novo valor de bairro
+     */
     public void setBairro(String bairro) {
         this.validaBairro(bairro);
         this.bairro = bairro;
     }
 
+    /**
+     * Seta o atributo cep.
+     *
+     * @param cep novo valor de cep
+     */
     public void setCep(String cep) {
         this.validaCep(cep);
         this.cep = cep;
     }
 
+    /**
+     * Seta o atributo cidade.
+     *
+     * @param cidade novo valor de cidade
+     */
     public void setCidade(String cidade) {
         this.validaCidade(cidade);
         this.cidade = cidade;
     }
 
+    /**
+     * Seta o atributo estado.
+     *
+     * @param estado novo valor de estado
+     */
     public void setEstado(String estado) {
         this.validaEstado(estado);
         this.estado = estado;
     }
 
+    /**
+     * Seta o atributo pais.
+     *
+     * @param pais novo valor de pais
+     */
     public void setPais(String pais) {
         this.validaPais(pais);
         this.pais = pais;
     }
 
-    public void setNumero(int numero) {
+    /**
+     * Seta o atributo numero.
+     *
+     * @param numero novo valor de numero
+     */
+    public void setNumero(Integer numero) {
         this.validaNumero(numero);
         this.numero = numero;
     }
     
+	/**
+	 * Seta o atributo tipo endereco.
+	 *
+	 * @param tipoEndereco novo valor de tipo endereco
+	 */
 	public void setTipoEndereco(String tipoEndereco) {
 		this.tipoEndereco = tipoEndereco;
 	}
@@ -205,28 +301,26 @@ public class Endereco {
  //Metodos de validacao-------------------------------------------------------------------
     
     /**
-     *
      * Verifica o logradouro, se preenchido e se respeita as ordem
      * preestabelecidas de preenchimento
-     *
+     * 
      * @param logradouro
      */
     public void validaLogradouro(String logradouro) {
         this.verificaSePreenchidoOuNulo(logradouro);
-        this.verificaTamMin(logradouro);
-        this.verificaTamMax(logradouro);
     }
 
+    /**
+     * Verifica se preenchido ou nulo.
+     *
+     * @param logradouro the logradouro
+     */
     public void verificaSePreenchidoOuNulo(String logradouro) {
-        checkNotNull(logradouro, "Logradouro não pode estar vazio/nulo!");
-    }
-
-    public void verificaTamMin(String logradouro) {
+        checkNotNull(logradouro, "Logradouro não pode ser nulo!");
+        checkArgument(!logradouro.isEmpty(), "Logradouro não pode estar vazio!");
         checkArgument(logradouro.length() > TAM_MIN_LOGRADOURO, "Logradouro não pode conter menos de 5 caracteres!");
-    }
-
-    public void verificaTamMax(String logradouro) {
-        Preconditions.checkArgument(logradouro.length() < TAM_MAX_LOGRADOURO, "Logradouro não pode conter mais de 80 caracteres!");
+        checkArgument(logradouro.length() < TAM_MAX_LOGRADOURO, "Logradouro não pode conter mais de 80 caracteres!");
+        
     }
 
     /**
@@ -238,21 +332,20 @@ public class Endereco {
      */
     public void validaBairro(String bairro) {
         this.verificaSePreenchidoBairro(bairro);
-        this.verificaTamMinBairro(bairro);
-        this.verificaTamMaxBairro(bairro);
     }
 
+    /**
+     * Verifica se preenchido bairro.
+     *
+     * @param bairro the bairro
+     */
     public void verificaSePreenchidoBairro(String bairro) {
-        checkNotNull(bairro, "Bairro não pode estar vazio/nulo!");
-    }
-
-    public void verificaTamMinBairro(String bairro) {
+        checkNotNull(bairro, "Bairro não pode ser nulo!");
+        checkArgument(!bairro.isEmpty(), "O bairro não pode estar vazio!");
         checkArgument(bairro.length() > TAM_MIN_BAIRRO, "O bairro não pode conter menos de 6 letras!");
+        checkArgument(bairro.length() < TAM_MAX_BAIRRO, "O bairro não pode conter mais de 80 letras!");
     }
 
-    public void verificaTamMaxBairro(String bairro) {
-        Preconditions.checkArgument(bairro.length() < TAM_MAX_BAIRRO, "O bairro não pode conter mais de 80 letras!");
-    }
 
     /**
      *
@@ -262,14 +355,11 @@ public class Endereco {
      */
     public void validaCep(String cep) {
         this.verificaSePreenchidoCep(cep);
-        this.verificaTamCep(cep);
     }
 
     public void verificaSePreenchidoCep(String cep) {
-        checkNotNull(cep, "Cep não pode estar vazio/nulo!");
-    }
-
-    public void verificaTamCep(String cep) {
+        checkNotNull(cep, "Cep não pode estar nulo!");
+        checkArgument(!cep.isEmpty(), "Cep não pode estar vazio!");
         checkArgument(cep.length() == TAM_MAX_CEP, "O cep não pode ter um valor de dígitos diferente de 9!");
     }
 
@@ -281,19 +371,12 @@ public class Endereco {
      */
     public void validaCidade(String cidade) {
         this.verificaSePreenchidaCidade(cidade);
-        this.verificaTamMinCidade(cidade);
-        this.verificaTamMaxCidade(cidade);
     }
 
     public void verificaSePreenchidaCidade(String cidade) {
-        checkNotNull(cidade, "A cidade não pode estar vazia/nula!");
-    }
-
-    public void verificaTamMinCidade(String cidade) {
+        checkNotNull(cidade, "A cidade não pode estar nula!");
+        checkArgument(!cidade.isEmpty(), "A cidade não pode estar vazia!");
         checkArgument(cidade.length() > TAM_MIN_CIDADE, "A cidade não pode conter menos do que 6 letras!");
-    }
-
-    public void verificaTamMaxCidade(String cidade) {
         checkArgument(cidade.length() < TAM_MAX_CIDADE, "A cidade não pode conter mais do que 30 caracteres!");
     }
 
@@ -305,14 +388,11 @@ public class Endereco {
      */
     public void validaEstado(String estado) {
         this.verificaSePreenchidoEstado(estado);
-        this.verificaTamanhoEstado(estado);
     }
 
     public void verificaSePreenchidoEstado(String estado) {
-        checkNotNull(estado, "O estado não pode ser nulo/vazio!");
-    }
-
-    public void verificaTamanhoEstado(String estado) {
+        checkNotNull(estado, "O estado não pode ser nulo!");
+        checkArgument(!estado.isEmpty(), "O estado não pode estar vazio!");
         checkArgument(estado.length() == TAM_ESTADO, "O estado não pode ter mais que 2 letras!");
     }
 
@@ -325,25 +405,18 @@ public class Endereco {
      */
     public void validaPais(String pais) {
         this.verificaSePreenchidoPais(pais);
-        this.verificaTamMinPais(pais);
-        this.verificaTamMaxPais(pais);
     }
 
     public void verificaSePreenchidoPais(String pais) {
-        checkNotNull(pais, "O país não pode estar vazio/nulo!");
-    }
-
-    public void verificaTamMinPais(String pais) {
+        checkNotNull(pais, "O país não pode estar nulo!");
+        checkArgument(!pais.isEmpty(), "O país não pode ser vzaio!");
         checkArgument(pais.length() > TAM_MIN_PAIS, "O país deve conter mais de 5 letras!");
-    }
-
-    public void verificaTamMaxPais(String pais) {
         checkArgument(pais.length() < TAM_MAX_PAIS, "O país deve conter no máximo 20 letras!");
     }
 
     /**
      *
-     * Verifica se o numero estÃ¡ preenchido, assim como as regras
+     * Verifica se o numero esta preenchido, assim como as regras
      * preestabelecidas
      *
      * @param numero
@@ -358,15 +431,23 @@ public class Endereco {
      *
      * @param numero
      */
-    public void verificaSePreenchidoNumero(int numero) {
-        checkArgument(numero != 0, "O nÃºmero nÃ£o pode ser 0!");
+    public void verificaSePreenchidoNumero(Integer numero) {
+        checkArgument(numero != 0, "O número não pode ser 0!");
+        checkArgument(!numero.toString().isEmpty(), "Você deve preencher um número");
     }
-
+    
+    //Equals, HashCode e toString---------------------------------------------------------------------------------------------------
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
     	return new HashCodeBuilder().append(this.cep).toHashCode();
     }
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Endereco)){
@@ -375,6 +456,10 @@ public class Endereco {
 		Endereco other = (Endereco) obj;
 		return new EqualsBuilder().append(this.cep, other.cep).isEquals();
 	}
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         return new ToStringBuilder(this, MyStyle.MY_STYLE)
