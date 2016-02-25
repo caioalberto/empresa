@@ -1,21 +1,3 @@
-/******************************************************************************
- * Produto: Connect Cont                                                      *
- * Contmatic Phoenix © Desde 1986                                             *
- * Tecnologia em Softwares de Gestão Contábil, Empresarial e ERP              *
- * Todos os direitos reservados.                                              *
- *                                                                            *
- *                                                                            *
- *    Histórico:                                                              *
- *          Data        Programador              Tarefa                       *
- *          ----------  -----------------        -----------------------------*
- *   Autor  24/02/2016  Caio Ribeiro         Classe criada.                   *
- *                                                                            *
- *   Comentários:                                                             *
- *                                                                            *
- *                                                                            *
- *                                                                            *
- *                                                                            *
- *****************************************************************************/
 package br.com.caioribeiro.empresa;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -33,9 +15,7 @@ import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
  */
 public class Email {
 
-    //Variaveis e constantes----------------------------------------------------------------------------------------------------------
-
-    /**
+     /**
      * Define o tamanho minimo do username do email.
      */
     private static final int TAMANHO_MINIMO_USERNAME = 6;
@@ -64,9 +44,9 @@ public class Email {
      *  Define o dominio do email.
      */
     private String dominio;
-
+/**
     //Getters and Setters-------------------------------------------------------------------------------------------------------------    
-    /**
+/**    
      * Gets the user name.
      *
      * @return the user name
@@ -77,7 +57,6 @@ public class Email {
     
     /**
      * Gets the dominio.
-     *
      * @return the dominio
      */
     public String getDominio() {
@@ -112,9 +91,7 @@ public class Email {
      * @param userName the user name
      */
     public void validarUserName(String userName) {
-        this.verificaSeNuloOuVazioUserName(userName);
-        this.verificaTamMinUserName(userName);
-        this.verificaTamMaxUserName(userName);        
+        this.verificaSeNuloOuVazioUserName(userName);  
     }
 
     /**
@@ -125,34 +102,17 @@ public class Email {
     public void verificaSeNuloOuVazioUserName(String userName) {
         checkNotNull(userName, "O Nome de Usuário não pode ser nulo!");
         checkArgument(userName.length() != 0, "O Nome de Usuário não pode ser vazio!");
-    }
-
-    /**
-     * Verifica tam min user name.
-     *
-     * @param userName the user name
-     */
-    public void verificaTamMinUserName(String userName) {
         checkArgument(userName.length() > TAMANHO_MINIMO_USERNAME, "O Nome de Usuário deve conter pelo menos 6 caracteres!");
-    }
-
-    /**
-     * Verifica tam max user name.
-     *
-     * @param userName the user name
-     */
-    public void verificaTamMaxUserName(String userName) {
         checkArgument(userName.length() < TAMANHO_MAXIMO_USERNAME, "O Nome de Usuário deve conter no máximo 15 caracteres!");
     }
 
-    /**
+   /**
      * Validar dominio.
      *
      * @param dominio the dominio
      */
     public void validarDominio(String dominio) {
         this.verificaSeNuloOuVazioUserName(dominio);
-        this.verificaTamMinUserName(dominio);
         this.verificaTamMaxDominio(dominio);        
     }
 

@@ -1,21 +1,3 @@
-/******************************************************************************
- * Produto: Connect Cont                                                      *
- * Contmatic Phoenix © Desde 1986                                             *
- * Tecnologia em Softwares de Gestão Contábil, Empresarial e ERP              *
- * Todos os direitos reservados.                                              *
- *                                                                            *
- *                                                                            *
- *    Histórico:                                                              *
- *          Data        Programador              Tarefa                       *
- *          ----------  -----------------        -----------------------------*
- *   Autor  22/02/2016  ${author}          Classe criada.                  *
- *                                                                            *
- *   Comentários:                                                             *
- *                                                                            *
- *                                                                            *
- *                                                                            *
- *                                                                            *
- *****************************************************************************/
 package br.com.caioribeiro.empresa;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -26,11 +8,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.NotBlank;
 
+import br.com.caelum.stella.bean.validation.CNPJ;
 import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
 
 /**
@@ -43,13 +28,7 @@ import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
 public class Empresa {
 
 //Variaveis e Constantes-------------------------------------------------------------------------------------   
-    
-    /**
-     * 
-     * Define o tamanho de um CNPJ.
-     */
-    private static final int TAMANHO_CNPJ = 14;
-    
+        
     /** Define o tamanho minimo da razao social. */
     private static final int TAMANHO_MINIMO_RAZAO_SOCIAL = 10;
     
@@ -70,12 +49,17 @@ public class Empresa {
 
     /**
      * Define o CNPJ de uma empresa.
-     */
+     */   
+    @Size(min=14, max=14, message="O CNPJ deve ter {max} dígitos!")
+    @NotBlank(message="O CNPJ deve ser preenchido!")
+    @CNPJ
     private String cnpj;
 
     /**
      * Define a razao social de uma empresa.
      */
+    @Size(min=10, max=80, message="A Razão Social deve ter entre {min} e {max} letras!")
+    @NotBlank(message="A Razão Social deve ser preenchida!")
     private String razaoSocial;
 
     /**
@@ -86,7 +70,7 @@ public class Empresa {
     /**
      *
      * Define uma String que armazena o email da empresa.
-     */
+     */    
     private List<Email> emails;
 
     /**
@@ -185,13 +169,12 @@ public class Empresa {
         this.telefones = telefones;
     }
 
-    /**
+   /**
      * Seta o atributo cnpj.
      *
      * @param cnpj novo valor de cnpj
      */
     public void setCnpj(String cnpj) {
-        this.validarCnpj(cnpj);
         this.cnpj = cnpj;
     }
 
@@ -201,7 +184,6 @@ public class Empresa {
      * @param razaoSocial novo valor de razao social
      */
     public void setRazaoSocial(String razaoSocial) {
-        this.validarRazaoSocial(razaoSocial);
         this.razaoSocial = razaoSocial;
     }
 
@@ -287,9 +269,10 @@ public class Empresa {
      *
      * @param dataDeCadastro the data de cadastro
      */
-    public void verificaDataNula(Date dataDeCadastro) {
-        this.validaDataDeAlteracao(dataDeCadastro);
-        
+    public void verificaDataNula(Date dataDeAlteracao) {
+        checkNotNull(dataDeAlteracao, "A Data de Alteração não pode ser nula!");
+        this.verificaSeAntesQueAtual(dataDeAlteracao);
+        this.verificaSeDepoisQueAtual(dataDeAlteracao);
     }
 
     /**
@@ -322,37 +305,39 @@ public class Empresa {
      * @param dataDeAlteracao the data de alteracao
      */
     public void validaDataDeAlteracao(Date dataDeAlteracao) {
-        dataDeAlteracao = new Date();
+        this.verificaDataNula(dataDeAlteracao);
+       // this.verificaSeAntesQueAtual(dataDeAlteracao);
+        //this.verificaSeDepoisQueAtual(dataDeAlteracao);
     }
     
     /**
      * Validar cnpj.
      *
      * @param cnpj the cnpj
-     */
+     *//*
     public void validarCnpj(String cnpj) {
         this.verificaSeNuloOuVazioCnpj(cnpj);
         this.verificaTamanhoCnpj(cnpj);        
     }
     
-    /**
+    *//**
      * Verifica se nulo ou vazio cnpj.
      *
      * @param cnpj the cnpj
-     */
+     *//*
     public void verificaSeNuloOuVazioCnpj(String cnpj) {
         checkNotNull(cnpj, "O CNPJ não pode ser nulo!");
         checkArgument(cnpj.length() != 0, "O CNPJ não pode ser vazio!");
     }
         
-    /**
+    *//**
      * Verifica tamanho cnpj.
      *
      * @param cnpj the cnpj
-     */
+     *//*
     public void verificaTamanhoCnpj(String cnpj) {
         checkArgument(cnpj.length() == TAMANHO_CNPJ, "O CNPJ deve conter exatamente 14 números!");
-    }
+    }*/
     
     /**
      * Metodo que verifica a quantidade minima de telefones na empresa.
@@ -373,45 +358,6 @@ public class Empresa {
     	checkArgument(telefones.size() < 0, "Empresa deve ter pelo menos 1 telefone!");
     }
     
-    /**
-     * Metodo que verifica o preenchimento da razao social, assim como as regras preestabelecidas.
-     *
-     * @param razaoSocial the razao social
-     */
-    public void validarRazaoSocial(String razaoSocial) {
-        this.verificaSePreenchidaRazaoSocial(razaoSocial);
-        this.verificaTamanhoMinimoRazaoSocial(razaoSocial);
-        this.verificaTamanhoMaximoRazaoSocial(razaoSocial);
-    }
-    
-    /**
-     * Verifica se preenchida razao social.
-     *
-     * @param razaoSocial the razao social
-     */
-    public void verificaSePreenchidaRazaoSocial(String razaoSocial) {
-        checkNotNull(razaoSocial, "A Razão Social não pode ser nula!");
-        checkArgument(razaoSocial.length() != 0, "A Razão Social não pode estar vazia!");
-    }
-    
-    /**
-     * Verifica tamanho minimo razao social.
-     *
-     * @param razaoSocial the razao social
-     */
-    public void verificaTamanhoMinimoRazaoSocial(String razaoSocial) {
-        checkArgument(razaoSocial.length() > TAMANHO_MINIMO_RAZAO_SOCIAL, "A Razão Social deve conter no mínimo 10 caracteres!");
-    }
-    
-    /**
-     * Verifica tamanho maximo razao social.
-     *
-     * @param razaoSocial the razao social
-     */
-    public void verificaTamanhoMaximoRazaoSocial(String razaoSocial) {
-        checkArgument(razaoSocial.length() < TAMANHO_MAXIMO_RAZAO_SOCIAL, "A Razão Social deve conter no máximo 80 caracteres!");
-    }
-
     /**
      * Metodo que verifica a quantidade minima de enderecos na empresa.
      *
@@ -470,8 +416,9 @@ public class Empresa {
         return new ToStringBuilder(this, MyStyle.MY_STYLE)
                 .append(this.razaoSocial)
                 .append("CNPJ: ", this.cnpj)
-                .append("Endereço(s): " + enderecos.toString())
+                .append(enderecos.toString())
                 .append("Contato: " + telefones.toString() + "\n" + emails.toString())
-                .append("Data de abertura: " + sdf.format(this.dataDeCadastro)).toString();
+                .append("Data de Abertura: " + sdf.format(this.dataDeCadastro))
+                .append("Data de Alteração: " + sdf.format(this.dataDeAlteracao)).toString();
     }
 }

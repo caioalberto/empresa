@@ -1,5 +1,6 @@
 package br.com.caioribeiro.empresa;
 
+import static br.com.caioribeiro.empresa.util.EmpresaUtil.isNumber;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -8,6 +9,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import br.com.caioribeiro.empresa.stringbuilder.MyTelephoneStyle;
+import br.com.caioribeiro.empresa.util.EmpresaUtil;
+import br.com.caioribeiro.empresa.util.ValidadorUtil;
 
 /**
  *
@@ -116,7 +119,7 @@ public final class  Telefone {
  */
     public void validaTelefone(String telefone) {
         this.verificaSeNuloOuVazio(telefone);
-        checkArgument(this.verificaSeEhNumero(telefone) == true,"Você deve inserir apenas números!");
+        checkArgument(isNumber(telefone),"Você deve inserir apenas números!");
         checkArgument(telefone.length() >= TAM_MIN_TELEFONE, "O telefone não deve conter menos do que 8 caracteres!");
         checkArgument(telefone.length() <= TAM_MAX_TELEFONE, "O telefone não deve conter mais do que 9 caracteres!");
     }
@@ -131,25 +134,6 @@ public final class  Telefone {
         checkArgument(!telefone.isEmpty(),"O telefone não pode estar vazio!");
     }
     
-    /**
-     * Verifica se eh numero.
-     *
-     * @param telefone the telefone
-     * @return true, se tiver sucesso
-     */
-    public boolean verificaSeEhNumero(String telefone) {
-		boolean aceito = true;
-		char c[] = telefone.toCharArray();		
-		for(int i = 0; i < c.length; i++){
-			if(!Character.isDigit(c[i])){
-				aceito = false;
-				break;
-			}
-		}
-		
-    	return aceito;
-    }
-
     /**
      * Verifica se o DDD foi preenchido corretamente, assim como as regras
      * preestabelecidas.

@@ -1,21 +1,3 @@
-/******************************************************************************
- * Produto: Connect Cont                                                      *
- * Contmatic Phoenix © Desde 1986                                             *
- * Tecnologia em Softwares de Gestão Contábil, Empresarial e ERP              *
- * Todos os direitos reservados.                                              *
- *                                                                            *
- *                                                                            *
- *    Histórico:                                                              *
- *          Data        Programador              Tarefa                       *
- *          ----------  -----------------        -----------------------------*
- *   Autor  24/02/2016  ${author}          Classe criada.                  *
- *                                                                            *
- *   Comentários:                                                             *
- *                                                                            *
- *                                                                            *
- *                                                                            *
- *                                                                            *
- *****************************************************************************/
 package br.com.caioribeiro.empresa;
 
 import static com.google.common.base.Preconditions.checkArgument;
