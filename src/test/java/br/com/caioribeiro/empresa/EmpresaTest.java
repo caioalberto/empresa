@@ -1,12 +1,11 @@
 package br.com.caioribeiro.empresa;
 
 import static br.com.caioribeiro.empresa.util.ValidadorUtil.containsError;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -18,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import br.com.caioribeiro.empresa.Email;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
@@ -36,7 +36,7 @@ public class EmpresaTest {
     private Empresa empresa;
     
     /** The emails. */
-    private List<Email> emails;
+    private Set<Email> emails;
     
     /** The validator. */
     private Validator validator;
@@ -53,17 +53,17 @@ public class EmpresaTest {
         FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 
         // Atribui a variavel do objeto empresa, o template "valido".
-        empresa = Fixture.from(Empresa.class).gimme("valid");
-        emails = Fixture.from(Email.class).gimme(5, "valid");
-
+        empresa = new Empresa();
+                //Fixture.from(Empresa.class).gimme("valid");
+        //Set<Email>emails = Fixture.from(Email.class).gimme(5, "valid");
+        
+        
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
 
     // CNPJ----------------------------------------------------------------------------------------------------------------------------
-    /**
-     * Deve_testar_se_o_cnpj_e_nulo.
-     */
+
     @Test
     public void nao_deve_aceitar_um_cnpj_nulo() {
         empresa.setCnpj(null);
@@ -109,14 +109,13 @@ public class EmpresaTest {
      */
     @Test
     public void deve_aceitar_o_cnpj() {
-        empresa.setCnpj("12345678901234");
+        String cnpj = "12345678901234";
+        empresa.setCnpj(cnpj);
+        assertEquals("12345678901234", empresa.getCnpj());
     }
 
     // Razao Social--------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Nao_deve_aceitar_uma_razao_social_nula.
-     */
     @Test
     public void nao_deve_aceitar_uma_razao_social_nula() {
         empresa.setRazaoSocial(null);
@@ -128,19 +127,17 @@ public class EmpresaTest {
      */
     @Test
     public void nao_deve_aceitar_uma_razao_social_vazia() {
-        //exception.expect(IllegalArgumentException.class);
-        //exception.expectMessage("A Razão Social não pode estar vazia!");
         empresa.setRazaoSocial("");
+        assertTrue(containsError(validator.validate(empresa), "A Razão Social deve ser preenchida!"));
     }
 
     /**
-     * Nao_deve_aceitar_una_razao_social_menor_que_10.
+     * Nao_deve_aceitar_uma_razao_social_menor_que_10.
      */
     @Test
-    public void nao_deve_aceitar_una_razao_social_menor_que_10() {
-        //exception.expect(IllegalArgumentException.class);
-        //exception.expectMessage("A Razão Social deve conter no mínimo 10 caracteres!");
+    public void nao_deve_aceitar_uma_razao_social_menor_que_10() {
         empresa.setRazaoSocial("abc");
+        assertTrue(containsError(validator.validate(empresa), "A Razão Social deve ter entre 10 e 80 letras!"));
     }
 
     /**
@@ -148,9 +145,8 @@ public class EmpresaTest {
      */
     @Test
     public void nao_deve_aceitar_uma_razao_social_maior_que_80() {
-        //exception.expect(IllegalArgumentException.class);
-       //exception.expectMessage("A Razão Social deve conter no máximo 80 caracteres!");
-        empresa.setRazaoSocial("abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh");
+        empresa.setRazaoSocial("\\w{80}");
+        assertTrue(containsError(validator.validate(empresa), "A Razão Social deve ter entre 10 e 80 letras!"));
     }
 
     /**
@@ -158,16 +154,59 @@ public class EmpresaTest {
      */
     @Test
     public void deve_aceitar_a_razao_social() {
-        empresa.getRazaoSocial();
+        empresa.setRazaoSocial("Teste de Razão Social LTDA.");
+        assertEquals("Teste de Razão Social LTDA.", empresa.getRazaoSocial());
     }
+    // Nome Fantasia-----------------------------------------------------------------------------------------------------------------
+   
+    @Test
+    public void nao_deve_aceitar_um_nome_fantasia_nulo() {
+        empresa.setNomeFantasia(null);
+        assertTrue(containsError(validator.validate(empresa), "O Nome Fantasia deve ser preenchido!"));
+    }
+    
+    @Test
+    public void nao_deve_aceitar_um_nome_fantasia_vazio() {
+        empresa.setNomeFantasia("");
+        assertTrue(containsError(validator.validate(empresa), "O Nome Fantasia deve ser preenchido!"));
+    }
+    
+    @Test
+    public void nao_deve_aceitar_um_nome_fantasia_com_menos_de_10_letras() {
+        empresa.setNomeFantasia("abc");
+        assertTrue(containsError(validator.validate(empresa), "O Nome Fantasia deve conter mais de 10 e menos de 80 letras!"));
+    }
+    
+    @Test
+    public void nao_deve_aceitar_um_nome_fantasia_com_mais_de_80_letras() {
+        empresa.setNomeFantasia("\\w{80}");
+        assertTrue(containsError(validator.validate(empresa), "O Nome Fantasia deve conter mais de 10 e menos de 80 letras!"));
+    }
+    
+    @Test
+    public void deve_aceitar_o_nome_fantasia() {
+        String nomeFantasia = "Nome Fantasia";
+        empresa.setNomeFantasia(nomeFantasia);
+        assertEquals("Nome Fantasia", empresa.getNomeFantasia());
+    }
+    
     // Data de Cadastro--------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Deve_aceitar_uma_data_de_cadastro.
-     */
+    @Test
+    public void nao_deve_aceitar_uma_data_de_cadastro_nula() {
+        empresa.setDataDeCadastro(null);
+        assertTrue(containsError(validator.validate(empresa), "A data não pode ser nula!"));
+    }
+    
+    @Test
+    public void nao_deve_aceitar_uma_data_posterior_a_atual() {
+        empresa.setDataDeCadastro(new Date(3918));
+        assertTrue(containsError(validator.validate(empresa), "A data não pode ser posterior a data atual!"));
+    }
+    
     @Test
     public void deve_aceitar_uma_data_de_cadastro() {
-        empresa.setDataDeAlteracao(new Date());
+        empresa.setDataDeCadastro(new Date());
+        assertEquals(new Date(), empresa.getDataDeCadastro());
     }
 
     /**
@@ -175,11 +214,23 @@ public class EmpresaTest {
      */
     // Data de Alteracao--------------------------------------------------------------------------------------------------------------
     @Test
-    public void deve_imprimir_as_datas_de_cadastro_e_de_alteracao() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        empresa.setDataDeAlteracao(new Date());
-        System.out.println("Data de Alteração: " + sdf.format(empresa.getDataDeAlteracao()));
-        System.out.println("Data de Cadastro: " + sdf.format(empresa.getDataDeCadastro()));
+    public void nao_deve_aceitar_uma_data_de_alteracao_nula() {
+        empresa.setDataDeAlteracao(null);
+    }
+    
+    @SuppressWarnings("deprecation")
+    @Test
+    public void nao_deve_aceitar_uma_data_de_alteracao_anterior_a_data_de_criacao() {
+        empresa.setDataDeAlteracao(new Date(3918, 12, 4));
+        empresa.setDataDeCadastro(new Date());
+        assertTrue(containsError(validator.validate(empresa), "A data não pode ser anterior a data atual!"));
+    }
+    
+    @Test
+    public void deve_aceitar_uma_data_de_alteracao() {
+        Date dataCadastro = new Date(3918);
+        Date dataAlteracao = new Date();
+        assertTrue(dataCadastro.before(dataAlteracao));
     }
 
     // Email--------------------------------------------------------------------------------------------------------------------------
@@ -189,7 +240,11 @@ public class EmpresaTest {
      */
     @Test
     public void deve_aceitar_uma_lista_com_um_email() {
-        empresa.getEmails();
+        Email email = new Email();
+        email.setUserName("novo_usuario");
+        email.setDominio("@novoteste.com.br");
+        emails.add(email);
+        System.out.println(emails);
     }
 
     /**
@@ -207,46 +262,12 @@ public class EmpresaTest {
      */
     @Test
     public void nao_deve_aceitar_uma_lista_de_emails_vazia() {
-        List<Email> emailsVazio = new ArrayList<>();
+        Set<Email> emailsVazio = new HashSet<>();
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Você não pode utilizar uma lista vazia de emails!");
         empresa.setEmails(emailsVazio);
     }
-
-    /**
-     * Deve_testar_se_nome_fantasia_da_empresa_e_nulo.
-     */
-    @Test
-    public void deve_aceitar_o_nome_fantasia() {
-        empresa.getNomeFantasia();
-    }
-
-    /**
-     * Deve_verificar_se_os_enderecos_estao_vazios.
-     */
-    @Test
-    public void deve_aceitar_uma_lista_com_objeto_do_tipo_endereco() {
-        empresa.getEnderecos();
-    }
-
-    /**
-     * Deve_verificar_se_os_telefones_estao_vazios.
-     */
-    @Test
-    public void aceitar_uma_lista_com_objeto_do_tipo_telefone() {
-        empresa.getTelefones();
-    }
     
-
-    /**
-     * Deve_testar_to_string.
-     */
-    @Test
-    public void deve_testar_to_string() {
-        empresa.setDataDeAlteracao(new Date());
-        System.out.println(empresa);
-    }
-
 
     
 }

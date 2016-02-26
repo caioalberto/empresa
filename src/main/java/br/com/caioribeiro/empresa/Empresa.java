@@ -1,13 +1,15 @@
 package br.com.caioribeiro.empresa;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -27,25 +29,18 @@ import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
  */
 public class Empresa {
 
-//Variaveis e Constantes-------------------------------------------------------------------------------------   
-        
-    /** Define o tamanho minimo da razao social. */
-    private static final int TAMANHO_MINIMO_RAZAO_SOCIAL = 10;
-    
-    /** Define o tamanho maximo da razao social. */
-    private static final int TAMANHO_MAXIMO_RAZAO_SOCIAL = 80;
-        
+//Variaveis de Atributo-------------------------------------------------------------------------------------                
     /**
      * Define uma lista de Enderecos, para armazenar os enderecos de uma empresa
      * caso haja mais de um.
-     */
-    private List<Endereco> enderecos;
+     */    
+    private Set<Endereco> enderecos;
 
     /**
      * Define uma lista de Telefones, para armazenar os telefones de uma
      * empresa.
      */
-    private List<Telefone> telefones;
+    private Set<Telefone> telefones;
 
     /**
      * Define o CNPJ de uma empresa.
@@ -58,31 +53,40 @@ public class Empresa {
     /**
      * Define a razao social de uma empresa.
      */
-    @Size(min=10, max=80, message="A Razão Social deve ter entre {min} e {max} letras!")
     @NotBlank(message="A Razão Social deve ser preenchida!")
+    @Size(min=10, max=80, message="A Razão Social deve ter entre {min} e {max} letras!")
     private String razaoSocial;
 
     /**
      * Define o nome fantasia de uma empresa.
      */
+    @NotBlank(message="O Nome Fantasia deve ser preenchido!")
+    @Size(min=10, max=80, message="O Nome Fantasia deve conter mais de {min} e menos de {max} letras!")
     private String nomeFantasia;
 
     /**
      *
      * Define uma String que armazena o email da empresa.
-     */    
-    private List<Email> emails;
+     */ 
+    @Valid
+    private Set<Email> emails;
 
     /**
      *
      * Define a data de cadastro de uma empresa dentro do objeto.
      */
+    @Future(message="A data não pode ser posterior a data atual!")
+    @Past(message="A data não pode ser anterior a data atual!")
+    @NotNull(message="A data não pode ser nula!")
     private Date dataDeCadastro;
     
     /**
      * 
      * Define a data de alteracao de uma empresa dentro do objeto.
      */
+    @Future(message="A data não pode ser posterior a data atual!")
+    @Past(message="A data não pode ser anterior a data atual!")
+    @NotNull(message="A data não pode ser nula!")
     private Date dataDeAlteracao;
 
 //Getters e Setters------------------------------------------------------------------------------------------        
@@ -91,7 +95,7 @@ public class Empresa {
      *
      * @return the enderecos
      */
-    public List<Endereco> getEnderecos() {
+    public Set<Endereco> getEnderecos() {
         return enderecos;
     }
 
@@ -100,7 +104,7 @@ public class Empresa {
      *
      * @return the telefones
      */
-    public List<Telefone> getTelefones() {
+    public Set<Telefone> getTelefones() {
         return telefones;
     }
 
@@ -136,7 +140,7 @@ public class Empresa {
      *
      * @return the emails
      */
-    public List<Email> getEmails() {
+    public Set<Email> getEmails() {
         return emails;
     }
 
@@ -154,8 +158,7 @@ public class Empresa {
      *
      * @param enderecos novo valor de endereco
      */
-    public void setEndereco(List<Endereco> enderecos) {
-    	this.verificaSeVazioEnderco(enderecos);
+    public void setEndereco(Set<Endereco> enderecos) {
         this.enderecos = enderecos;
     }
 
@@ -164,8 +167,7 @@ public class Empresa {
      *
      * @param telefones novo valor de telefone
      */
-    public void setTelefone(List<Telefone> telefones) {
-    	this.validarListaTelefone(telefones);
+    public void setTelefone(Set<Telefone> telefones) {        
         this.telefones = telefones;
     }
 
@@ -175,6 +177,7 @@ public class Empresa {
      * @param cnpj novo valor de cnpj
      */
     public void setCnpj(String cnpj) {
+        isNumeric(cnpj);
         this.cnpj = cnpj;
     }
 
@@ -201,8 +204,8 @@ public class Empresa {
      *
      * @param emails novo valor de emails
      */
-    public void setEmails(List<Email> emails) {
-        this.validarEmails(emails);
+    public void setEmails(Set<Email> emails) {
+       //this.validarEmails(emails);
         this.emails = emails;
     }
 
@@ -212,7 +215,7 @@ public class Empresa {
      * @param dataDeCadastro novo valor de data de cadastro
      */
     public void setDataDeCadastro(Date dataDeCadastro) {
-        this.validaDataCadastro(dataDeCadastro);
+        //this.validaDataCadastro(dataDeCadastro);
         this.dataDeCadastro = dataDeCadastro;
     }
     
@@ -231,161 +234,10 @@ public class Empresa {
      * @param dataDeAlteracao novo valor de data de alteracao
      */
     public void setDataDeAlteracao(Date dataDeAlteracao) {
-        this.validaDataDeAlteracao(dataDeAlteracao);
+        //this.validaDataDeAlteracao(dataDeAlteracao);
         this.dataDeAlteracao = dataDeAlteracao;
     }
-    
-  //Metodos de validacao-------------------------------------------------------------------
-    
-    /**
-   * Metodo para a verificacao e validacao da data de cadastro.
-   *
-   * @param dataDeCadastro the data de cadastro
-   */
-    public void validaDataCadastro(Date dataDeCadastro) {
-        this.verificaDataNula(dataDeCadastro);
-        this.verificaSeAntesQueAtual(dataDeCadastro);
-        this.verificaSeDepoisQueAtual(dataDeCadastro);
-    }
-
-    /**
-     * Zerar horas.
-     *
-     * @param data the data
-     * @return o date
-     */
-    private static Date zerarHoras(Date data) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(data);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTime();
-    }
-
-    /**
-     * Verifica data nula.
-     *
-     * @param dataDeCadastro the data de cadastro
-     */
-    public void verificaDataNula(Date dataDeAlteracao) {
-        checkNotNull(dataDeAlteracao, "A Data de Alteração não pode ser nula!");
-        this.verificaSeAntesQueAtual(dataDeAlteracao);
-        this.verificaSeDepoisQueAtual(dataDeAlteracao);
-    }
-
-    /**
-     * Verifica se antes que atual.
-     *
-     * @param dataDeCadastro the data de cadastro
-     */
-    public void verificaSeAntesQueAtual(Date dataDeCadastro) {
-        Date dataAtual = new Date();
-        Date dataAtualZerada = zerarHoras(dataAtual);
-        Date dataCadastroZerada = zerarHoras(dataDeCadastro);
-        checkArgument(!dataCadastroZerada.before(dataAtualZerada), "Não é possível criar um objeto com uma data anterior a atual!");
-    }
-
-    /**
-     * Verifica se depois que atual.
-     *
-     * @param dataDeCadastro the data de cadastro
-     */
-    public void verificaSeDepoisQueAtual(Date dataDeCadastro) {
-        Date dataAtual = new Date();
-        Date dataAtualZerada = zerarHoras(dataAtual);
-        Date dataCadastroZerada = zerarHoras(dataDeCadastro);
-        checkArgument(!dataCadastroZerada.after(dataAtualZerada), "Não é possível criar um objeto com uma data posterior a atual!");
-    }
-    
-    /**
-     * Valida data de alteracao.
-     *
-     * @param dataDeAlteracao the data de alteracao
-     */
-    public void validaDataDeAlteracao(Date dataDeAlteracao) {
-        this.verificaDataNula(dataDeAlteracao);
-       // this.verificaSeAntesQueAtual(dataDeAlteracao);
-        //this.verificaSeDepoisQueAtual(dataDeAlteracao);
-    }
-    
-    /**
-     * Validar cnpj.
-     *
-     * @param cnpj the cnpj
-     *//*
-    public void validarCnpj(String cnpj) {
-        this.verificaSeNuloOuVazioCnpj(cnpj);
-        this.verificaTamanhoCnpj(cnpj);        
-    }
-    
-    *//**
-     * Verifica se nulo ou vazio cnpj.
-     *
-     * @param cnpj the cnpj
-     *//*
-    public void verificaSeNuloOuVazioCnpj(String cnpj) {
-        checkNotNull(cnpj, "O CNPJ não pode ser nulo!");
-        checkArgument(cnpj.length() != 0, "O CNPJ não pode ser vazio!");
-    }
-        
-    *//**
-     * Verifica tamanho cnpj.
-     *
-     * @param cnpj the cnpj
-     *//*
-    public void verificaTamanhoCnpj(String cnpj) {
-        checkArgument(cnpj.length() == TAMANHO_CNPJ, "O CNPJ deve conter exatamente 14 números!");
-    }*/
-    
-    /**
-     * Metodo que verifica a quantidade minima de telefones na empresa.
-     *
-     * @param telefones the telefones
-     */
-    public void validarListaTelefone(List<Telefone> telefones){
-        this.verificaSeNuloOuVazioTelefone(telefones);
-    }
-    
-    /**
-     * Verifica se nulo ou vazio telefone.
-     *
-     * @param telefones the telefones
-     */
-    public void verificaSeNuloOuVazioTelefone(List<Telefone> telefones) {
-        checkNotNull(telefones, "Empresa não pode ter telefone nulo!");
-    	checkArgument(telefones.size() < 0, "Empresa deve ter pelo menos 1 telefone!");
-    }
-    
-    /**
-     * Metodo que verifica a quantidade minima de enderecos na empresa.
-     *
-     * @param enderecos the enderecos
-     */
-    public void verificaSeVazioEnderco(List<Endereco> enderecos) {
-    	checkArgument(enderecos.size() < 0, "Empresa deve ter pelo menos 1 endereco!");
-    }
     	
-	/**
-	 * Validar emails.
-	 *
-	 * @param emails the emails
-	 */
-	public void validarEmails(List<Email> emails) {
-	    this.verificarListaEmail(emails);
-	}
-		
-	/**
-	 * Verificar lista email.
-	 *
-	 * @param emails the emails
-	 */
-	public void verificarListaEmail(List<Email> emails) {
-	    checkNotNull(emails, "A lista de emails não pode ser nula!");
-	    checkArgument(emails.size() != 0, "Você não pode utilizar uma lista vazia de emails!");	    
-	}
-	
 //hashCode, equals e to String----------------------------------------------------------------------------------------------------    
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()

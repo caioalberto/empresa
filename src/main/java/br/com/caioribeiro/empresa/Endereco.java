@@ -66,7 +66,7 @@ public class Endereco {
      * 
      * Define o tipo do endereco, se residencial/comercial.
      */
-    private String tipoEndereco;
+    private TipoEndereco tipoEndereco;
 
     /**
      *
@@ -197,7 +197,7 @@ public class Endereco {
      *
      * @return the tipo endereco
      */
-    public String getTipoEndereco() {
+    public TipoEndereco getTipoEndereco() {
 		return tipoEndereco;
 	}
 
@@ -276,7 +276,7 @@ public class Endereco {
 	 *
 	 * @param tipoEndereco novo valor de tipo endereco
 	 */
-	public void setTipoEndereco(String tipoEndereco) {
+	public void setTipoEndereco(TipoEndereco tipoEndereco) {
 		this.tipoEndereco = tipoEndereco;
 	}
 

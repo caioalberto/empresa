@@ -3,17 +3,19 @@ package br.com.caioribeiro.empresa;
 public enum TipoTelefone {
     CELULAR(9, "Celular"), FAX(8, "Fax"), COMERCIAL(8, "Comercial");
     
-   private static int qtdNumeros;
-   private static String nomeTipo;
-    
-    TipoTelefone(int qtdNumeros, String nomeTipo){        
+   private final int qtdNumeros;
+   private final String nomeTipo;
+   
+    TipoTelefone(int telefone, String descricao){
+        qtdNumeros = telefone;
+        nomeTipo = descricao;
     }
 
-    public static int getQtdNumeros() {
+    public int getQtdNumeros() {
         return qtdNumeros;
     }
 
-    public static String getNomeTipo() {
+    public String getNomeTipo() {
         return nomeTipo;
     }
     

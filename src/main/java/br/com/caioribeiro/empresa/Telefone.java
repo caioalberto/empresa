@@ -4,9 +4,12 @@ import static br.com.caioribeiro.empresa.util.EmpresaUtil.isNumber;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.NotBlank;
 
 import br.com.caioribeiro.empresa.stringbuilder.MyTelephoneStyle;
 import br.com.caioribeiro.empresa.util.EmpresaUtil;
@@ -25,16 +28,19 @@ public final class  Telefone {
     /**
      * Define o numero de telefone da classe.
      */
+    @NotBlank(message="Não pode estar vazio!")
     private String telefone;
 
     /**
      * Define o tipo de telefone da classe. Se fixo, celular, fax etc.
      */
+    @Valid
     private TipoTelefone tipo;
 
     /**
      * Define o DDD do telefone, sempre com apenas dois numeros.
      */
+    @NotBlank
     private Integer ddd;
 
     /**
@@ -86,7 +92,7 @@ public final class  Telefone {
      * @param telefone novo valor de telefone
      */
     public void setTelefone(String telefone) {
-        this.validaTelefone(telefone);
+        //this.validaTelefone(telefone);
         this.telefone = telefone;
     }
 

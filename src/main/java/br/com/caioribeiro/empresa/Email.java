@@ -3,9 +3,12 @@ package br.com.caioribeiro.empresa;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.NotBlank;
 
 import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
 
@@ -38,6 +41,7 @@ public class Email {
     /**
      * Define o username do email.
      */
+    @NotBlank(message="O Nome do usuário não pode ser nulo!")
     private String userName;
 
     /**
@@ -69,7 +73,7 @@ public class Email {
      * @param userName novo valor de user name
      */
     public void setUserName(String userName) {
-        this.validarUserName(userName);
+        //this.validarUserName(userName);
         this.userName = userName;
     }
     
@@ -79,7 +83,7 @@ public class Email {
      * @param dominio novo valor de dominio
      */
     public void setDominio(String dominio) {
-        this.validarDominio(dominio);
+        //this.validarDominio(dominio);
         this.dominio = dominio;
     }
 

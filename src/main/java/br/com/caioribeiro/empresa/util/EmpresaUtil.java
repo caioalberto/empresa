@@ -1,5 +1,9 @@
 package br.com.caioribeiro.empresa.util;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.base.Strings;
+
 public final class EmpresaUtil {
     public static boolean validCnpj(String cnpj) {
         int cont, r, numero, peso;
@@ -23,8 +27,15 @@ public final class EmpresaUtil {
         return true;
     }           
     
-    public static boolean isNumber(String telefone) {
-        char c[] = telefone.toCharArray();      
+    /**
+     * Checka se number.
+     *
+     * @param toTest the to test
+     * @return true, na condicao de number
+     */
+    public static boolean isNumber(String toTest) {
+        //StringUtils.isNumeric(toTest);
+        char c[] = toTest.toCharArray();      
         for(int i = 0; i < c.length; i++){
             if(!Character.isDigit(c[i])){
                 return false;
