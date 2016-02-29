@@ -228,7 +228,14 @@ public class EnderecoTest {
 	@Test 
 	public void nao_deve_aceitar_que_numero_seja_igual_0() {
 		endereco.setNumero(0);
+		assertTrue(containsError(validator.validate(endereco), "O número deve conter, entre 1 e 9999, desde que não seja 0!"));
 	}
+	
+	   @Test 
+	    public void nao_deve_aceitar_que_numero_seja_maior_que_9999() {
+	        endereco.setNumero(99999);
+	        assertTrue(containsError(validator.validate(endereco), "O número deve conter, entre 1 e 9999, desde que não seja 0!"));
+	    }
 		
 	@Test
 	public void deve_aceitar_o_numero() {

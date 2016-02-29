@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 /**
  *
@@ -74,6 +75,7 @@ public final class Endereco {
      *
      * Define o numero do estabelecimento dentro do endereco.
      */
+    @Range(min=1L, max=9999L, message="O número deve conter, entre {min} e {max}, desde que não seja 0!")
     private Integer numero;
     
     /**
