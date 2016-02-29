@@ -1,10 +1,9 @@
 package br.com.caioribeiro.empresa;
 
-import static br.com.caioribeiro.empresa.util.EmpresaUtil.isNumber;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -12,8 +11,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import br.com.caioribeiro.empresa.stringbuilder.MyTelephoneStyle;
-import br.com.caioribeiro.empresa.util.EmpresaUtil;
-import br.com.caioribeiro.empresa.util.ValidadorUtil;
 
 /**
  *
@@ -28,7 +25,8 @@ public final class  Telefone {
     /**
      * Define o numero de telefone da classe.
      */
-    @NotBlank(message="Não pode estar vazio!")
+    @NotBlank(message="O telefone não pode estar vazio!")
+    @Size(max=9, min=8, message="O telefone não pode ter menos de {min} dígitos e mais de {max} dígitos!")    
     private String telefone;
 
     /**
@@ -40,23 +38,9 @@ public final class  Telefone {
     /**
      * Define o DDD do telefone, sempre com apenas dois numeros.
      */
-    @NotBlank
-    private Integer ddd;
-
-    /**
-     * Define o tamanho minimo da constante telefone.
-     */
-    private static final int TAM_MIN_TELEFONE = 8;
-
-    /**
-     * Define o tamanho maximo da constante telefone.
-     */
-    private static final int TAM_MAX_TELEFONE = 9;
-
-    /**
-     * Define o tamanho minimo do DDD.
-     */
-    private static final int TAM_DDD = 2;
+    @NotBlank(message="O DDD não pode estar vazio!")
+    @Size(max=2, min=2, message="O DDD não pode ter tamanho diferente de {max}!")
+    private String ddd;
 
 //Getters e Setters-----------------------------------------------------------------------------------------
     /**
@@ -82,7 +66,7 @@ public final class  Telefone {
      *
      * @return the ddd
      */
-    public Integer getDdd() {
+    public String getDdd() {
         return ddd;
     }
 
@@ -92,7 +76,7 @@ public final class  Telefone {
      * @param telefone novo valor de telefone
      */
     public void setTelefone(String telefone) {
-        //this.validaTelefone(telefone);
+        isNumeric(telefone);
         this.telefone = telefone;
     }
 
@@ -101,8 +85,8 @@ public final class  Telefone {
      *
      * @param ddd novo valor de ddd
      */
-    public void setDdd(Integer ddd) {
-        this.validaDdd(ddd);
+    public void setDdd(String ddd) {
+        isNumeric(ddd);
         this.ddd = ddd;
     }
 
@@ -112,72 +96,8 @@ public final class  Telefone {
      * @param tipo novo valor de tipo
      */
     public void setTipo(TipoTelefone tipo) {
-        this.validaTipo(tipo);
+        //this.validaTipo(tipo);
         this.tipo = tipo;
-    }
-
-//Metodos de validacao-------------------------------------------------------------------
-    
-    /**
- * Valida o preenchimento do telefone, assim como as regras preestabelecidas.
- *
- * @param telefone the telefone
- */
-    public void validaTelefone(String telefone) {
-        this.verificaSeNuloOuVazio(telefone);
-        checkArgument(isNumber(telefone),"Você deve inserir apenas números!");
-        checkArgument(telefone.length() >= TAM_MIN_TELEFONE, "O telefone não deve conter menos do que 8 caracteres!");
-        checkArgument(telefone.length() <= TAM_MAX_TELEFONE, "O telefone não deve conter mais do que 9 caracteres!");
-    }
-
-    /**
-     * Verifica se nulo.
-     *
-     * @param telefone the telefone
-     */
-    public void verificaSeNuloOuVazio(String telefone) {
-        checkNotNull(telefone, "O telefone não pode ser nulo!");
-        checkArgument(!telefone.isEmpty(),"O telefone não pode estar vazio!");
-    }
-    
-    /**
-     * Verifica se o DDD foi preenchido corretamente, assim como as regras
-     * preestabelecidas.
-     *
-     * @param ddd the ddd
-     */
-    public void validaDdd(Integer ddd) {
-        this.verificaSePreenchidoDdd(ddd);
-    }
-
-    /**
-     * Verifica se preenchido ddd.
-     *
-     * @param ddd the ddd
-     */
-    public void verificaSePreenchidoDdd(Integer ddd) {
-    	checkArgument(ddd != 00, "O DDD não pode ser 0!");     
-    	int compair;
-    	compair = ddd.toString().length();
-    	checkArgument(compair == TAM_DDD, "O DDD deve ser 2!");
-    }
-    
-    /**
-     * Verifica se o tipo foi preenchido, e as regras preestabelecidas.
-     *
-     * @param tipo the tipo
-     */
-    public void validaTipo(TipoTelefone tipo) {
-        this.verificaSePreenchidoTipo(tipo);
-    }
-
-    /**
-     * Verifica se preenchido tipo.
-     *
-     * @param tipo the tipo
-     */
-    public void verificaSePreenchidoTipo(TipoTelefone tipo) {
-        checkNotNull(tipo, "O tipo não pode ser nulo!");
     }
 
   //Equals, HashCode e toString---------------------------------------------------------------------------------------------------   

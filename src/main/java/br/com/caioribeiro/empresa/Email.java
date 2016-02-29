@@ -47,6 +47,7 @@ public class Email {
     /**
      *  Define o dominio do email.
      */
+    @NotBlank(message="O Domínio não pode estar vazio!")
     private String dominio;
 /**
     //Getters and Setters-------------------------------------------------------------------------------------------------------------    

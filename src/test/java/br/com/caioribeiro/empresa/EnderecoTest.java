@@ -1,194 +1,264 @@
 package br.com.caioribeiro.empresa;
 
-import static org.junit.Assert.assertNotNull;
+import static br.com.caioribeiro.empresa.util.ValidadorUtil.containsError;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
 public class EnderecoTest {
-	
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-	
-    private Endereco endereco;
+		
+    private Endereco endereco = new Endereco();
+    
+    private Validator validator;
 
     @Before
 	public void setUp() {	 
 	    FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");		
-	    endereco = Fixture.from(Endereco.class).gimme("valid");
+	    //endereco = Fixture.from(Endereco.class).gimme("valid");
 		System.out.println("Before");
+		
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
 	}
 
 //Logradouro----------------------------------------------------------------------------
-	@Test 
+	
+    @Test
+    public void nao_deve_aceitar_logradouro_nulo() {
+        endereco.setLogradouro(null);
+        assertTrue(containsError(validator.validate(endereco), "O logradouro não pode estar vazio!"));
+    }
+    
+    @Test
+    public void nao_deve_aceitar_logradouro_vazio() {
+        endereco.setLogradouro("");
+        assertTrue(containsError(validator.validate(endereco), "O logradouro não pode estar vazio!"));
+    }
+    
+    @Test 
 	public void nao_deve_aceitar_logradouro_com_menos_de_5_caracteres() {
-	   exception.expect(IllegalArgumentException.class);
-	   exception.expectMessage("Logradouro não pode conter menos de 5 caracteres!");
 	   endereco.setLogradouro("aaa");
+	   assertTrue(containsError(validator.validate(endereco), "O Logradouro deve conter, no mínimo 5 e no máximo 80 letras!"));
 	}
 	
 	@Test 
 	public void nao_deve_aceitar_logradouro_com_mais_de_80_caracteres() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("Logradouro não pode conter mais de 80 caracteres!");
-		endereco.setLogradouro("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		endereco.setLogradouro("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertTrue(containsError(validator.validate(endereco), "O Logradouro deve conter, no mínimo 5 e no máximo 80 letras!"));
 	}
 	
-	@Test 
-	public void nao_deve_aceitar_logradouro_nulo() {
-		exception.expect(NullPointerException.class);
-		exception.expectMessage("Logradouro não pode estar vazio/nulo!");
-		endereco.setLogradouro(null);
-	}
 	
 	@Test
 	public void deve_aceitar_o_logradouro() {
-		assertNotNull(endereco.getLogradouro());
+	    String logradouroCompair = "Rua Teste";
+		endereco.setLogradouro(logradouroCompair);
+		assertEquals("Rua Teste", endereco.getLogradouro());
 	}
 	
 //Bairro----------------------------------------------------------------------------------	
 	@Test 
-	public void nao_deve_aceitar_bairro_com_menos_de_6_letras() {	    
-	    exception.expect(IllegalArgumentException.class);
-	    exception.expectMessage("O bairro não pode conter menos de 6 letras!");
-	    endereco.setBairro("abc");
+	public void nao_deve_aceitar_bairro_nulo() {	    
+	    endereco.setBairro(null);
+	    assertTrue(containsError(validator.validate(endereco), "O bairro não pode estar vazio!"));
 	}
 	
 	@Test 
+	public void nao_deve_aceitar_bairro_vazio() {
+		endereco.setBairro("");
+		assertTrue(containsError(validator.validate(endereco), "O bairro não pode estar vazio!"));
+	}
+	
+	@Test 
+	public void nao_deve_aceitar_bairro_com_menos_de_5_letras() {	    
+		endereco.setBairro("abcd");
+		assertTrue(containsError(validator.validate(endereco), "O Bairro deve conter, no mínino 5 e no máximo 80 letras!"));
+	}
+	
+	@Test
 	public void nao_deve_aceitar_bairro_com_mais_de_80_letras() {
-	    exception.expect(IllegalArgumentException.class);
-	    exception.expectMessage("O bairro não pode conter mais de 80 letras!");
-		endereco.setBairro("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-	}
-	
-	@Test 
-	public void nao_deve_aceitar_bairro_nulo() {
-		exception.expect(NullPointerException.class);
-		exception.expectMessage("Bairro não pode estar vazio/nulo!");
-		endereco.setBairro(null);
+	    endereco.setBairro("abcdefghijlkabcdefghijlkabcdefghijlkabcdefghijlkabcdefghijlkabcdefghijlkabcdefghijlkabcdefghijlk");
+	    assertTrue(containsError(validator.validate(endereco), "O Bairro deve conter, no mínino 5 e no máximo 80 letras!"));
 	}
 	
 	@Test 
 	public void deve_aceitar_o_bairro() {
-		endereco.setBairro("Jardim Flor da Montanha");
+	    String bairroCompair = "Jardim Flor da Montanha";
+		endereco.setBairro(bairroCompair);
+		assertEquals("Jardim Flor da Montanha", endereco.getBairro());
 	}
 
 //CEP-------------------------------------------------------------------------------------------	
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_excecao_do_tamanho_minimo_do_cep() {
-		endereco.setCep("000");
-	}
 	
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_excecao_do_tamanho_do_cep() {
-		endereco.setCep("0000000000");
-	}
-	
-	@Test (expected = NullPointerException.class)
-	public void deve_gerar_uma_excecao_de_cep_nulo() {
+	@Test 
+	public void nao_deve_aceitar_cep_nulo() {
 		endereco.setCep(null);
+		assertTrue(containsError(validator.validate(endereco), "O CEP não pode estar vazio!"));
 	}
 	
 	@Test
-	public void deve_aceitar_o_cep() {
-		endereco.setCep("07097-170");
+	public void nao_deve_aceitar_cep_vazio() {
+	    endereco.setCep("");
+	    assertTrue(containsError(validator.validate(endereco), "O CEP não pode estar vazio!"));
 	}
 	
-//Cidade-------------------------------------------------------------------------------	
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_excecao_de_tamanho_minimo_da_cidade() {
-		endereco.setCidade("ABC");
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_excecao_de_tamanho_maximo_da_cidade() {
-		endereco.setCidade("ABCABCABCABCABCABCABCABCABCABCABCABCABC");
-	}
-	
-	@Test (expected = NullPointerException.class)
-	public void deve_gerar_excecao_de_cidade_nula() {
-		endereco.setCidade(null);
-	}
-	
-	@Test
-	public void deve_aceitar_cidade() {
-		endereco.setCidade("Guarulhos");
-	}
-	
-//Estado--------------------------------------------------------------------------------	
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_excecao_de_tamanho_minimo_do_estado() {
-		endereco.setEstado("A");
+	@Test 
+	public void nao_deve_aceitar_um_cep_com_tamanho_diferente_de_8() {
+		endereco.setCep("123456789");
+		assertTrue(containsError(validator.validate(endereco), "O CEP não pode ter tamanho diferente de 8!"));
 	}
 		
 	@Test
-    public void deve_gerar_excecao_de_estado_nulo() {
-        exception.expect(NullPointerException.class);
-        exception.expectMessage("O estado não pode ser nulo/vazio!");
-        endereco.setEstado(null);
-    }
+	public void deve_aceitar_o_cep() {
+	    String cepCompair = "07097-170";
+		endereco.setCep(cepCompair);
+		assertEquals("07097-170", endereco.getCep());
+	}
+	
+//Cidade-------------------------------------------------------------------------------	
 	
 	@Test
+	public void nao_deve_aceitar_cidade_nula() {
+	    endereco.setCidade(null);
+	    assertTrue(containsError(validator.validate(endereco), "A cidade não pode estar vazia!"));
+	}
+	
+	@Test 
+	public void nao_deve_aceitar_uma_cidade_vazia() {
+	    endereco.setCidade("");
+	    assertTrue(containsError(validator.validate(endereco), "A cidade não pode estar vazia!"));
+	}
+
+	@Test 
+	public void deve_gerar_excecao_de_tamanho_minimo_da_cidade() {
+		endereco.setCidade("ABC");
+		assertTrue(containsError(validator.validate(endereco), "A cidade não pode conter menos de 7 e mais de 50 letras!"));
+	}
+	
+	@Test 
+	public void deve_gerar_excecao_de_tamanho_maximo_da_cidade() {
+		endereco.setCidade("abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde");
+		assertTrue(containsError(validator.validate(endereco), "A cidade não pode conter menos de 7 e mais de 50 letras!"));
+	}
+	
+	
+	@Test
+	public void deve_aceitar_cidade() {
+	    String cidadeCompair = "São Paulo";
+		endereco.setCidade(cidadeCompair);
+		assertEquals("São Paulo", endereco.getCidade());
+	}
+	
+//Estado--------------------------------------------------------------------------------	
+	
+	@Test
+	public void nao_deve_aceitar_estado_nulo() {
+	    endereco.setEstado(null);
+	    assertTrue(containsError(validator.validate(endereco), "O estado não pode estar vazio!"));
+	}
+	
+	@Test
+	public void nao_deve_aceitar_estado_vazio() {
+	    endereco.setEstado("");
+	    assertTrue(containsError(validator.validate(endereco), "O estado não pode estar vazio!"));
+	}
+
+	@Test 
+	public void deve_gerar_excecao_de_tamanho_minimo_do_estado() {
+		endereco.setEstado("A");
+		assertTrue(containsError(validator.validate(endereco), "O estado deve conter 2 letras!"));
+	}
+	
+	@Test 
+	public void deve_gerar_excecao_de_tamanho_maximo_do_estado() {
+	    endereco.setEstado("AAAA");
+	    assertTrue(containsError(validator.validate(endereco), "O estado deve conter 2 letras!"));
+	}
+		
+	@Test
 	public void deve_aceitar_o_estado() {
-		endereco.setEstado("SP");
+		String estadoCompair = "SP";
+		endereco.setEstado(estadoCompair);
+	    assertEquals("SP", endereco.getEstado());
 	}
 	
 //Pais---------------------------------------------------------------------------------	
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_excecao_de_tamanho_minimo_de_pais() {
-		endereco.setPais("BR");
-	}
 	
-	@Test (expected = IllegalArgumentException.class)
-	public void deve_gerar_excecao_de_tamanho_maximo_de_pais() {
-		endereco.setPais("BRBRBRBRBRBRBRBRBRBRBRBR");
-	}
-	
-	@Test (expected = NullPointerException.class)
-	public void deve_gerar_excecao_de_pais_nulo() {
-		endereco.setPais(null);
+	@Test 
+	public void nao_deve_aceitar_um_pais_nulo() {
+	    endereco.setPais(null);
+	    assertTrue(containsError(validator.validate(endereco), "O país não pode estar vazio!"));
 	}
 	
 	@Test
-	public void deve_aceitar_pais() {
-		endereco.getPais();
+	public void nao_deve_aceitar_pais_vazio() {
+	    endereco.setPais("");
+	    assertTrue(containsError(validator.validate(endereco), "O país deve conter 2 letras!"));
 	}
+	
+	@Test 
+	public void nao_deve_aceitar_um_pais_menor_que_2() {
+	    endereco.setPais("B");
+	    assertTrue(containsError(validator.validate(endereco), "O país deve conter 2 letras!"));
+	}
+	
+	@Test 
+	public void deve_gerar_excecao_de_tamanho_maximo_de_pais() {
+	    endereco.setPais("BRBRBRBRBRBRBRBRBRBRBRBR");
+	    assertTrue(containsError(validator.validate(endereco), "O país deve conter 2 letras!"));
+	}
+	
+	@Test 
+	public void deve_aceitar_o_pais() {
+		String paisCompair = "BR";
+		endereco.setPais(paisCompair);
+		assertEquals("BR", endereco.getPais());
+	}
+	
 	
 //Numero--------------------------------------------------------------------------------	
 	@Test 
 	public void nao_deve_aceitar_que_numero_seja_igual_0() {
-	    exception.expect(IllegalArgumentException.class);
-	    exception.expectMessage("O número não pode ser 0!");
 		endereco.setNumero(0);
 	}
 		
 	@Test
 	public void deve_aceitar_o_numero() {
-		endereco.setNumero(144);
+	    Integer numeroCompair = 144;
+		endereco.setNumero(numeroCompair);
+		assertEquals(numeroCompair, endereco.getNumero());
 	}
 
-//Ignore---------------------------------------------------------------------------------	
+//Ignore-------------------------------------------------------------------------------------------	
 	@Ignore
 	public void deve_ignorar_teste() {
 		endereco.setBairro(null);
 	}
 
-//Timeout--------------------------------------------------------------------------------	
+//Timeout---------------------------------------------------------------------------------------	
+	
 	@Test(timeout = 500)
 	public void deve_retornar_o_endereco_em_25_milissegundos() throws InterruptedException {
 		Thread.sleep(500);
 	}
-
-//Teste do toString()--------------------------------------------------------------------	
-	@Test
-	public void deve_listar_as_informacoes_do_endereco_corretamente() {
-		endereco = Fixture.from(Endereco.class).gimme("valid");
-		System.out.println(endereco);
+	
+//Tipo de Endereço----------------------------------------------------------------------------
+	
+	public void deve_aceitar_o_tipo_de_endereco() {
+	    endereco.setTipoEndereco(TipoEndereco.COMERCIAL);
+	    System.out.println(endereco);
+	}
+	
+	public void deve_aceitar_o_novo_tipo_de_endereco() {
+	    endereco.setTipoEndereco(TipoEndereco.RESIDENCIAL);
+	    System.out.println(endereco);
 	}
 }
