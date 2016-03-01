@@ -3,7 +3,8 @@ package br.com.caioribeiro.empresa;
 import static br.com.caioribeiro.empresa.stringbuilder.MyStyle.MY_STYLE;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
-import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+
 
 /**
  *
@@ -44,6 +46,7 @@ public final class Endereco {
      */
     @NotBlank(message="O CEP não pode estar vazio!")
     @Size(min=8, max=8, message="O CEP não pode ter tamanho diferente de {min}!")
+    @Pattern(regexp = "\\d{5}"+"-"+"\\d{3}", message="O CEP deve ser no formato XXXXX-XXX")
     private String cep;
 
     /**
@@ -82,7 +85,7 @@ public final class Endereco {
      * 
      * Define o tipo do endereco, se residencial/comercial.
      */
-    @Valid
+    @NotNull(message="O tipo do endereço pode ser nulo!")
     private TipoEndereco tipoEndereco;
 
 //Getters e Setters---------------------------------------------------------------------------------------			

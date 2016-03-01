@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -15,6 +14,7 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import br.com.caelum.stella.bean.validation.CNPJ;
@@ -27,7 +27,7 @@ import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
  *
  * @author Caio Alberto
  */
-public class Empresa {
+public final class Empresa {
 
 //Variaveis de Atributo-------------------------------------------------------------------------------------                
     /**
@@ -68,8 +68,9 @@ public class Empresa {
      *
      * Define uma String que armazena o email da empresa.
      */ 
-    @Valid
-    private Set<Email> emails;
+    @NotBlank(message="A lista de E-mails não pode estar vazia!")
+    @Email(regexp="@", message="O Email deve conter pelo menos um @")
+    private Set<String> emails;
 
     /**
      *
@@ -140,7 +141,7 @@ public class Empresa {
      *
      * @return the emails
      */
-    public Set<Email> getEmails() {
+    public Set<String> getEmails() {
         return emails;
     }
 
@@ -204,8 +205,7 @@ public class Empresa {
      *
      * @param emails novo valor de emails
      */
-    public void setEmails(Set<Email> emails) {
-       //this.validarEmails(emails);
+    public void setEmails(Set<String> emails) {
         this.emails = emails;
     }
 
@@ -215,7 +215,6 @@ public class Empresa {
      * @param dataDeCadastro novo valor de data de cadastro
      */
     public void setDataDeCadastro(Date dataDeCadastro) {
-        //this.validaDataCadastro(dataDeCadastro);
         this.dataDeCadastro = dataDeCadastro;
     }
     
@@ -234,7 +233,6 @@ public class Empresa {
      * @param dataDeAlteracao novo valor de data de alteracao
      */
     public void setDataDeAlteracao(Date dataDeAlteracao) {
-        //this.validaDataDeAlteracao(dataDeAlteracao);
         this.dataDeAlteracao = dataDeAlteracao;
     }
     	

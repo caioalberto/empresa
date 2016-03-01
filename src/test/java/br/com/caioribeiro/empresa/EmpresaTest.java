@@ -20,6 +20,8 @@ import org.junit.rules.ExpectedException;
 import br.com.caioribeiro.empresa.Email;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 /**
  * Classe de teste EmpresaTest.
@@ -262,12 +264,14 @@ public class EmpresaTest {
      */
     @Test
     public void nao_deve_aceitar_uma_lista_de_emails_vazia() {
-        Set<Email> emailsVazio = new HashSet<>();
+        Set<String> emailsVazio = new HashSet<>();
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Você não pode utilizar uma lista vazia de emails!");
         empresa.setEmails(emailsVazio);
     }
     
-
-    
+    @Test
+    public void deve_respeitar_o_contrato_equals_e_hashcode() {
+        EqualsVerifier.forClass(Empresa.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    }
 }

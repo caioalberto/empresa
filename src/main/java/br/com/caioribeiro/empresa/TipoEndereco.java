@@ -1,5 +1,7 @@
 package br.com.caioribeiro.empresa;
 
+
+
 public enum TipoEndereco {
     
     COMERCIAL("Comcercial"), RESIDENCIAL ("Residencial");
@@ -10,6 +12,7 @@ public enum TipoEndereco {
         nomeTipoEndereco = descricao;
     }
     
+
     public String getNomeTipoEndereco() {
         return nomeTipoEndereco;
     }

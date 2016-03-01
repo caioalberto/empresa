@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNoException;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -60,7 +61,7 @@ public class TelefoneTest {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
 	}
-//Numero do Telefone--------------------------------------------------------------------------------------------------------------------	
+//Numero do Telefone----------------------------------------------------------------------------------------------------------------------------------------------------------	
 	@Test 
 	public void nao_deve_aceitar_um_telefone_nulo() {
 	    telefone.setTelefone(null);
@@ -99,7 +100,7 @@ public class TelefoneTest {
 		assertEquals(telefoneComparar, telefone.getTelefone());
 	}
 	
-//DDD-----------------------------------------------------------------------------------------------------------------------------	
+//DDD-------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 	
 	@Test
 	public void nao_deve_aceitar_um_ddd_nulo() {
@@ -124,7 +125,7 @@ public class TelefoneTest {
 	    telefone.setDdd("1");
 	    assertTrue(containsError(validator.validate(telefone), "O DDD não pode ter tamanho diferente de 2!"));
 	}
-	
+		
 	/**
 	 * Deve_aceitar_o_numero_do_ddd.
 	 */
@@ -135,7 +136,7 @@ public class TelefoneTest {
 		assertEquals(dddCompair, telefone.getDdd());
 	}
 	
-//Contrato equals hashCode-------------------------------------------------------------------------------------------------------- 	
+//Contrato equals hashCode---------------------------------------------------------------------------------------------------------------------------------------------------- 	
 	/**
 	 * Deve_respeitar_o_contrato_equals_e_hashcode.
 	 */
@@ -192,7 +193,6 @@ public class TelefoneTest {
 	    Telefone tel36 = new Telefone();
 	    tel36.setTelefone("966560001");
 	    tel36.setTipo(TipoTelefone.CELULAR);
-	    System.out.println(tel36.getTipo());
 	}
 	
 	/**
@@ -203,7 +203,7 @@ public class TelefoneTest {
 		try {
 			t1.setTelefone(null);
 		} catch (NullPointerException e) {
-			Assume.assumeNoException(e);
+			assumeNoException(e);
 		}
 	}
 		

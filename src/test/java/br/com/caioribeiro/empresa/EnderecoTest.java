@@ -13,22 +13,26 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 public class EnderecoTest {
 		
     private Endereco endereco = new Endereco();
     
     private Validator validator;
+    
 
     @Before
 	public void setUp() {	 
 	    FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");		
 	    //endereco = Fixture.from(Endereco.class).gimme("valid");
-		System.out.println("Before");
-		
+				
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        validator = factory.getValidator();           
+        
 	}
+    
 
 //Logradouro----------------------------------------------------------------------------
 	
@@ -114,6 +118,12 @@ public class EnderecoTest {
 	public void nao_deve_aceitar_um_cep_com_tamanho_diferente_de_8() {
 		endereco.setCep("123456789");
 		assertTrue(containsError(validator.validate(endereco), "O CEP não pode ter tamanho diferente de 8!"));
+	}
+	
+	@Test
+	public void nao_deve_aceitar_cep_fora_da_pattern() {
+	    endereco.setCep("07097-170");
+	    assertTrue(containsError(validator.validate(endereco), "O CEP deve ser no formato XXXXX-XXX"));
 	}
 		
 	@Test
@@ -246,6 +256,7 @@ public class EnderecoTest {
 
 //Ignore-------------------------------------------------------------------------------------------	
 	@Ignore
+	@Test
 	public void deve_ignorar_teste() {
 		endereco.setBairro(null);
 	}
@@ -259,13 +270,27 @@ public class EnderecoTest {
 	
 //Tipo de Endereço----------------------------------------------------------------------------
 	
-	public void deve_aceitar_o_tipo_de_endereco() {
-	    endereco.setTipoEndereco(TipoEndereco.COMERCIAL);
-	    System.out.println(endereco);
+	@Test
+	public void nao_deve_aceitar_o_tipo_de_endereco_nulo() {
+	    endereco.setTipoEndereco(null);
+	    assertTrue(containsError(validator.validate(endereco), "O tipo do endereço pode ser nulo!"));
+	    
 	}
 	
+	@Test
+	public void deve_aceitar_o_tipo_de_endereco() {
+	    endereco.setTipoEndereco(TipoEndereco.COMERCIAL);	    
+	}
+	
+	@Test
 	public void deve_aceitar_o_novo_tipo_de_endereco() {
 	    endereco.setTipoEndereco(TipoEndereco.RESIDENCIAL);
-	    System.out.println(endereco);
+	    assertEquals(endereco.getTipoEndereco(), TipoEndereco.RESIDENCIAL);
 	}
+	
+	   @Test
+	    public void deve_respeitar_o_contrato_equals_e_hashcode() {
+	        EqualsVerifier.forClass(Endereco.class).suppress(Warning.NONFINAL_FIELDS).verify();
+	    }
+	
 }
