@@ -235,8 +235,7 @@ public class EmpresaTest {
     @Test
     public void deve_aceitar_uma_lista_com_um_email() {
         Email email = new Email();
-        email.setUserName("empresanova");
-        email.setDominio("@gmail.com");
+        email.setUserName("empresanova@gmail.com");
         emails.add(email);
     }
 

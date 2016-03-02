@@ -272,20 +272,20 @@ public class EnderecoTest {
 	
 	@Test
 	public void nao_deve_aceitar_o_tipo_de_endereco_nulo() {
-	    endereco.setTipoEndereco(null);
+	    endereco.setEnderecoType(null);
 	    assertTrue(containsError(validator.validate(endereco), "O tipo do endereço pode ser nulo!"));
 	    
 	}
 	
 	@Test
 	public void deve_aceitar_o_tipo_de_endereco() {
-	    endereco.setTipoEndereco(TipoEndereco.COMERCIAL);	    
+	    endereco.setEnderecoType(EnderecoType.COMERCIAL);	    
 	}
 	
 	@Test
 	public void deve_aceitar_o_novo_tipo_de_endereco() {
-	    endereco.setTipoEndereco(TipoEndereco.RESIDENCIAL);
-	    assertEquals(endereco.getTipoEndereco(), TipoEndereco.RESIDENCIAL);
+	    endereco.setEnderecoType(EnderecoType.RESIDENCIAL);
+	    assertEquals(endereco.getEnderecoType(), EnderecoType.RESIDENCIAL);
 	}
 	
 	   @Test

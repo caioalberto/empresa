@@ -1,10 +1,8 @@
 package br.com.caioribeiro.empresa;
 
 import static br.com.caioribeiro.empresa.util.ValidadorUtil.containsError;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -50,10 +48,10 @@ public final class TelefoneTest {
 		//Carregando os templates de teste
 		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 		
-//		//Atribuindo aos objetos um template
-	//telefone = Fixture.from(Telefone.class).gimme("valid");
-		//t1 = Fixture.from(Telefone.class).gimme("valid");
-		//t2 = Fixture.from(Telefone.class).gimme("valid");
+	//Atribuindo aos objetos um template
+	telefone = Fixture.from(Telefone.class).gimme("valid");
+	t1 = Fixture.from(Telefone.class).gimme("valid");
+	t2 = Fixture.from(Telefone.class).gimme("valid");
 		
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
@@ -100,27 +98,9 @@ public final class TelefoneTest {
 //DDD-------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 	
 	@Test
-	public void nao_deve_aceitar_um_ddd_nulo() {
-	    telefone.setDdd(null);
-	    assertTrue(containsError(validator.validate(telefone), "O DDD não pode estar vazio!"));
-	}
-	
-	@Test
-	public void nao_deve_aceitar_um_ddd_vazio() {
-	    telefone.setDdd("");
-	    assertTrue(containsError(validator.validate(telefone), "O DDD não pode estar vazio!"));
-	}
-	
-	@Test
 	public void nao_deve_aceitar_um_ddd_maior_que_2() {
-	    telefone.setDdd("123");
-	    assertTrue(containsError(validator.validate(telefone), "O DDD não pode ter tamanho diferente de 2!"));
-	}
-	
-	@Test
-	public void nao_deve_aceitar_um_ddd_menor_que_2() {
-	    telefone.setDdd("1");
-	    assertTrue(containsError(validator.validate(telefone), "O DDD não pode ter tamanho diferente de 2!"));
+	    telefone.setDdd(123);
+	    assertTrue(containsError(validator.validate(telefone), "O DDD deve ser entre 11 e 99!"));
 	}
 		
 	/**
@@ -128,7 +108,7 @@ public final class TelefoneTest {
 	 */
 	@Test
 	public void deve_aceitar_o_numero_do_ddd() {
-	    String dddCompair = "18";
+	    Integer dddCompair = 18;
 		telefone.setDdd(dddCompair);
 		assertEquals(dddCompair, telefone.getDdd());
 	}
@@ -158,15 +138,7 @@ public final class TelefoneTest {
 		telefone.setTelefone("24594064");
 		assertThat(telefone.getTelefone(), startsWith("24"));
 	}
-	
-	/**
-	 * Deve_retornar_se_os_objetos_sao_da_mesma_instancia.
-	 */
-	@Test
-	public void deve_retornar_se_os_objetos_sao_da_mesma_instancia() {
-		assertThat(t1, is(equalTo(t2))); 
-	}
-	
+		
 	/**
 	 * Deve_retornar_se_a_lista_contem_os_objetos.
 	 */
@@ -182,7 +154,7 @@ public final class TelefoneTest {
 	public void deve_retornar_o_tipo_do_telefone_como_celular(){
 	    Telefone tel36 = new Telefone();
 	    tel36.setTelefone("966560001");
-	    tel36.setTipo(TipoTelefone.CELULAR);
+	    tel36.setTipo(TelefoneType.CELULAR);
 	}
 	
 	/**
@@ -195,6 +167,12 @@ public final class TelefoneTest {
 		} catch (NullPointerException e) {
 			assumeNoException(e);
 		}
+	}
+	
+	@Test
+	public void um() {
+	    System.out.println(t1);
+	    System.out.println(t2);
 	}
 		
 }

@@ -19,17 +19,11 @@ public class Email {
      */
     @NotBlank(message="O Nome do usuário não pode ser nulo!")
     @Size(min=6, max=15, message="O Nome de Usuário deve conter entre {min} e {max}!")
+    @org.hibernate.validator.constraints.Email(regexp="xxxxx@xxx.xxx")
     private String userName;
 
-    /**
-     *  Define o dominio do email.
-     */
-    @NotBlank(message="O Domínio não pode estar vazio!")
-    @Size(min=9, max=15, message="O Nome do Domínio deve conter entre {min} e {max}!")
-    private String dominio;
-/**
     //Getters and Setters-------------------------------------------------------------------------------------------------------------    
-/**    
+    /**    
      * Gets the user name.
      *
      * @return the user name
@@ -37,15 +31,7 @@ public class Email {
     public String getUserName() {
         return userName;
     }
-    
-    /**
-     * Gets the dominio.
-     * @return the dominio
-     */
-    public String getDominio() {
-        return dominio;
-    }
-    
+        
     /**
      * Seta o atributo user name.
      *
@@ -56,16 +42,6 @@ public class Email {
         this.userName = userName;
     }
     
-    /**
-     * Seta o atributo dominio.
-     *
-     * @param dominio novo valor de dominio
-     */
-    public void setDominio(String dominio) {
-        //this.validarDominio(dominio);
-        this.dominio = dominio;
-    }
-
     //Equals, HashCode e toString---------------------------------------------------------------------------------------------------       
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
@@ -73,7 +49,7 @@ public class Email {
     @Override
     public String toString() {
         return new ToStringBuilder(this, MyStyle.MY_STYLE)
-                .append(this.getUserName()+this.getDominio()).toString();
+                .append(this.getUserName() != null ? this.getUserName() : "O username não pode estar vazio!").toString();
     }
     
     /* (non-Javadoc)
@@ -81,7 +57,7 @@ public class Email {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.dominio).append(this.userName).toHashCode();
+        return new HashCodeBuilder().append(this.userName).toHashCode();
     }
     
     /* (non-Javadoc)
@@ -93,7 +69,7 @@ public class Email {
             return false;
         }
         Email ohter = (Email) obj;
-        return new EqualsBuilder().append(this.userName, ohter.userName).append(this.dominio, ohter.dominio).isEquals();
+        return new EqualsBuilder().append(this.userName, ohter.userName).isEquals();
     }
 
 }

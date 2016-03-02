@@ -5,9 +5,11 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 import java.text.SimpleDateFormat;
 import java.util.Set;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -47,7 +49,8 @@ public final class Empresa {
      */   
     @Size(min=14, max=14, message="O CNPJ deve ter {max} dígitos!")
     @NotBlank(message="O CNPJ deve ser preenchido!")
-    @CNPJ
+    @CNPJ(formatted=true)
+    @Pattern(regexp="XX.XXX.XXX/XXXX-XX", message="O CNPJ deve estar no formato {regexp}")
     private String cnpj;
 
     /**
@@ -70,6 +73,7 @@ public final class Empresa {
      */ 
     @NotEmpty(message="A lista de E-mails não pode estar vazia!")
     @NotNull(message="A lista de E-mails não pode estar vazia!")
+    @Valid
     private Set<Email> emails;
 
     /**

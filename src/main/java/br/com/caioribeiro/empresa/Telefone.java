@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import br.com.caioribeiro.empresa.stringbuilder.MyTelephoneStyle;
 
@@ -33,14 +34,13 @@ public final class  Telefone {
      * Define o tipo de telefone da classe. Se fixo, celular, fax etc.
      */
     @Valid
-    private TipoTelefone tipo;
+    private TelefoneType tipo;
 
     /**
      * Define o DDD do telefone, sempre com apenas dois numeros.
      */
-    @NotBlank(message="O DDD não pode estar vazio!")
-    @Size(max=2, min=2, message="O DDD não pode ter tamanho diferente de {max}!")
-    private String ddd;
+    @Range(min=11, max=99, message="O DDD deve ser entre {min} e {max}!")    
+    private Integer ddd;
 
 //Getters e Setters-----------------------------------------------------------------------------------------
     /**
@@ -57,7 +57,7 @@ public final class  Telefone {
      *
      * @return the tipo
      */
-    public TipoTelefone getTipo() {
+    public TelefoneType getTipo() {
         return tipo;
     }
 
@@ -66,7 +66,7 @@ public final class  Telefone {
      *
      * @return the ddd
      */
-    public String getDdd() {
+    public Integer getDdd() {
         return ddd;
     }
 
@@ -85,8 +85,7 @@ public final class  Telefone {
      *
      * @param ddd novo valor de ddd
      */
-    public void setDdd(String ddd) {
-        isNumeric(ddd);
+    public void setDdd(Integer ddd) {
         this.ddd = ddd;
     }
 
@@ -95,7 +94,7 @@ public final class  Telefone {
      *
      * @param tipo novo valor de tipo
      */
-    public void setTipo(TipoTelefone tipo) {
+    public void setTipo(TelefoneType tipo) {
         //this.validaTipo(tipo);
         this.tipo = tipo;
     }

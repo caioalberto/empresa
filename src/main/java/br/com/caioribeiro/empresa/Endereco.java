@@ -3,6 +3,7 @@ package br.com.caioribeiro.empresa;
 import static br.com.caioribeiro.empresa.stringbuilder.MyStyle.MY_STYLE;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -86,7 +87,8 @@ public final class Endereco {
      * Define o tipo do endereco, se residencial/comercial.
      */
     @NotNull(message="O tipo do endereço pode ser nulo!")
-    private TipoEndereco tipoEndereco;
+    @Valid
+    private EnderecoType tipoEndereco;
 
 //Getters e Setters---------------------------------------------------------------------------------------			
     /**
@@ -157,7 +159,7 @@ public final class Endereco {
      *
      * @return the tipo endereco
      */
-    public TipoEndereco getTipoEndereco() {
+    public EnderecoType getEnderecoType() {
 		return tipoEndereco;
 	}
 
@@ -230,7 +232,7 @@ public final class Endereco {
 	 *
 	 * @param tipoEndereco novo valor de tipo endereco
 	 */
-	public void setTipoEndereco(TipoEndereco tipoEndereco) {
+	public void setEnderecoType(EnderecoType tipoEndereco) {
 		this.tipoEndereco = tipoEndereco;
 	}
     

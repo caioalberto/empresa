@@ -2,13 +2,13 @@ package br.com.caioribeiro.empresa;
 
 
 
-public enum TipoEndereco {
+public enum EnderecoType {
     
     COMERCIAL("Comcercial"), RESIDENCIAL ("Residencial");
     
     private final String nomeTipoEndereco;
     
-    TipoEndereco(String descricao){
+    EnderecoType(String descricao){
         nomeTipoEndereco = descricao;
     }
     
