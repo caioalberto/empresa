@@ -1,9 +1,6 @@
 package br.com.caioribeiro.empresa;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -17,37 +14,18 @@ import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
  *
  */
 public class Email {
-
-     /**
-     * Define o tamanho minimo do username do email.
-     */
-    private static final int TAMANHO_MINIMO_USERNAME = 6;
-
-    /**
-     * Define o tamanho maximo do username do email.
-     */
-    private static final int TAMANHO_MAXIMO_USERNAME = 15;
-
-    /**
-     * Define o tamanho minimo do dominio do email.
-     */
-    private static final int TAMANHO_MINIMO_DOMINIO = 9;
-
-    /**
-     * Define o tamanho maximo do username do email.
-     */
-    private static final int TAMANHO_MAXIMO_DOMINIO = 15;
-
     /**
      * Define o username do email.
      */
     @NotBlank(message="O Nome do usuário não pode ser nulo!")
+    @Size(min=6, max=15, message="O Nome de Usuário deve conter entre {min} e {max}!")
     private String userName;
 
     /**
      *  Define o dominio do email.
      */
     @NotBlank(message="O Domínio não pode estar vazio!")
+    @Size(min=9, max=15, message="O Nome do Domínio deve conter entre {min} e {max}!")
     private String dominio;
 /**
     //Getters and Setters-------------------------------------------------------------------------------------------------------------    
@@ -86,67 +64,6 @@ public class Email {
     public void setDominio(String dominio) {
         //this.validarDominio(dominio);
         this.dominio = dominio;
-    }
-
-    //Metodos de Verificacao----------------------------------------------------------------------------------------------------------
-
-    /**
-     * Validar user name.
-     *
-     * @param userName the user name
-     */
-    public void validarUserName(String userName) {
-        this.verificaSeNuloOuVazioUserName(userName);  
-    }
-
-    /**
-     * Verifica se nulo ou vazio user name.
-     *
-     * @param userName the user name
-     */
-    public void verificaSeNuloOuVazioUserName(String userName) {
-        checkNotNull(userName, "O Nome de Usuário não pode ser nulo!");
-        checkArgument(userName.length() != 0, "O Nome de Usuário não pode ser vazio!");
-        checkArgument(userName.length() > TAMANHO_MINIMO_USERNAME, "O Nome de Usuário deve conter pelo menos 6 caracteres!");
-        checkArgument(userName.length() < TAMANHO_MAXIMO_USERNAME, "O Nome de Usuário deve conter no máximo 15 caracteres!");
-    }
-
-   /**
-     * Validar dominio.
-     *
-     * @param dominio the dominio
-     */
-    public void validarDominio(String dominio) {
-        this.verificaSeNuloOuVazioUserName(dominio);
-        this.verificaTamMaxDominio(dominio);        
-    }
-
-    /**
-     * Verifica se nulo ou vazio dominio.
-     *
-     * @param dominio the dominio
-     */
-    public void verificaSeNuloOuVazioDominio(String dominio) {
-        checkNotNull(dominio, "O domínio não pode ser nulo!");
-        checkArgument(dominio.length() != 0, "O domínio não pode ser vazio!");
-    }
-
-    /**
-     * Verifica tam min dominio.
-     *
-     * @param dominio the dominio
-     */
-    public void verificaTamMinDominio(String dominio) {
-        checkArgument(dominio.length() > TAMANHO_MINIMO_DOMINIO, "O Domínio deve conter pelo menos 9 caracteres!");
-    }
-
-    /**
-     * Verifica tam max dominio.
-     *
-     * @param dominio the dominio
-     */
-    public void verificaTamMaxDominio(String dominio) {
-        checkArgument(dominio.length() < TAMANHO_MAXIMO_DOMINIO, "O Domínio deve conter no máximo 15 caracteres!");
     }
 
     //Equals, HashCode e toString---------------------------------------------------------------------------------------------------       

@@ -46,7 +46,7 @@ public final class Endereco {
      */
     @NotBlank(message="O CEP não pode estar vazio!")
     @Size(min=8, max=8, message="O CEP não pode ter tamanho diferente de {min}!")
-    @Pattern(regexp = "\\d{5}"+"-"+"\\d{3}", message="O CEP deve ser no formato XXXXX-XXX")
+    @Pattern(regexp = "XXXXX-XXX", message="O CEP deve ser no formato XXXXX-XXX")
     private String cep;
 
     /**
@@ -261,13 +261,13 @@ public final class Endereco {
     @Override
     public String toString() {
         return new ToStringBuilder(this, MY_STYLE)
-                .append("Endereço: ",this.logradouro)
-                .append("Nº", this.numero)
-                .append("Bairro: ", this.bairro)
-                .append("Cidade: ", this.cidade)
-                .append("UF: ", this.estado)
-                .append("País ", this.pais)
-                .append(tipoEndereco)
+                .append(this.logradouro != null ? "Endereço: " + this.logradouro : "O logradouro não pode estar vazio!")
+                .append(this.numero != null ? "Nº" + this.numero : "Você deve inserir um número para o endereço!")
+                .append(this.bairro != null ? "Bairro: " + this.bairro : "O bairro não pode estar vazio!")
+                .append(this.cidade != null ? "Cidade: " + this.cidade : "A cidade não pode estar vazia!")
+                .append(this.estado != null ? "UF: " + this.estado : "O estado não pode estar vazio!")
+                .append(this.pais !=null ? "País " + this.pais : "O país não pode estar vazio!")
+                .append(tipoEndereco != null ? tipoEndereco : "O tipo do endereço não pode estar vazio!" )
                 .toString();
     }
 

@@ -1,9 +1,10 @@
 package br.com.caioribeiro.empresa;
 
 import static br.com.caioribeiro.empresa.util.ValidadorUtil.containsError;
-import static org.junit.Assert.*;
+import static org.joda.time.LocalDate.now;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,14 +12,11 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import br.com.caioribeiro.empresa.Email;
-import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -30,15 +28,11 @@ import nl.jqno.equalsverifier.Warning;
  */
 public class EmpresaTest {
 
-    /** The exception. */
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     /** A empresa. */
-    private Empresa empresa;
+    private Empresa empresa = new Empresa();
     
     /** The emails. */
-    private Set<Email> emails;
+    private Set<Email> emails = new HashSet<>();
     
     /** The validator. */
     private Validator validator;
@@ -55,9 +49,8 @@ public class EmpresaTest {
         FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 
         // Atribui a variavel do objeto empresa, o template "valido".
-        empresa = new Empresa();
-                //Fixture.from(Empresa.class).gimme("valid");
-        //Set<Email>emails = Fixture.from(Email.class).gimme(5, "valid");
+       // empresa = Fixture.from(Empresa.class).gimme("valid");
+       //emails = Fixture.from(Email.class).gimme(5, "valid");
         
         
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -103,7 +96,7 @@ public class EmpresaTest {
     @Test
     public void nao_deve_aceitar_o_cnpj_invalido() {
        empresa.setCnpj("12345678901234");
-       //assertTrue(containsError(validator.validate(empresa), "Não é um CNPJ válido"));
+       assertTrue(containsError(validator.validate(empresa), "Não é um CNPJ válido"));
     }    
 
     /**
@@ -201,14 +194,14 @@ public class EmpresaTest {
     
     @Test
     public void nao_deve_aceitar_uma_data_posterior_a_atual() {
-        empresa.setDataDeCadastro(new Date(3918));
+        empresa.setDataDeCadastro(now().plusDays(20));
         assertTrue(containsError(validator.validate(empresa), "A data não pode ser posterior a data atual!"));
     }
     
     @Test
     public void deve_aceitar_uma_data_de_cadastro() {
-        empresa.setDataDeCadastro(new Date());
-        assertEquals(new Date(), empresa.getDataDeCadastro());
+        empresa.setDataDeCadastro(now());
+        assertEquals(now(), empresa.getDataDeCadastro());
     }
 
     /**
@@ -220,19 +213,18 @@ public class EmpresaTest {
         empresa.setDataDeAlteracao(null);
     }
     
-    @SuppressWarnings("deprecation")
     @Test
     public void nao_deve_aceitar_uma_data_de_alteracao_anterior_a_data_de_criacao() {
-        empresa.setDataDeAlteracao(new Date(3918, 12, 4));
-        empresa.setDataDeCadastro(new Date());
+        empresa.setDataDeAlteracao(now().minusYears(16));
+        empresa.setDataDeCadastro(now());
         assertTrue(containsError(validator.validate(empresa), "A data não pode ser anterior a data atual!"));
     }
     
     @Test
     public void deve_aceitar_uma_data_de_alteracao() {
-        Date dataCadastro = new Date(3918);
-        Date dataAlteracao = new Date();
-        assertTrue(dataCadastro.before(dataAlteracao));
+        LocalDate dataCadastro = now().minusMonths(2);
+        LocalDate dataAlteracao = now();
+        assertTrue(dataCadastro.isBefore(dataAlteracao));
     }
 
     // Email--------------------------------------------------------------------------------------------------------------------------
@@ -243,10 +235,9 @@ public class EmpresaTest {
     @Test
     public void deve_aceitar_uma_lista_com_um_email() {
         Email email = new Email();
-        email.setUserName("novo_usuario");
-        email.setDominio("@novoteste.com.br");
+        email.setUserName("empresanova");
+        email.setDominio("@gmail.com");
         emails.add(email);
-        System.out.println(emails);
     }
 
     /**
@@ -254,9 +245,8 @@ public class EmpresaTest {
      */
     @Test
     public void nao_deve_aceitar_uma_lista_de_emails_nula() {
-        exception.expect(NullPointerException.class);
-        exception.expectMessage("A lista de emails não pode ser nula!");
         empresa.setEmails(null);
+        assertTrue(containsError(validator.validate(empresa), "A lista de E-mails não pode estar vazia!"));
     }
 
     /**
@@ -264,14 +254,15 @@ public class EmpresaTest {
      */
     @Test
     public void nao_deve_aceitar_uma_lista_de_emails_vazia() {
-        Set<String> emailsVazio = new HashSet<>();
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Você não pode utilizar uma lista vazia de emails!");
-        empresa.setEmails(emailsVazio);
+        empresa.setEmails(emails);
+        assertTrue(containsError(validator.validate(empresa), "A lista de E-mails não pode estar vazia!"));
     }
+    
+ //Equals e hashCode-----------------------------------------------------------------------------------------------------------------   
     
     @Test
     public void deve_respeitar_o_contrato_equals_e_hashcode() {
         EqualsVerifier.forClass(Empresa.class).suppress(Warning.NONFINAL_FIELDS).verify();
     }
+    
 }

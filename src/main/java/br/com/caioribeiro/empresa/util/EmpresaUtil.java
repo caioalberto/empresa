@@ -1,9 +1,5 @@
 package br.com.caioribeiro.empresa.util;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.base.Strings;
-
 public final class EmpresaUtil {
     public static boolean validCnpj(String cnpj) {
         int cont, r, numero, peso;

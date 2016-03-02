@@ -3,7 +3,6 @@ package br.com.caioribeiro.empresa;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Set;
 
 import javax.validation.constraints.Future;
@@ -14,8 +13,9 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.LocalDate;
 
 import br.com.caelum.stella.bean.validation.CNPJ;
 import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
@@ -68,27 +68,27 @@ public final class Empresa {
      *
      * Define uma String que armazena o email da empresa.
      */ 
-    @NotBlank(message="A lista de E-mails não pode estar vazia!")
-    @Email(regexp="@", message="O Email deve conter pelo menos um @")
-    private Set<String> emails;
+    @NotEmpty(message="A lista de E-mails não pode estar vazia!")
+    @NotNull(message="A lista de E-mails não pode estar vazia!")
+    private Set<Email> emails;
 
     /**
      *
      * Define a data de cadastro de uma empresa dentro do objeto.
      */
-    @Future(message="A data não pode ser posterior a data atual!")
-    @Past(message="A data não pode ser anterior a data atual!")
+    @Future(message="A data não pode ser anterior a data atual!")
+    @Past(message="A data não pode ser posterior a data atual!")
     @NotNull(message="A data não pode ser nula!")
-    private Date dataDeCadastro;
+    private LocalDate dataDeCadastro;
     
     /**
      * 
      * Define a data de alteracao de uma empresa dentro do objeto.
      */
-    @Future(message="A data não pode ser posterior a data atual!")
-    @Past(message="A data não pode ser anterior a data atual!")
+    @Future(message="A data não pode ser anterior a data atual!")
+    @Past(message="A data não pode ser posterior a data atual!")
     @NotNull(message="A data não pode ser nula!")
-    private Date dataDeAlteracao;
+    private LocalDate dataDeAlteracao;
 
 //Getters e Setters------------------------------------------------------------------------------------------        
     /**
@@ -141,7 +141,7 @@ public final class Empresa {
      *
      * @return the emails
      */
-    public Set<String> getEmails() {
+    public Set<Email> getEmails() {
         return emails;
     }
 
@@ -150,7 +150,7 @@ public final class Empresa {
      *
      * @return the data de cadastro
      */
-    public Date getDataDeCadastro() {
+    public LocalDate getDataDeCadastro() {
         return dataDeCadastro;
     }
 
@@ -205,7 +205,7 @@ public final class Empresa {
      *
      * @param emails novo valor de emails
      */
-    public void setEmails(Set<String> emails) {
+    public void setEmails(Set<Email> emails) {
         this.emails = emails;
     }
 
@@ -214,7 +214,7 @@ public final class Empresa {
      *
      * @param dataDeCadastro novo valor de data de cadastro
      */
-    public void setDataDeCadastro(Date dataDeCadastro) {
+    public void setDataDeCadastro(LocalDate dataDeCadastro) {
         this.dataDeCadastro = dataDeCadastro;
     }
     
@@ -223,7 +223,7 @@ public final class Empresa {
      *
      * @return the data de alteracao
      */
-    public Date getDataDeAlteracao() {
+    public LocalDate getDataDeAlteracao() {
         return dataDeAlteracao;
     }
     
@@ -232,7 +232,7 @@ public final class Empresa {
      *
      * @param dataDeAlteracao novo valor de data de alteracao
      */
-    public void setDataDeAlteracao(Date dataDeAlteracao) {
+    public void setDataDeAlteracao(LocalDate dataDeAlteracao) {
         this.dataDeAlteracao = dataDeAlteracao;
     }
     	
@@ -264,11 +264,13 @@ public final class Empresa {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return new ToStringBuilder(this, MyStyle.MY_STYLE)
-                .append(this.razaoSocial)
-                .append("CNPJ: ", this.cnpj)
-                .append(enderecos.toString())
-                .append("Contato: " + telefones.toString() + "\n" + emails.toString())
-                .append("Data de Abertura: " + sdf.format(this.dataDeCadastro))
-                .append("Data de Alteração: " + sdf.format(this.dataDeAlteracao)).toString();
+                .append(this.razaoSocial != null ? this.razaoSocial : "A razão social não pode estar vazia!")
+                .append(this.cnpj != null ? "CNPJ: " + this.cnpj : "O CNPJ não pode estar vazio!")
+                .append(enderecos != null ? "Endereço: " + enderecos : "O endereço não pode estar vazio!")
+                .append(telefones != null ? "Contato: " + telefones : "O telefone não pode estar vazio!")
+                .append(emails != null ? emails + "\n" : "O email não pode estar vazio!") 
+                .append(this.dataDeCadastro != null ? "Data de Abertura: " + sdf.format(this.dataDeCadastro) : "A data de abertura não pode estar vazia!")
+                .append(this.dataDeCadastro != null ? "Data de Alteração: " + sdf.format(this.dataDeAlteracao) : "A data de alteração não pode estar vazia!")
+                .toString();
     }
 }

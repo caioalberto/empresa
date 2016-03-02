@@ -4,23 +4,24 @@ import static br.com.caioribeiro.empresa.util.ValidadorUtil.containsError;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeNoException;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.junit.Assume;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
+import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -30,13 +31,10 @@ import nl.jqno.equalsverifier.Warning;
  *
  * @author Caio Ribeiro
  */
-public class TelefoneTest {
+public final class TelefoneTest {
     
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
 	/** The telefones. */
-	//private List<Telefone> telefones;
+	private Set<Telefone> telefones = new HashSet<>();
 	
 	/** The t3. */
 	private Telefone telefone = new Telefone();
@@ -53,10 +51,9 @@ public class TelefoneTest {
 		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 		
 //		//Atribuindo aos objetos um template
-//		telefone = Fixture.from(Telefone.class).gimme("valid");
-//		t1 = Fixture.from(Telefone.class).gimme("valid");
-//		t2 = Fixture.from(Telefone.class).gimme("valid");
-//		t3 = Fixture.from(Telefone.class).gimme("valid");
+	//telefone = Fixture.from(Telefone.class).gimme("valid");
+		//t1 = Fixture.from(Telefone.class).gimme("valid");
+		//t2 = Fixture.from(Telefone.class).gimme("valid");
 		
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
@@ -173,21 +170,14 @@ public class TelefoneTest {
 	/**
 	 * Deve_retornar_se_a_lista_contem_os_objetos.
 	 */
-//	@Test
-//	public void deve_retornar_se_a_lista_contem_os_objetos() {
-//		assertThat(telefones, hasItems(t1,t2,t3,telefone));
-//	}
-//	
-	/**
-	 * Deve_retornar_se_sao_os_mesmos_numeros_de_telefone.
-	 */
 	@Test
-	public void deve_retornar_se_sao_os_mesmos_numeros_de_telefone(){
-		telefone.getTelefone();
-		t1.getTelefone();
-		assertThat(telefone.getTelefone(), is(not(equalTo(t1.getTelefone()))));
+	public void deve_retornar_se_a_lista_contem_os_objetos() {
+	    telefones.add(telefone);
+	    telefones.add(t1);
+	    telefones.add(t2);
+		assertThat(telefones, hasItems(t1,t2,telefone));
 	}
-		
+			
 	@Test
 	public void deve_retornar_o_tipo_do_telefone_como_celular(){
 	    Telefone tel36 = new Telefone();

@@ -127,9 +127,10 @@ public final class  Telefone {
 	@Override
     public String toString() {
         return new ToStringBuilder(this, MyTelephoneStyle.MY_TELEPHONE_STYLE)
-                .append(this.ddd)
-                .append(this.telefone)
-                .append(this.tipo).toString();
+                .append(this.ddd != null ? this.ddd : "O DDD não pode estar vazio!")
+                .append(this.telefone != null ? this.telefone : "O telefone não pode estar vazio!")
+                .append(this.tipo != null ? this.tipo : "O tipo não pode estar vazio!")
+                .toString();
     }
 	
 }
