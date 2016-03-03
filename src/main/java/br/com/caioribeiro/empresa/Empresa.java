@@ -268,13 +268,13 @@ public final class Empresa {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return new ToStringBuilder(this, MyStyle.MY_STYLE)
-                .append(this.razaoSocial != null ? this.razaoSocial : "A razão social não pode estar vazia!")
-                .append(this.cnpj != null ? "CNPJ: " + this.cnpj : "O CNPJ não pode estar vazio!")
-                .append(enderecos != null ? "Endereço: " + enderecos : "O endereço não pode estar vazio!")
-                .append(telefones != null ? "Contato: " + telefones : "O telefone não pode estar vazio!")
-                .append(emails != null ? emails + "\n" : "O email não pode estar vazio!") 
-                .append(this.dataDeCadastro != null ? "Data de Abertura: " + sdf.format(this.dataDeCadastro) : "A data de abertura não pode estar vazia!")
-                .append(this.dataDeCadastro != null ? "Data de Alteração: " + sdf.format(this.dataDeAlteracao) : "A data de alteração não pode estar vazia!")
+                .append(this.razaoSocial != null ? this.razaoSocial : null)
+                .append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
+                .append(enderecos != null ? "Endereço: " + enderecos : null)
+                .append(telefones != null ? "Contato: " + telefones : null)
+                .append(emails != null ? emails + "\n" : null) 
+                .append(this.dataDeCadastro != null ? "Data de Abertura: " + sdf.format(this.dataDeCadastro) : null)
+                .append(this.dataDeCadastro != null ? "Data de Alteração: " + sdf.format(this.dataDeAlteracao) : null)
                 .toString();
     }
 }
