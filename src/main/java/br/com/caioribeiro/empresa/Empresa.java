@@ -2,7 +2,6 @@ package br.com.caioribeiro.empresa;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
-import java.text.SimpleDateFormat;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -17,7 +16,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.LocalDate;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import br.com.caelum.stella.bean.validation.CNPJ;
 import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
@@ -35,13 +36,19 @@ public final class Empresa {
     /**
      * Define uma lista de Enderecos, para armazenar os enderecos de uma empresa
      * caso haja mais de um.
-     */    
+     */
+    @NotEmpty(message="A lista de endereços não pode estar vazia!")
+    @NotNull(message="A lista de endereços não pode estar vazia!")
+    @Valid
     private Set<Endereco> enderecos;
 
     /**
      * Define uma lista de Telefones, para armazenar os telefones de uma
      * empresa.
      */
+    @NotEmpty(message="A lista de telefones não pode estar vazia!")
+    @NotNull(message="A lista de telefones não pode estar vazia!")
+    @Valid
     private Set<Telefone> telefones;
 
     /**
@@ -83,7 +90,7 @@ public final class Empresa {
     @Future(message="A data não pode ser anterior a data atual!")
     @Past(message="A data não pode ser posterior a data atual!")
     @NotNull(message="A data não pode ser nula!")
-    private LocalDate dataDeCadastro;
+    private DateTime dataDeCadastro;
     
     /**
      * 
@@ -92,7 +99,7 @@ public final class Empresa {
     @Future(message="A data não pode ser anterior a data atual!")
     @Past(message="A data não pode ser posterior a data atual!")
     @NotNull(message="A data não pode ser nula!")
-    private LocalDate dataDeAlteracao;
+    private DateTime dataDeAlteracao;
 
 //Getters e Setters------------------------------------------------------------------------------------------        
     /**
@@ -154,7 +161,7 @@ public final class Empresa {
      *
      * @return the data de cadastro
      */
-    public LocalDate getDataDeCadastro() {
+    public DateTime getDataDeCadastro() {
         return dataDeCadastro;
     }
 
@@ -218,7 +225,7 @@ public final class Empresa {
      *
      * @param dataDeCadastro novo valor de data de cadastro
      */
-    public void setDataDeCadastro(LocalDate dataDeCadastro) {
+    public void setDataDeCadastro(DateTime dataDeCadastro) {
         this.dataDeCadastro = dataDeCadastro;
     }
     
@@ -227,7 +234,7 @@ public final class Empresa {
      *
      * @return the data de alteracao
      */
-    public LocalDate getDataDeAlteracao() {
+    public DateTime getDataDeAlteracao() {
         return dataDeAlteracao;
     }
     
@@ -236,7 +243,7 @@ public final class Empresa {
      *
      * @param dataDeAlteracao novo valor de data de alteracao
      */
-    public void setDataDeAlteracao(LocalDate dataDeAlteracao) {
+    public void setDataDeAlteracao(DateTime dataDeAlteracao) {
         this.dataDeAlteracao = dataDeAlteracao;
     }
     	
@@ -266,15 +273,15 @@ public final class Empresa {
      */
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/YYYY");
         return new ToStringBuilder(this, MyStyle.MY_STYLE)
-                .append(this.razaoSocial != null ? this.razaoSocial : null)
+                .append(this.razaoSocial != null ? "Razão Social: " + this.razaoSocial : null)
                 .append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
                 .append(enderecos != null ? "Endereço: " + enderecos : null)
                 .append(telefones != null ? "Contato: " + telefones : null)
                 .append(emails != null ? emails + "\n" : null) 
-                .append(this.dataDeCadastro != null ? "Data de Abertura: " + sdf.format(this.dataDeCadastro) : null)
-                .append(this.dataDeCadastro != null ? "Data de Alteração: " + sdf.format(this.dataDeAlteracao) : null)
+                .append(this.dataDeCadastro != null ? "Data de Abertura: " + dtf.print(this.dataDeCadastro) : null)
+                .append(this.dataDeCadastro != null ? "Data de Alteração: " + dtf.print(this.dataDeAlteracao) : null)
                 .toString();
     }
 }

@@ -1,6 +1,7 @@
 package br.com.caioribeiro.empresa;
 
 import static br.com.caioribeiro.empresa.util.ValidadorUtil.containsError;
+import static br.com.six2six.fixturefactory.Fixture.from;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.startsWith;
@@ -19,7 +20,6 @@ import javax.validation.ValidatorFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -49,9 +49,9 @@ public final class TelefoneTest {
 		FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 		
 	//Atribuindo aos objetos um template
-	telefone = Fixture.from(Telefone.class).gimme("valid");
-	t1 = Fixture.from(Telefone.class).gimme("valid");
-	t2 = Fixture.from(Telefone.class).gimme("valid");
+	telefone = from(Telefone.class).gimme("valid");
+	t1 = from(Telefone.class).gimme("valid");
+	t2 = from(Telefone.class).gimme("valid");
 		
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
@@ -168,11 +168,5 @@ public final class TelefoneTest {
 			assumeNoException(e);
 		}
 	}
-	
-	@Test
-	public void um() {
-	    System.out.println(t1);
-	    System.out.println(t2);
-	}
-		
+			
 }

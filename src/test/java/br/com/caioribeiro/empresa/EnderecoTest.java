@@ -1,6 +1,7 @@
 package br.com.caioribeiro.empresa;
 
 import static br.com.caioribeiro.empresa.util.ValidadorUtil.containsError;
+import static br.com.six2six.fixturefactory.Fixture.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -18,7 +19,7 @@ import nl.jqno.equalsverifier.Warning;
 
 public class EnderecoTest {
 		
-    private Endereco endereco = new Endereco();
+    private Endereco endereco;
     
     private Validator validator;
     
@@ -26,7 +27,7 @@ public class EnderecoTest {
     @Before
 	public void setUp() {	 
 	    FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");		
-	    //endereco = Fixture.from(Endereco.class).gimme("valid");
+	    endereco = from(Endereco.class).gimme("valid");
 				
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();           

@@ -1,18 +1,18 @@
 package br.com.caioribeiro.empresa;
 
 import static br.com.caioribeiro.empresa.util.ValidadorUtil.containsError;
-import static org.joda.time.LocalDate.now;
+import static br.com.six2six.fixturefactory.Fixture.from;
+import static org.joda.time.DateTime.now;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.joda.time.LocalDate;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -29,10 +29,13 @@ import nl.jqno.equalsverifier.Warning;
 public class EmpresaTest {
 
     /** A empresa. */
-    private Empresa empresa = new Empresa();
+    private Empresa empresa;
     
     /** The emails. */
-    private Set<Email> emails = new HashSet<>();
+    private Set<Email> emails;
+    
+    /**The telefones. */
+    private Set<Telefone> telefones;
     
     /** The validator. */
     private Validator validator;
@@ -49,9 +52,8 @@ public class EmpresaTest {
         FixtureFactoryLoader.loadTemplates("br.com.caioribeiro.empresa.template");
 
         // Atribui a variavel do objeto empresa, o template "valido".
-       // empresa = Fixture.from(Empresa.class).gimme("valid");
-       //emails = Fixture.from(Email.class).gimme(5, "valid");
-        
+       empresa = from(Empresa.class).gimme("valid");
+       
         
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
@@ -222,23 +224,13 @@ public class EmpresaTest {
     
     @Test
     public void deve_aceitar_uma_data_de_alteracao() {
-        LocalDate dataCadastro = now().minusMonths(2);
-        LocalDate dataAlteracao = now();
+        DateTime dataCadastro = now().minusMonths(2);
+        DateTime dataAlteracao = now();
         assertTrue(dataCadastro.isBefore(dataAlteracao));
     }
 
     // Email--------------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Deve_aceitar_uma_lista_com_um_email.
-     */
-    @Test
-    public void deve_aceitar_uma_lista_com_um_email() {
-        Email email = new Email();
-        email.setUserName("empresanova@gmail.com");
-        emails.add(email);
-    }
-
+    
     /**
      * Nao_deve_aceitar_uma_lista_de_emails_nula.
      */
@@ -256,7 +248,19 @@ public class EmpresaTest {
         empresa.setEmails(emails);
         assertTrue(containsError(validator.validate(empresa), "A lista de E-mails não pode estar vazia!"));
     }
+//Email------------------------------------------------------------------------------------------------------------------------------
     
+    @Test
+    public void nao_deve_aceitar_uma_lista_telefones_nula() {
+        empresa.setTelefone(null);
+        assertTrue(containsError(validator.validate(empresa), "A lista de telefones não pode estar vazia!"));
+    }
+    
+    @Test
+    public void nao_deve_aceitar_uma_lista_de_telefones_vazia() {
+        empresa.setTelefone(telefones);
+        assertTrue(containsError(validator.validate(empresa), "A lista de telefones não pode estar vazia!"));
+    }
  //Equals e hashCode-----------------------------------------------------------------------------------------------------------------   
     
     @Test
@@ -264,4 +268,9 @@ public class EmpresaTest {
         EqualsVerifier.forClass(Empresa.class).suppress(Warning.NONFINAL_FIELDS).verify();
     }
     
+    @Test
+    public void um() {
+        empresa = from(Empresa.class).gimme("empresa_com_celular");
+        System.out.println(empresa);
+    }
 }
