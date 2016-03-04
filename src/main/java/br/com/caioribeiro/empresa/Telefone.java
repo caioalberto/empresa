@@ -15,19 +15,22 @@ import br.com.caioribeiro.empresa.stringbuilder.MyTelephoneStyle;
 
 /**
  *
- * Classe Telefone, define a criacao de um objeto do tipo telefone, assim como
- * seus atributos e metodos.
+ * Classe Telefone, define a criacao de um objeto do tipo telefone, assim como seus atributos e metodos.
  *
  * @author Caio Alberto
  */
-public final class  Telefone {
+/**
+ * @author Caio Ribeiro
+ *
+ */
+public final class Telefone {
 
-//Variaveis e constantes------------------------------------------------------------------------ 
+    // Variaveis e constantes------------------------------------------------------------------------
     /**
      * Define o numero de telefone da classe.
      */
-    @NotBlank(message="O telefone não pode estar vazio!")
-    @Size(max=9, min=8, message="O telefone não pode ter menos de {min} dígitos e mais de {max} dígitos!")    
+    @NotBlank(message = "O telefone não pode estar vazio!")
+    @Size(max = 9, min = 8, message = "O telefone não pode ter menos de {min} dígitos e mais de {max} dígitos!")
     private String telefone;
 
     /**
@@ -39,10 +42,10 @@ public final class  Telefone {
     /**
      * Define o DDD do telefone, sempre com apenas dois numeros.
      */
-    @Range(min=11, max=99, message="O DDD deve ser entre {min} e {max}!")    
+    @Range(min = 11, max = 99, message = "O DDD deve ser entre {min} e {max}!")
     private Integer ddd;
 
-//Getters e Setters-----------------------------------------------------------------------------------------
+    // Getters e Setters-----------------------------------------------------------------------------------------
     /**
      * Gets the telefone.
      *
@@ -95,41 +98,44 @@ public final class  Telefone {
      * @param tipo novo valor de tipo
      */
     public void setTipo(TelefoneType tipo) {
-        //this.validaTipo(tipo);
+        // this.validaTipo(tipo);
         this.tipo = tipo;
     }
 
-  //Equals, HashCode e toString---------------------------------------------------------------------------------------------------   
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(this.tipo).toHashCode();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof Telefone)){
-			return false;			
-		}
-		Telefone other = (Telefone) obj;
-		return new EqualsBuilder().append(this.tipo, other.tipo).isEquals();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-    public String toString() {
-        return new ToStringBuilder(this, MyTelephoneStyle.MY_TELEPHONE_STYLE)
-                .append(this.ddd != null ? this.ddd : "O DDD não pode estar vazio!")
-                .append(this.telefone != null ? this.telefone : "O telefone não pode estar vazio!")
-                .append(this.tipo != null ? this.tipo : "O tipo não pode estar vazio!")
-                .toString();
+    // Equals, HashCode e toString---------------------------------------------------------------------------------------------------
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(this.tipo).append(this.telefone).toHashCode();
     }
-	
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Telefone)) {
+            return false;
+        }
+        Telefone other = (Telefone) obj;
+        return new EqualsBuilder().append(this.tipo, other.tipo).append(this.telefone, other.telefone).isEquals();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, MyTelephoneStyle.MY_TELEPHONE_STYLE).append(this.ddd != null ? this.ddd : null)
+                .append(this.telefone != null ? this.telefone : null).append(this.tipo != null ? this.tipo : null).toString();
+    }
+
 }

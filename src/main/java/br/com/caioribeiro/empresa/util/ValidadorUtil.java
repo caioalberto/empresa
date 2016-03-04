@@ -7,6 +7,10 @@ import javax.validation.ConstraintViolation;
 /**
  * The Class ValidadorUtil.
  */
+/**
+ * @author Caio Ribeiro
+ *
+ */
 public final class ValidadorUtil {
 
     /**
@@ -29,5 +33,5 @@ public final class ValidadorUtil {
             }
         }
         return false;
-    }    
+    }
 }

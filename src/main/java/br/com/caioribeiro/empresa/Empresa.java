@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
@@ -25,61 +27,59 @@ import br.com.caioribeiro.empresa.stringbuilder.MyStyle;
 
 /**
  *
- * Classe Empresa, define a criacao de um objeto do tipo empresa, assim como
- * seus atributos e metodos.
+ * Classe Empresa, define a criacao de um objeto do tipo empresa, assim como seus atributos e metodos.
+ * @author Caio Ribeiro
  *
- * @author Caio Alberto
  */
 public final class Empresa {
 
-//Variaveis de Atributo-------------------------------------------------------------------------------------                
+    // Variaveis de Atributo-------------------------------------------------------------------------------------
     /**
-     * Define uma lista de Enderecos, para armazenar os enderecos de uma empresa
-     * caso haja mais de um.
+     * Define uma lista de Enderecos, para armazenar os enderecos de uma empresa caso haja mais de um.
      */
-    @NotEmpty(message="A lista de endereços não pode estar vazia!")
-    @NotNull(message="A lista de endereços não pode estar vazia!")
+    @NotEmpty(message = "A lista de endereços não pode estar vazia!")
+    @NotNull(message = "A lista de endereços não pode estar vazia!")
     @Valid
     private Set<Endereco> enderecos;
 
     /**
-     * Define uma lista de Telefones, para armazenar os telefones de uma
-     * empresa.
+     * Define uma lista de Telefones, para armazenar os telefones de uma empresa.
      */
-    @NotEmpty(message="A lista de telefones não pode estar vazia!")
-    @NotNull(message="A lista de telefones não pode estar vazia!")
+    @NotEmpty(message = "A lista de telefones não pode estar vazia!")
+    @NotNull(message = "A lista de telefones não pode estar vazia!")
     @Valid
     private Set<Telefone> telefones;
 
     /**
      * Define o CNPJ de uma empresa.
-     */   
-    @Size(min=14, max=14, message="O CNPJ deve ter {max} dígitos!")
-    @NotBlank(message="O CNPJ deve ser preenchido!")
-    @CNPJ(formatted=true)
-    @Pattern(regexp="XX.XXX.XXX/XXXX-XX", message="O CNPJ deve estar no formato {regexp}")
+     */
+    @Size(min = 14, max = 14, message = "O CNPJ deve ter {max} dígitos!")
+    @NotBlank(message = "O CNPJ deve ser preenchido!")
+    @CNPJ(formatted = true)
+    @Pattern(regexp = "XX.XXX.XXX/XXXX-XX", message = "O CNPJ deve estar no formato {regexp}")
     private String cnpj;
 
     /**
      * Define a razao social de uma empresa.
      */
-    @NotBlank(message="A Razão Social deve ser preenchida!")
-    @Size(min=10, max=80, message="A Razão Social deve ter entre {min} e {max} letras!")
+    @NotBlank(message = "A Razão Social deve ser preenchida!")
+    @Size(min = 10, max = 80, message = "A Razão Social deve ter entre {min} e {max} letras!")
     private String razaoSocial;
 
     /**
      * Define o nome fantasia de uma empresa.
      */
-    @NotBlank(message="O Nome Fantasia deve ser preenchido!")
-    @Size(min=10, max=80, message="O Nome Fantasia deve conter mais de {min} e menos de {max} letras!")
+    @NotBlank(message = "O Nome Fantasia deve ser preenchido!")
+    @Min(value = 10, message = "O Nome Fantasia deve conter mais de {min} letras!")
+    @Max(value = 80, message = "O Nome Fantasia deve conter menos de {max} letras!")
     private String nomeFantasia;
 
     /**
      *
      * Define uma String que armazena o email da empresa.
-     */ 
-    @NotEmpty(message="A lista de E-mails não pode estar vazia!")
-    @NotNull(message="A lista de E-mails não pode estar vazia!")
+     */
+    @NotEmpty(message = "A lista de E-mails não pode estar vazia!")
+    @NotNull(message = "A lista de E-mails não pode estar vazia!")
     @Valid
     private Set<Email> emails;
 
@@ -87,21 +87,21 @@ public final class Empresa {
      *
      * Define a data de cadastro de uma empresa dentro do objeto.
      */
-    @Future(message="A data não pode ser anterior a data atual!")
-    @Past(message="A data não pode ser posterior a data atual!")
-    @NotNull(message="A data não pode ser nula!")
+    @Future(message = "A data não pode ser anterior a data atual!")
+    @Past(message = "A data não pode ser posterior a data atual!")
+    @NotNull(message = "A data não pode ser nula!")
     private DateTime dataDeCadastro;
-    
+
     /**
      * 
      * Define a data de alteracao de uma empresa dentro do objeto.
      */
-    @Future(message="A data não pode ser anterior a data atual!")
-    @Past(message="A data não pode ser posterior a data atual!")
-    @NotNull(message="A data não pode ser nula!")
+    @Future(message = "A data não pode ser anterior a data atual!")
+    @Past(message = "A data não pode ser posterior a data atual!")
+    @NotNull(message = "A data não pode ser nula!")
     private DateTime dataDeAlteracao;
 
-//Getters e Setters------------------------------------------------------------------------------------------        
+    // Getters e Setters------------------------------------------------------------------------------------------
     /**
      * Gets the enderecos.
      *
@@ -179,11 +179,11 @@ public final class Empresa {
      *
      * @param telefones novo valor de telefone
      */
-    public void setTelefone(Set<Telefone> telefones) {        
+    public void setTelefone(Set<Telefone> telefones) {
         this.telefones = telefones;
     }
 
-   /**
+    /**
      * Seta o atributo cnpj.
      *
      * @param cnpj novo valor de cnpj
@@ -228,7 +228,7 @@ public final class Empresa {
     public void setDataDeCadastro(DateTime dataDeCadastro) {
         this.dataDeCadastro = dataDeCadastro;
     }
-    
+
     /**
      * Gets the data de alteracao.
      *
@@ -237,7 +237,7 @@ public final class Empresa {
     public DateTime getDataDeAlteracao() {
         return dataDeAlteracao;
     }
-    
+
     /**
      * Seta o atributo data de alteracao.
      *
@@ -246,42 +246,43 @@ public final class Empresa {
     public void setDataDeAlteracao(DateTime dataDeAlteracao) {
         this.dataDeAlteracao = dataDeAlteracao;
     }
-    	
-//hashCode, equals e to String----------------------------------------------------------------------------------------------------    
-    /* (non-Javadoc)
+
+    // hashCode, equals e to String----------------------------------------------------------------------------------------------------
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
-    	return new HashCodeBuilder().append(this.cnpj).toHashCode();
+        return new HashCodeBuilder().append(this.cnpj).toHashCode();
     }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof Empresa)){
-			return false;			
-		}
-		Empresa other = (Empresa) obj;
-		return new EqualsBuilder().append(this.cnpj, other.cnpj).isEquals();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Empresa)) {
+            return false;
+        }
+        Empresa other = (Empresa) obj;
+        return new EqualsBuilder().append(this.cnpj, other.cnpj).isEquals();
+    }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/YYYY");
-        return new ToStringBuilder(this, MyStyle.MY_STYLE)
-                .append(this.razaoSocial != null ? "Razão Social: " + this.razaoSocial : null)
-                .append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
-                .append(enderecos != null ? "Endereço: " + enderecos : null)
-                .append(telefones != null ? "Contato: " + telefones : null)
-                .append(emails != null ? emails + "\n" : null) 
+        return new ToStringBuilder(this, MyStyle.MY_STYLE).append(this.razaoSocial != null ? "Razão Social: " + this.razaoSocial : null).append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
+                .append(enderecos != null ? "Endereço: " + enderecos : null).append(telefones != null ? "Contato: " + telefones : null).append(emails != null ? emails + "\n" : null)
                 .append(this.dataDeCadastro != null ? "Data de Abertura: " + dtf.print(this.dataDeCadastro) : null)
-                .append(this.dataDeCadastro != null ? "Data de Alteração: " + dtf.print(this.dataDeAlteracao) : null)
-                .toString();
+                .append(this.dataDeCadastro != null ? "Data de Alteração: " + dtf.print(this.dataDeAlteracao) : null).toString();
     }
 }
