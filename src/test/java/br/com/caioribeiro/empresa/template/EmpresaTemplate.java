@@ -51,7 +51,7 @@ public class EmpresaTemplate implements TemplateLoader {
             add("enderecoDeEmail", regex("\\w{4}\\@\\w{3}\\.\\w{3}"));
         }});
         Fixture.of(Telefone.class).addTemplate("celular", new Rule(){{
-            add("telefone", regex("\\9[4-9]\\d{3}\\-\\d{4}"));
+            add("telefone", regex("\\9[4-9]{1}\\d{3}\\-\\d{4}"));
             add("ddd", random(Integer.class, range(11, 99)));
             add("tipo", TelefoneType.CELULAR);
         }});
