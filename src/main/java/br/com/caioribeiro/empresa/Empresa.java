@@ -56,7 +56,7 @@ public final class Empresa {
     @Size(min = 14, max = 14, message = "O CNPJ deve ter {max} dígitos!")
     @NotBlank(message = "O CNPJ deve ser preenchido!")
     @CNPJ(formatted = true)
-    @Pattern(regexp = "XX.XXX.XXX/XXXX-XX", message = "O CNPJ deve estar no formato {regexp}")
+    @Pattern(regexp = "(\\d{2}\\.\\d{3}\\.\\d{3}\\/\\d{4}\\-\\d{2})", message = "O CNPJ deve estar no formato {regexp}")
     private String cnpj;
 
     /**
@@ -64,6 +64,7 @@ public final class Empresa {
      */
     @NotBlank(message = "A Razão Social deve ser preenchida!")
     @Size(min = 10, max = 80, message = "A Razão Social deve ter entre {min} e {max} letras!")
+    @Pattern(regexp ="\\w[^|]|[^;]", message = "A Razão Social não pode conter pipe/ponto-vírgula!")
     private String razaoSocial;
 
     /**
@@ -72,6 +73,7 @@ public final class Empresa {
     @NotBlank(message = "O Nome Fantasia deve ser preenchido!")
     @Min(value = 10, message = "O Nome Fantasia deve conter mais de {min} letras!")
     @Max(value = 80, message = "O Nome Fantasia deve conter menos de {max} letras!")
+    @Pattern(regexp ="\\w[^|]|[^;]", message = "O Nome Fantasia não pode conter pipe/ponto-vírgula!")
     private String nomeFantasia;
 
     /**

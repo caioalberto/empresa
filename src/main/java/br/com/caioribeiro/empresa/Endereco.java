@@ -72,6 +72,7 @@ public final class Endereco {
      */
     @NotBlank(message = "O país não pode estar vazio!")
     @Length(min = 2, max = 2, message = "O país deve conter {max} letras!")
+    @Pattern(regexp = "\\w{2}")
     private String pais;
 
     /**

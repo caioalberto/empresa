@@ -13,9 +13,17 @@ import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 
 
+/**
+ * @author Caio Ribeiro
+ *
+ */
+/**
+ * @author Caio Ribeiro
+ *
+ */
 public class EmpresaTemplate implements TemplateLoader {
-	@Override
-	public void load() {
+    @Override
+    public void load() {
         Fixture.of(Empresa.class).addTemplate("valid", new Rule(){{
             add("enderecos", has(2).of(Endereco.class, "valid"));
             add("telefones", has(4).of(Telefone.class, "valid"));
@@ -40,17 +48,17 @@ public class EmpresaTemplate implements TemplateLoader {
             add("tipoEndereco", random(EnderecoType.COMERCIAL, EnderecoType.RESIDENCIAL));
         }});
         Fixture.of(Telefone.class).addTemplate("valid", new Rule(){{
-        	add("telefone", regex("[2-5]{1}\\d{3}-\\d{4}"));
-        	add("ddd", random(Integer.class, range(11, 99)));
-        	add("tipo", random(TelefoneType.COMERCIAL, TelefoneType.FAX));
+            add("telefone", regex("[2-5]{1}\\d{3}-\\d{4}"));
+            add("ddd", random(Integer.class, range(11, 99)));
+            add("tipo", random(TelefoneType.COMERCIAL, TelefoneType.FAX));
         }});        
         Fixture.of(Email.class).addTemplate("valid", new Rule(){{
-            add("userName", regex("\\w{4}\\@\\w{3}\\.\\w{3}"));
+            add("enderecoDeEmail", regex("\\w{4}\\@\\w{3}\\.\\w{3}"));
         }});
         Fixture.of(Telefone.class).addTemplate("celular", new Rule(){{
-        	add("telefone", regex("\\9[4-9]\\d{3}\\-\\d{4}"));
-        	add("ddd", random(Integer.class, range(11, 99)));
-        	add("tipo", TelefoneType.CELULAR);
+            add("telefone", regex("\\9[4-9]\\d{3}\\-\\d{4}"));
+            add("ddd", random(Integer.class, range(11, 99)));
+            add("tipo", TelefoneType.CELULAR);
         }});
-	}	
+    }	
 }

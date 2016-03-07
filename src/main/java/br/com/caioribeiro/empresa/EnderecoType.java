@@ -1,5 +1,7 @@
 package br.com.caioribeiro.empresa;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * The Enum EnderecoType.
  */
@@ -15,6 +17,7 @@ public enum EnderecoType {
                           RESIDENCIAL("Residencial");
 
     /** The nome tipo endereco. */
+    @NotBlank(message = "O tipo não pode estar vazio!")
     private final String nomeTipoEndereco;
 
     /**

@@ -3,6 +3,7 @@ package br.com.caioribeiro.empresa;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -31,6 +32,7 @@ public final class Telefone {
      */
     @NotBlank(message = "O telefone não pode estar vazio!")
     @Size(max = 9, min = 8, message = "O telefone não pode ter menos de {min} dígitos e mais de {max} dígitos!")
+    @Pattern(regexp = "([2-5]{1}\\d{3}-\\d{4})|(\\9[4-9]\\d{3}\\-\\d{4})", message = "O Telefone deve ser no modelo: {regexp}")
     private String telefone;
 
     /**
